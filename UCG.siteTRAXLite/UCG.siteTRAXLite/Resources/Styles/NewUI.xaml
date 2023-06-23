@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffImageLoading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Compat.Maui">
+    <!--  Colors  -->
+    <Color x:Key="MediumDarkBlue">#3D4872</Color>
+    <Color x:Key="MediumLightBlue">#9FB6D4</Color>
+    <Color x:Key="LightGrey">#D4DDE9</Color>
+    <Color x:Key="MediumLightGrey">#B2B2B2</Color>
+    <Color x:Key="MediumGrey">#617691</Color>
+    <Color x:Key="ThinGrey">#F2F7FC</Color>
+    <Color x:Key="VeryDarkBlue">#1E243A</Color>
+    <Color x:Key="PrimaryBlue">#0492F2</Color>
+    <Color x:Key="SecondaryBlue">#0E67CC</Color>
+    <Color x:Key="TertiaryBlue">#0286DF</Color>
+
+    <Style x:Key="ActiveButton" TargetType="Button">
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontFamily" Value="FS-Medium" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Offset=".5" Color="{StaticResource PrimaryBlue}" />
+                    <GradientStop Offset=".5" Color="{StaticResource TertiaryBlue}" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style x:Key="NormalButton" TargetType="Button">
+        <Setter Property="TextColor" Value="{StaticResource MediumDarkBlue}" />
+        <Setter Property="FontFamily" Value="FS-Medium" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Offset=".5" Color="{StaticResource MediumLightBlue}" />
+                    <GradientStop Offset=".5" Color="{StaticResource MediumLightBlue}" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style x:Key="ActiveCancelButton" TargetType="Button">
+        <Setter Property="BorderColor" Value="{StaticResource MediumDarkBlue}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="TextColor" Value="#3D4872" />
+        <Setter Property="FontFamily" Value="FS-Medium" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <ControlTemplate x:Key="LoginHeader">
+        <StackLayout Padding="0" Spacing="0" VerticalOptions="Start">
+            <StackLayout Padding="16,0,16,0" BackgroundColor="{StaticResource SecondaryBlue}" HeightRequest="64" VerticalOptions="Center">
+                <ffImageLoading:CachedImage Aspect="AspectFit" AutomationId="settingBtn" HeightRequest="30.74" Source="sitetraxair_logo_v2.png" VerticalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout Padding="16,8,16,0" HeightRequest="25" VerticalOptions="Center">
+                <Label FontFamily="FS-LightItalic" FontSize="16" HorizontalTextAlignment="Center" Text="Your job management app by UCG" TextColor="#122671" VerticalTextAlignment="Center" />
+            </StackLayout>
+        </StackLayout>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="LoginFooter">
+        <Grid ColumnDefinitions="1*,1*,1*" ColumnSpacing="0" RowDefinitions="Auto,Auto" RowSpacing="0">
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Spacing="0">
+                <Label FontFamily="FS-Regular" FontSize="14" Text="If you have difficulties logging in please contact your field manager or send us an email." TextColor="#617691" />
+            </StackLayout>
+            <StackLayout Grid.Row="1" Grid.Column="0" Padding="0" Spacing="0">
+                <Label FontFamily="FS-Regular" FontSize="14" HorizontalTextAlignment="Start" Text="SiteTRAX AIR 4.2" TextColor="#D4DDE9" />
+
+            </StackLayout>
+            <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Spacing="0">
+                <ffImageLoading:CachedImage Aspect="AspectFit" AutomationId="settingBtn" HeightRequest="15" Source="ucgLogo.png" VerticalOptions="CenterAndExpand" />
+            </StackLayout>
+            
+            <StackLayout x:Name="SettingsButton" Grid.RowSpan="2" Grid.Column="2" IsEnabled="False" Spacing="0">
+                <Frame Padding="0" BorderColor="#3D4872" CornerRadius="3.6" HasShadow="False" HeightRequest="36" HorizontalOptions="EndAndExpand" Opacity=".5" VerticalOptions="EndAndExpand" WidthRequest="36">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{TemplateBinding BindingContext.SettingCommand}" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                    <ffImageLoading:CachedImage Aspect="AspectFit" AutomationId="settingBtn" HeightRequest="22" Source="cogwheel.png" VerticalOptions="CenterAndExpand" />
+                </Frame>
+            </StackLayout>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="PageWithBackTitleAndLogout">
+        <ContentPresenter HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+
+        <!--<Grid ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <BoxView Grid.Row="0" BackgroundColor="Blue" />
+        <ContentPresenter Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+    </Grid>-->
+    </ControlTemplate>
+
+</ResourceDictionary>

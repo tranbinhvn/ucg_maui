@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UCG.siteTRAXLite.Views.SettingsPage"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="0" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                <ContentView ControlTemplate="{StaticResource LoginHeader}" />
+
+                <StackLayout Margin="0,20,0,0" Padding="16,0,16,0" HeightRequest="25" VerticalOptions="Center">
+                    <Label FontFamily="FS-Italic" FontSize="24" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Text="SELECT COUNTRY AND ENDPOINT" TextColor="{StaticResource VeryDarkBlue}" />
+                </StackLayout>
+
+                <StackLayout Padding="48,0,48,0" Spacing="14" VerticalOptions="CenterAndExpand">
+                    <StackLayout HeightRequest="80" Spacing="0" VerticalOptions="Center">
+                        <Label FontFamily="FS-Regular" FontSize="20" HorizontalTextAlignment="Start" Text="Country" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                        <Picker AutomationId="countryPicker" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" ItemsSource="{Binding ListCountrySetting}" SelectedItem="{Binding CountrySelected}" TextColor="Gray" VerticalOptions="Center" />
+                    </StackLayout>
+
+                    <StackLayout HeightRequest="80" Spacing="0" VerticalOptions="Center">
+                        <Label FontFamily="FS-Regular" FontSize="20" HorizontalTextAlignment="Start" Text="Endpoint" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                        <Picker AutomationId="endPointPicker" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" ItemDisplayBinding="{Binding Name}" ItemsSource="{Binding ListEndPointSetting}" SelectedItem="{Binding ItemSelected}" TextColor="Gray" VerticalOptions="Center" />
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="FillAndExpand" IsVisible="{Binding IsShowEndPoint}" Spacing="0" VerticalOptions="FillAndExpand">
+                        <Label FontFamily="FS-Regular" FontSize="14" HorizontalTextAlignment="Center" Text="BMP SingalR Endpoint" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                        <Entry IsEnabled="False" Placeholder="BMP SignalR Endpoint URL" Style="{StaticResource LoginEntry}" Text="{Binding EndpointBMPSignalRURL}" />
+
+                        <Label FontFamily="FS-Regular" FontSize="14" HorizontalTextAlignment="Center" Text="DPP SingalR Endpoint" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                        <Entry IsEnabled="False" Placeholder="DPP Endpoint URL" Style="{StaticResource LoginEntry}" Text="{Binding DPPEndPointUrl}" />
+                    </StackLayout>
+
+                    <Button Margin="0,30,0,0" Command="{Binding SaveSettingsCommand}" Style="{StaticResource ActiveButton}" Text="SAVE" VerticalOptions="Center" />
+                    <Button Command="{Binding GoBackCommand}" Style="{StaticResource ActiveCancelButton}" Text="CANCEL" VerticalOptions="Center" />
+
+                    <Label HorizontalOptions="Center" Text="{Binding AppVersion}" TextColor="{StaticResource MediumGrey}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowEndPointCommand}" NumberOfTapsRequired="1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+
+                <StackLayout Padding="16,0,16,10" Spacing="0" VerticalOptions="End">
+                    <ContentView ControlTemplate="{StaticResource LoginFooter}" />
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>

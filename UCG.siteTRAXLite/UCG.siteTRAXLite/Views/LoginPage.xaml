@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UCG.siteTRAXLite.Views.LoginPage"
+             xmlns:customcontrols="clr-namespace:UCG.siteTRAXLite.CustomControls"
+             xmlns:ffImageLoading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Compat.Maui"
+             Shell.NavBarIsVisible="False">
+    <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="0" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                <ContentView ControlTemplate="{StaticResource LoginHeader}" />
+
+                <StackLayout Padding="48,0,48,0" Spacing="14" VerticalOptions="CenterAndExpand">
+                    <StackLayout HeightRequest="80" Spacing="0" VerticalOptions="Center">
+                        <Label FontFamily="FS-Regular" FontSize="20" HorizontalTextAlignment="Start" Text="Login / User Name" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                        <customcontrols:CustomLoginEntry AutomationId="username" Placeholder="Enter your login / user name" Style="{StaticResource LoginEntry}" Text="{Binding Username}" />
+                    </StackLayout>
+                    <StackLayout HeightRequest="80" Spacing="0" VerticalOptions="Center">
+                        <Label FontFamily="FS-Regular" FontSize="20" HorizontalTextAlignment="Start" Text="Password" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                        <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand">
+                            <customcontrols:CustomLoginEntry x:Name="PasswordEntry" AutomationId="password" HorizontalOptions="FillAndExpand" IsPassword="True" Placeholder="Enter your password" Style="{StaticResource LoginEntry}" Text="{Binding Password}" />
+                        </StackLayout>
+                    </StackLayout>
+                    <!--<StackLayout Margin="{OnPlatform iOS='8,0,0,0', Android='2,0,0,0'}" HeightRequest="80" Orientation="Horizontal" Spacing="8" VerticalOptions="Center">
+                        <CheckBox AutomationId="rememberMeSwitch" IsChecked="{Binding RememberMe}" ScaleX="2" ScaleY="2" Color="{StaticResource MediumDarkBlue}">
+                            <CheckBox.Behaviors>
+                                <behaviors:EventToCommandBehavior Command="{Binding RememberCommand}" EventName="CheckedChanged" />
+                            </CheckBox.Behaviors>
+                        </CheckBox>
+                        <Label FontFamily="FS-Regular" FontSize="20" HorizontalTextAlignment="Start" Text="Remember Me" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                    </StackLayout>
+                    <StackLayout Margin="0,-28,0,0" HeightRequest="80" IsVisible="{Binding IsEnableOffsiteMode}" Orientation="Horizontal" Spacing="8" VerticalOptions="Center">
+                        <CheckBox AutomationId="offsiteSwitch" IsChecked="{Binding IsUserEnableOffsiteMode}" ScaleX="2" ScaleY="2" Color="{StaticResource MediumDarkBlue}">
+                            <CheckBox.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="CheckedChanged" />
+                            </CheckBox.Behaviors>
+                        </CheckBox>
+                        <Label FontFamily="FS-Regular" FontSize="20" HorizontalTextAlignment="Start" Text="Offsite" TextColor="{StaticResource MediumDarkBlue}" VerticalTextAlignment="Center" />
+                    </StackLayout>-->
+                    <Button AutomationId="loginBtn" Command="{Binding LoginCommand}" Style="{StaticResource ActiveButton}" Text="LOG IN" VerticalOptions="Center" />
+                </StackLayout>
+
+                <StackLayout Padding="16,0,16,10" Spacing="0" VerticalOptions="End">
+                    <!--<StackLayout HorizontalOptions="FillAndExpand">
+                        <Label FontFamily="FS-Regular" FontSize="18" HorizontalTextAlignment="End" Text="Forgot Password" TextColor="{StaticResource MediumLightBlue}" TextDecorations="Underline" VerticalTextAlignment="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" NumberOfTapsRequired="1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>-->
+
+                    <Grid ColumnDefinitions="1*,1*,1*" ColumnSpacing="0" RowDefinitions="Auto,Auto" RowSpacing="0">
+                        <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Spacing="0">
+                            <Label FontFamily="FS-Regular" FontSize="14" Text="If you have difficulties logging in please contact your field manager or send us an email." TextColor="#617691" />
+                        </StackLayout>
+                        <StackLayout Grid.Row="1" Grid.Column="0" Padding="0" Spacing="0">
+                            <Label FontFamily="FS-Regular" FontSize="14" HorizontalTextAlignment="Start" Text="SiteTRAX AIR 4.2" TextColor="#D4DDE9" />
+
+                        </StackLayout>
+                        <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Spacing="0">
+                            <ffImageLoading:CachedImage Aspect="AspectFit" AutomationId="settingBtn" HeightRequest="15" Source="UcgLogo.png" VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                        <StackLayout x:Name="SettingsButton" Grid.RowSpan="2" Grid.Column="2" Spacing="0">
+                            <Frame Padding="0" BorderColor="#3D4872" CornerRadius="3.6" HasShadow="False" HeightRequest="36" HorizontalOptions="EndAndExpand" VerticalOptions="EndAndExpand" WidthRequest="36">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SettingCommand}" NumberOfTapsRequired="1" />
+                                </Frame.GestureRecognizers>
+                                <ffImageLoading:CachedImage Aspect="AspectFit" AutomationId="settingBtn" HeightRequest="22" Source="cogwheel.png" VerticalOptions="CenterAndExpand" />
+                            </Frame>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+            <!--<customDialogs:CustomAlert IsVisible="{Binding CustomAlertModel.IsAlertVisible}" Style="{StaticResource AlertStyle}" />-->
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>
