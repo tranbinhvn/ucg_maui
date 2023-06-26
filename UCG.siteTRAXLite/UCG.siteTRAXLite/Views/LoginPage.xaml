@@ -54,7 +54,7 @@
                             <Label FontFamily="FS-Regular" FontSize="14" Text="If you have difficulties logging in please contact your field manager or send us an email." TextColor="#617691" />
                         </StackLayout>
                         <StackLayout Grid.Row="1" Grid.Column="0" Padding="0" Spacing="0">
-                            <Label FontFamily="FS-Regular" FontSize="14" HorizontalTextAlignment="Start" Text="SiteTRAX AIR 4.2" TextColor="#D4DDE9" />
+                            <Label FontFamily="FS-Regular" FontSize="14" HorizontalTextAlignment="Start" Text="siteTRAX Lite PoC" TextColor="#D4DDE9" />
 
                         </StackLayout>
                         <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Spacing="0">
