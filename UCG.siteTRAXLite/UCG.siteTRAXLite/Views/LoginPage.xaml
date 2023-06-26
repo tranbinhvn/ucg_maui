@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UCG.siteTRAXLite.Views.LoginPage"
+             xmlns:customcontrols="clr-namespace:UCG.siteTRAXLite.CustomControls"
+             xmlns:ffImageLoading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Compat.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="False">
+    <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="0" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                <StackLayout Padding="0" Spacing="0" VerticalOptions="Start">
+                    <Label Text="siteTRAX Lite" FontAttributes="Bold" FontSize="30" HorizontalOptions="CenterAndExpand"></Label>
+                </StackLayout>
+                <StackLayout Padding="48,0,48,0" Spacing="14" VerticalOptions="CenterAndExpand">
+                    <StackLayout HeightRequest="80" Spacing="0" VerticalOptions="Center">
+                        <Label Margin="0,0,0,20" FontSize="20" HorizontalTextAlignment="Start" Text="Login / User Name" VerticalTextAlignment="Center" />
+                        <Entry AutomationId="username" Placeholder="Enter your login / user name" Text="{Binding Username}" />
+                    </StackLayout>
+                    <StackLayout HeightRequest="120" Spacing="0" VerticalOptions="Center">
+                        <Label Margin="0,20,0,20" FontSize="20" HorizontalTextAlignment="Start" Text="Password" VerticalTextAlignment="Center" />
+                        <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand">
+                            <Entry x:Name="PasswordEntry" AutomationId="password" HorizontalOptions="FillAndExpand" IsPassword="True" Placeholder="Enter your password" Text="{Binding Password}" />
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Margin="{OnPlatform iOS='8,0,0,0', Android='2,0,0,0'}" HeightRequest="80" Orientation="Horizontal" Spacing="8" VerticalOptions="Center">
+                        <CheckBox AutomationId="rememberMeSwitch" IsChecked="{Binding RememberMe}" ScaleX="2" ScaleY="2">
+                            <CheckBox.Behaviors>
+                                <toolkit:EventToCommandBehavior Command="{Binding RememberCommand}" EventName="CheckedChanged" />
+                            </CheckBox.Behaviors>
+                        </CheckBox>
+                        <Label FontSize="20" HorizontalTextAlignment="Start" Text="Remember Me" VerticalTextAlignment="Center" />
+                    </StackLayout>
+                    <Button AutomationId="loginBtn" Command="{Binding LoginCommand}" Text="LOG IN" VerticalOptions="Center" />
+                </StackLayout>
+
+                <StackLayout Padding="16,0,16,10" Spacing="0" VerticalOptions="End">
+                    <Grid ColumnDefinitions="1*,1*,1*" ColumnSpacing="0" RowDefinitions="Auto,Auto" RowSpacing="0">
+                        <StackLayout Grid.Row="1" Grid.Column="0" Padding="0" Spacing="0">
+                            <Label FontSize="14" HorizontalTextAlignment="Start" Text="siteTRAX Lite PoC" TextColor="#D4DDE9" />
+                        </StackLayout>
+                        <StackLayout x:Name="SettingsButton" Grid.RowSpan="2" Grid.Column="2" Spacing="0">
+                            <Button Padding="0" Command="{Binding SettingCommand}" WidthRequest="70" Text="Settings" HorizontalOptions="EndAndExpand" VerticalOptions="EndAndExpand"></Button>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>
