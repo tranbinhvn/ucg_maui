@@ -83,7 +83,6 @@ namespace UCG.siteTRAXLite.WebServices
                         break;
                 }
                 APIBaseAddress = new Uri(APIBaseURL);
-                // dispose old connection
                 if (httpClient != null)
                     httpClient.Dispose();
                 if (handler != null)
@@ -130,13 +129,6 @@ namespace UCG.siteTRAXLite.WebServices
             _serializerSettings.Converters.Add(new StringEnumConverter());
         }
 
-        /// <summary>
-        /// Request an asynchronous call to webservices by the given endpoint.
-        /// </summary>
-        /// <param name="requestMessage">Request message.</param>
-        /// <param name="requestUri">The endpoint of webservices.</param>
-        /// <param name="query">Query string.</param>
-        /// <returns>The content of the requested endpoint.</returns>
         public async Task<TResult> SendRequestAsync<TResult>(HttpRequestMessage requestMessage, string requestUri, string query)
         {
 
@@ -165,11 +157,6 @@ namespace UCG.siteTRAXLite.WebServices
             return hmac64;
         }
 
-        /// <summary>
-        /// Request an asynchronous call to webservices by the given endpoint.
-        /// </summary>
-        /// <param name="requestUri">The endpoint of webservices.</param>
-        /// <returns>The content of the requested endpoint.</returns>
         public async Task<TResult> GetRequestAsync<TResult>(string requestUri)
         {
             //Authentication : use if ever
@@ -185,13 +172,6 @@ namespace UCG.siteTRAXLite.WebServices
             }
         }
 
-        /// <summary>
-        /// Puts the request asynchronous.
-        /// </summary>
-        /// <param name="requestUri">The request URI.</param>
-        /// <param name="content">The object that will be serialized to json string.</param>
-        /// <param name="accessToken">The access token of the logged in user.</param>
-        /// <returns>The content of the requested endpoint.</returns>
         public async Task<TResult> PutRequestAsync<T, TResult>(string requestUri, T content)
         {
             if (!string.IsNullOrEmpty(AccessToken))
@@ -209,13 +189,6 @@ namespace UCG.siteTRAXLite.WebServices
             }
         }
 
-        /// <summary>
-        /// Posts the request asynchronous.
-        /// </summary>
-        /// <param name="requestUri">The request URI.</param>
-        /// <param name="content">The object that will be serialized to json string.</param>
-        /// <param name="accessToken">The access token of the logged in user.</param>
-        /// <returns>The content of the requested endpoint.</returns>
         public async Task<TResult> PostRequestAsync<T, TResult>(string requestUri, T content)
         {
             if (!string.IsNullOrEmpty(AccessToken))
@@ -246,13 +219,6 @@ namespace UCG.siteTRAXLite.WebServices
             }
         }
 
-        /// <summary>
-        /// Post using formdata
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="requestUri"></param>
-        /// <param name="content"></param>
-        /// <returns></returns>
         public async Task<TResult> PostFormRequestAsync<T, TResult>(string requestUri, T content) where T : class
         {
             if (!string.IsNullOrEmpty(AccessToken))
@@ -406,7 +372,6 @@ namespace UCG.siteTRAXLite.WebServices
         public async Task UpdateMessageWhenFailed(MessageResponse result, NetworkException e)
         {
             result.Code = e.ResponseCode;
-            // update from server
             if (result.Code == ResponseCode.SERVERERROR)
             {
                 var modelMessage = await JsonHelper.FromString<ModelMessageResponse>(e.Message);
@@ -431,7 +396,6 @@ namespace UCG.siteTRAXLite.WebServices
                     }
                 }
 
-                // make sure we have friendly message
                 if (string.IsNullOrEmpty(result.ErrorDescription))
                 {
                     var exceptionMessage = await JsonHelper.FromString<ExceptionMessageResponse>(e.Message);

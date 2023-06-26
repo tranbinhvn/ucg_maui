@@ -106,7 +106,7 @@ namespace UCG.siteTRAXLite.ViewModels
         }
         #endregion
 
-        public SettingsPageViewModel(INavigationService navigationService) : base(navigationService)
+        public SettingsPageViewModel(INavigationService navigationService, IAlertService alertService) : base(navigationService, alertService)
         {
             var countries = Endpoints.GetAllCountries();
             TabCount = 0;
@@ -134,7 +134,9 @@ namespace UCG.siteTRAXLite.ViewModels
         {
             if (ItemSelected == null)
             {
-#if ANDROID
+#if WINDOWS
+                AlertService.ShowAlert(MessageStrings.NoSelectedEndpoint);
+#else
                 UserDialogs.Instance.Alert(MessageStrings.NoSelectedEndpoint);
 #endif
                 return;

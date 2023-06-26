@@ -83,32 +83,32 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddSingleton<IIdentityService, IdentityService>();
             mauiAppBuilder.Services.AddSingleton<ICrewService, CrewService>();
             mauiAppBuilder.Services.AddSingleton<IUserData, UserData>();
+            mauiAppBuilder.Services.AddSingleton<IOpenAppService, OpenAppService>();
+            mauiAppBuilder.Services.AddSingleton<IAlertService, AlertService>();
 
             return mauiAppBuilder;
         }
 
         private static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddTransient<MainPageViewModel>();
             mauiAppBuilder.Services.AddTransient<LoginPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SettingsPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<AppAccessPageViewModel>();
 
             return mauiAppBuilder;
         }
 
         private static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddTransient<MainPage>();
             mauiAppBuilder.Services.AddTransient<LoginPage>();
             mauiAppBuilder.Services.AddTransient<SettingsPage>();
+            mauiAppBuilder.Services.AddTransient<AppAccessPage>();
 
             return mauiAppBuilder;
         }
 
         private static MauiAppBuilder RegisterModels(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddTransient<MainPageItem>();
-
             return mauiAppBuilder;
         }
     }

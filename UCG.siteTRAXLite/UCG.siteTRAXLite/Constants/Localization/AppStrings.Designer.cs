@@ -176,5 +176,23 @@ namespace UCG.siteTRAXLite.Constants.Localization {
                 return ResourceManager.GetString("NoSelectedEndpoint", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app is not installed on your device.
+        /// </summary>
+        internal static string Not_Installed_app {
+            get {
+                return ResourceManager.GetString("Not_Installed_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to com.ucg.sitetraxair.
+        /// </summary>
+        internal static string SiteTraxAir_Package_Name {
+            get {
+                return ResourceManager.GetString("SiteTraxAir_Package_Name", resourceCulture);
+            }
+        }
     }
 }

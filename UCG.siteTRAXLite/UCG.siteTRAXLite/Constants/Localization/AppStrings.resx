@@ -156,4 +156,10 @@
   <data name="NoSelectedEndpoint" xml:space="preserve">
     <value>No Endpoint is selected, please choose an endpoint.</value>
   </data>
+  <data name="Not_Installed_app" xml:space="preserve">
+    <value>The app is not installed on your device</value>
+  </data>
+  <data name="SiteTraxAir_Package_Name" xml:space="preserve">
+    <value>com.ucg.sitetraxair</value>
+  </data>
 </root>

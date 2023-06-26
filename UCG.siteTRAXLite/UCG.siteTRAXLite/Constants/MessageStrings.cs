@@ -17,5 +17,7 @@ namespace UCG.siteTRAXLite.Constants
         public static string Error_SomeThingWrong = AppStrings.Error_SomeThingWrong;
         public static string APINotFoundTitle = AppStrings.APINotFoundTitle;
         public static string APINotFoundContent = AppStrings.APINotFoundContent;
+        public static string Not_Installed_App = AppStrings.Not_Installed_app;
+        public static string SiteTraxAir_Package_Name = AppStrings.SiteTraxAir_Package_Name;
     }
 }

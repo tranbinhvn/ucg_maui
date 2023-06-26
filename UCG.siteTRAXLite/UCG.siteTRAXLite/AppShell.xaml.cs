@@ -11,6 +11,7 @@ namespace UCG.siteTRAXLite
 
             Routing.RegisterRoute(PageNames.LoginPage, typeof(LoginPage));
             Routing.RegisterRoute(PageNames.SettingsPage, typeof(SettingsPage));
+            Routing.RegisterRoute(PageNames.AppAccessPage, typeof(AppAccessPage));
         }
     }
 }

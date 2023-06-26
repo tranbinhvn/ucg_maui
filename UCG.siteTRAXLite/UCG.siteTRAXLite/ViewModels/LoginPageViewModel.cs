@@ -5,6 +5,7 @@ using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.Mappers;
 using UCG.siteTRAXLite.Services;
+using UCG.siteTRAXLite.Utils;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.Exceptions;
 using UCG.siteTRAXLite.WebServices.Helper;
@@ -66,10 +67,24 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        public LoginPageViewModel(INavigationService navigationService, IIdentityService authenService, IUserManager userManager) : base(navigationService)
+        private ICommand rememberCommand;
+        public ICommand RememberCommand
+        {
+            get
+            {
+                return this.rememberCommand ?? (this.rememberCommand = new Command(RememberMeChange));
+            }
+        }
+
+        public LoginPageViewModel(INavigationService navigationService, 
+            IIdentityService authenService, 
+            IUserManager userManager,
+            IUserData userData, 
+            IAlertService alertService) : base(navigationService, alertService)
         {
             _authenService = authenService;
             _userManager = userManager;
+            _userData = userData;
 
             RememberMe = Settings.IsRememberMe;
             if (RememberMe)
@@ -86,17 +101,21 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        private void Login()
+        private async void Login()
         {
-#if ANDROID
+#if WINDOWS
+            var spinner = await SpinnerHelper.ShowSpinnerAsync(MessageStrings.Login);
+#else
             MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.ShowLoading(MessageStrings.Login, MaskType.Black));
 #endif
 
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 if (string.IsNullOrEmpty(Settings.SelectedCountry))
                 {
-#if ANDROID
+#if WINDOWS
+                    await AlertService.ShowAlertAsync(MessageStrings.NoEndpointSelected);
+#else
                     await UserDialogs.Instance.AlertAsync(MessageStrings.NoEndpointSelected).ConfigureAwait(true);
 #endif
                     return;
@@ -124,17 +143,26 @@ namespace UCG.siteTRAXLite.ViewModels
                     }
 
                     await SetupUserInfo(shouldUpdateCompany, true);
+
+                    MainThread.BeginInvokeOnMainThread(async () => 
+                    {
+                        await NavigationService.NavigateToAsync(PageNames.AppAccessPage);
+                    });
                 }
                 else
                 {
-#if ANDROID 
+#if WINDOWS
+                    await AlertService.ShowAlertAsync(isSuccess.ErrorDescription);
+#else
                     await UserDialogs.Instance.AlertAsync(isSuccess.ErrorDescription).ConfigureAwait(true);
 #endif
                 }
 
-            }).ContinueWith(res => MainThread.BeginInvokeOnMainThread(() =>
+            }).ContinueWith(res => MainThread.BeginInvokeOnMainThread(async () =>
             {
-#if ANDROID
+#if WINDOWS
+                await SpinnerHelper.CloseSpinnerAsync(spinner);
+#else
                 UserDialogs.Instance.HideLoading();
 #endif
             }));
@@ -147,14 +175,20 @@ namespace UCG.siteTRAXLite.ViewModels
                 var userInfoResponse = await _userManager.GetUserInfo(IsNetworkConnected);
                 var userInfo = userInfoResponse;
                 _userData.SetUserInfo(userInfo);
-
-#if ANDROID
-                await UserDialogs.Instance.AlertAsync("Login Successfully!").ConfigureAwait(true);
-#endif
             }
             catch (NetworkException ex)
             {
                 HandleNetworkException(ex);
+            }
+        }
+
+        private void RememberMeChange()
+        {
+            if (!RememberMe)
+            {
+                Settings.IsRememberMe = false;
+                Settings.UserNameSetting = string.Empty;
+                Settings.PasswordSetting = string.Empty;
             }
         }
 

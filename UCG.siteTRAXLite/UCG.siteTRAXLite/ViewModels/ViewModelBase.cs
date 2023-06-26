@@ -10,6 +10,7 @@ namespace UCG.siteTRAXLite.ViewModels
     public class ViewModelBase : BindableBase
     {
         protected INavigationService NavigationService { get; private set; }
+        protected IAlertService AlertService { get; private set; }
 
         public static bool _isNetworkConnected;
         public bool IsNetworkConnected
@@ -23,13 +24,14 @@ namespace UCG.siteTRAXLite.ViewModels
             get { return !_isNetworkConnected; }
         }
 
-        public ViewModelBase(INavigationService navigationService)
+        public ViewModelBase(INavigationService navigationService, IAlertService alertService)
         {
             NavigationService = navigationService;
 
             var accessType = Connectivity.Current.NetworkAccess;
 
             IsNetworkConnected = accessType == NetworkAccess.Internet;
+            AlertService = alertService;
         }
 
         public void HandleNetworkException(NetworkException e)
@@ -40,7 +42,9 @@ namespace UCG.siteTRAXLite.ViewModels
             // Custom Alert if api not found
             if (e.ResponseCode == ResponseCode.APINOTFOUND)
             {
-#if ANDROID
+#if WINDOWS
+                AlertService.ShowAlert(MessageStrings.APINotFoundContent, MessageStrings.APINotFoundTitle);
+#else
                 UserDialogs.Instance.Alert(MessageStrings.APINotFoundContent, MessageStrings.APINotFoundTitle);
 #endif
                 return;
@@ -48,7 +52,9 @@ namespace UCG.siteTRAXLite.ViewModels
             var errorMsg = ExceptionHandler.GetErrorMessage(e.ResponseCode, e.Message);
             if (!string.IsNullOrEmpty(errorMsg) || !string.IsNullOrWhiteSpace(errorMsg))
             {
-#if ANDROID
+#if WINDOWS
+                AlertService.ShowAlert(errorMsg);
+#else
                 UserDialogs.Instance.Alert(errorMsg);
 #endif
             }
