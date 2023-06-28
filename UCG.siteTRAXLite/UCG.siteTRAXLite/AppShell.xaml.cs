@@ -1,4 +1,4 @@
-﻿using UCG.siteTRAXLite.Constants;
+﻿using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Views;
 
 namespace UCG.siteTRAXLite

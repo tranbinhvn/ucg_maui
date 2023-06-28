@@ -2,7 +2,7 @@
 using UCG.siteTRAXLite.DataContracts.UserInfoContracts;
 using UCG.siteTRAXLite.Entities;
 
-namespace UCG.siteTRAXLite.Mappers
+namespace UCG.siteTRAXLite.Managers.Mappers
 {
     public class DataContractToEntityProfile : Profile
     {

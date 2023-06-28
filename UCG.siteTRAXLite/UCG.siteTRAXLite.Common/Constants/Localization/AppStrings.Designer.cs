@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UCG.siteTRAXLite.Constants.Localization {
+namespace UCG.siteTRAXLite.Common.Constants.Localization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace UCG.siteTRAXLite.Constants.Localization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UCG.siteTRAXLite.Constants.Localization.AppStrings", typeof(AppStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UCG.siteTRAXLite.Common.Constants.Localization.AppStrings", typeof(AppStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -1,8 +1,9 @@
-﻿using UCG.siteTRAXLite.Entities;
-using UCG.siteTRAXLite.Mappers;
+﻿using Microsoft.Maui.Networking;
+using UCG.siteTRAXLite.Entities;
+using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.WebServices.CrewServices;
 
-namespace UCG.siteTRAXLite.Managers
+namespace UCG.siteTRAXLite.Managers.UserManagers
 {
     public class UserManager : ManagerBase, IUserManager
     {

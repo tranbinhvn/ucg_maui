@@ -1,6 +1,6 @@
 ﻿using UCG.siteTRAXLite.Entities;
 
-namespace UCG.siteTRAXLite.Managers
+namespace UCG.siteTRAXLite.Managers.UserManagers
 {
     public interface IUserManager
     {

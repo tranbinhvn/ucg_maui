@@ -1,6 +1,6 @@
-﻿using UCG.siteTRAXLite.Constants.Localization;
+﻿using UCG.siteTRAXLite.Common.Constants.Localization;
 
-namespace UCG.siteTRAXLite.Constants
+namespace UCG.siteTRAXLite.Common.Constants
 {
     public static class MessageStrings
     {

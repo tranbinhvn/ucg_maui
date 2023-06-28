@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UCG.siteTRAXLite.DataContracts\UCG.siteTRAXLite.DataContracts.csproj" />
+    <ProjectReference Include="..\UCG.siteTRAXLite.Entities\UCG.siteTRAXLite.Entities.csproj" />
+    <ProjectReference Include="..\UCG.siteTRAXLite.WebServices\UCG.siteTRAXLite.WebServices.csproj" />
+  </ItemGroup>
+
+</Project>

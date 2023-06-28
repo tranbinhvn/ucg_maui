@@ -1,4 +1,4 @@
-﻿namespace UCG.siteTRAXLite.Constants
+﻿namespace UCG.siteTRAXLite.Common.Constants
 {
     public class Endpoints
     {

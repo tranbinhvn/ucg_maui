@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using System.ComponentModel;
 using UCG.siteTRAXLite.Managers;
-using UCG.siteTRAXLite.Mappers;
+using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Managers.UserDatas;
+using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
@@ -94,6 +96,7 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<LoginPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SettingsPageViewModel>();
             mauiAppBuilder.Services.AddTransient<AppAccessPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<SorEformPageViewModel>();
 
             return mauiAppBuilder;
         }
@@ -103,6 +106,7 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<LoginPage>();
             mauiAppBuilder.Services.AddTransient<SettingsPage>();
             mauiAppBuilder.Services.AddTransient<AppAccessPage>();
+            mauiAppBuilder.Services.AddTransient<SorEformPage>();
 
             return mauiAppBuilder;
         }

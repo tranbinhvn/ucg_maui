@@ -1,6 +1,6 @@
 ﻿using Acr.UserDialogs;
 using System.Windows.Input;
-using UCG.siteTRAXLite.Constants;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.WebServices.Helper;

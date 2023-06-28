@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UCG.siteTRAXLite.Constants;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.DataContracts.UserInfoContracts;
 

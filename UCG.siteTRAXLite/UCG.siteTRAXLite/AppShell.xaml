@@ -9,7 +9,7 @@
     Title="UCG.siteTRAXLite">
 
     <ShellContent
-        ContentTemplate="{DataTemplate views:LoginPage}"
-        Route="LoginPage"/>
-    
+        ContentTemplate="{DataTemplate views:SorEformPage}"
+        Route="SorEformPage"/>
+
 </Shell>

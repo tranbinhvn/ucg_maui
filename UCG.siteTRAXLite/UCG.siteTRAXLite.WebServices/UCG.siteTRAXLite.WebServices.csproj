@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="UserService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.0-preview.5.8529" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UCG.siteTRAXLite.Common\UCG.siteTRAXLite.Common.csproj" />
+    <ProjectReference Include="..\UCG.siteTRAXLite.DataContracts\UCG.siteTRAXLite.DataContracts.csproj" />
+  </ItemGroup>
+
+</Project>
