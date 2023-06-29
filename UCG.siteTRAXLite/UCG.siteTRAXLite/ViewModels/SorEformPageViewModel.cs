@@ -68,8 +68,8 @@ namespace UCG.siteTRAXLite.ViewModels
             IOpenAppService openAppService) : base(navigationService, alertService)
         {
             this._openAppService = openAppService;
-            this.CRN = "221226808423";
-            this.SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582";
+            this.CRN = "241226808423";
+            this.SiteName = "123 FINLENNE ROAD Waipu 0582";
             this.SORs = new ConcurrentObservableCollection<SorEform>
             {
                 new SorEform {Id = 1, Name = "577"},

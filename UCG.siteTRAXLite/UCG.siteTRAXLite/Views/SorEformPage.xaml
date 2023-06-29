@@ -69,7 +69,7 @@
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
-                    <Button Margin="0,10,0,0" Text="Go to Air" Command="{Binding GoToSiteTraxAirCommand}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
+                    <Button Margin="0,10,0,0" Text="Go to siteTRAX Air" Command="{Binding GoToSiteTraxAirCommand}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
                 </Grid>
             </StackLayout>
         </StackLayout>
