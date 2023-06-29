@@ -1,12 +1,10 @@
 ﻿using Acr.UserDialogs;
 using CommunityToolkit.Maui;
 using FFImageLoading.Maui;
-using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
-using System.ComponentModel;
-using UCG.siteTRAXLite.Managers;
-using UCG.siteTRAXLite.Mappers;
-using UCG.siteTRAXLite.Models;
+using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Managers.UserDatas;
+using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 using UCG.siteTRAXLite.Views;
@@ -59,10 +57,6 @@ namespace UCG.siteTRAXLite
 #endif
                 });
 
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
-
             return builder.Build();
         }
 
@@ -94,6 +88,7 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<LoginPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SettingsPageViewModel>();
             mauiAppBuilder.Services.AddTransient<AppAccessPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<SorEformPageViewModel>();
 
             return mauiAppBuilder;
         }
@@ -103,6 +98,7 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<LoginPage>();
             mauiAppBuilder.Services.AddTransient<SettingsPage>();
             mauiAppBuilder.Services.AddTransient<AppAccessPage>();
+            mauiAppBuilder.Services.AddTransient<SorEformPage>();
 
             return mauiAppBuilder;
         }

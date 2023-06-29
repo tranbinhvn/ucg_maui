@@ -3,14 +3,19 @@ using Android.Content.PM;
 using Android.Content;
 #endif
 
+#if IOS
+using Foundation;
+using UIKit;
+#endif
+
 namespace UCG.siteTRAXLite.Services
 {
     public class OpenAppService : IOpenAppService
     {
+#if ANDROID
         public bool IsAppInstalled(string packageName)
         {
             var installed = false;
-#if ANDROID
             var pm = Android.App.Application.Context.PackageManager;
             try
             {
@@ -21,9 +26,9 @@ namespace UCG.siteTRAXLite.Services
             {
                 installed = false;
             }
-#endif
             return installed;
         }
+#endif
 
         public Task<bool> LaunchApp(string packageName)
         {
@@ -47,6 +52,18 @@ namespace UCG.siteTRAXLite.Services
             catch (ActivityNotFoundException)
             {
                 result = false;
+            }
+#elif IOS
+            try
+            {
+                var canOpen = UIApplication.SharedApplication.CanOpenUrl(new NSUrl(packageName));
+                if (!canOpen)
+                    return Task.FromResult(false);
+                return Task.FromResult(UIApplication.SharedApplication.OpenUrl(new NSUrl(packageName)));
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult(false);
             }
 #endif
             return Task.FromResult(result);

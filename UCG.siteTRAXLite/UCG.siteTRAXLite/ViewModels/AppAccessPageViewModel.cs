@@ -1,8 +1,9 @@
 ﻿using Acr.UserDialogs;
 using System.Windows.Input;
-using UCG.siteTRAXLite.Constants;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Extensions;
 using UCG.siteTRAXLite.Managers;
+using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Services;
 
 namespace UCG.siteTRAXLite.ViewModels
@@ -34,11 +35,15 @@ namespace UCG.siteTRAXLite.ViewModels
         {
             try
             {
-                if (_openAppService.IsAppInstalled(MessageStrings.SiteTraxAir_Package_Name))
-                {
-                    await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name);
-                }
-                else
+                var isSuccess = false;
+
+#if ANDROID
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name);
+#elif IOS
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, $"{MessageStrings.SiteTraxAir_Package_Name}://");
+#endif
+
+                if (!isSuccess)
                 {
 #if WINDOWS
                     await AlertService.ShowAlertAsync(MessageStrings.Not_Installed_App);

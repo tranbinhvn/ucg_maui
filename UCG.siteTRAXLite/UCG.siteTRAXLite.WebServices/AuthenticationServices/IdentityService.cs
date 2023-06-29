@@ -1,4 +1,4 @@
-﻿using UCG.siteTRAXLite.Constants;
+﻿using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.DataContracts.AuthenContracts;
 using UCG.siteTRAXLite.WebServices.Exceptions;

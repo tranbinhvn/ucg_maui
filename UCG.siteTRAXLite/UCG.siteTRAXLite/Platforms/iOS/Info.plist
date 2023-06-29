@@ -28,5 +28,22 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.ucg.sitetraxlite</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>com.ucg.sitetraxair</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ucg.sitetraxlite</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.ucg.sitetraxlite</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

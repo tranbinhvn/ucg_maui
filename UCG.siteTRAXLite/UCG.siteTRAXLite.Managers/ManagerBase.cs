@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Maui.Networking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UCG.siteTRAXLite.DataContracts;
-using UCG.siteTRAXLite.Mappers;
+using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.WebServices.Exceptions;
 
 namespace UCG.siteTRAXLite.Managers

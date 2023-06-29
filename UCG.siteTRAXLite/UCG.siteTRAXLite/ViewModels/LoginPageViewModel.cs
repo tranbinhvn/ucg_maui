@@ -1,9 +1,10 @@
 ﻿using Acr.UserDialogs;
 using System.Windows.Input;
-using UCG.siteTRAXLite.Constants;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
-using UCG.siteTRAXLite.Managers;
-using UCG.siteTRAXLite.Mappers;
+using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Managers.UserDatas;
+using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;

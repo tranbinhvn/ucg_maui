@@ -1,5 +1,5 @@
 ﻿using Acr.UserDialogs;
-using UCG.siteTRAXLite.Constants;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;

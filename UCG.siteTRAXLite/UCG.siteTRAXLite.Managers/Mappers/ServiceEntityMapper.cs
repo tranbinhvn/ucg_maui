@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace UCG.siteTRAXLite.Mappers
+namespace UCG.siteTRAXLite.Managers.Mappers
 {
     public class ServiceEntityMapper : IServiceEntityMapper
     {
