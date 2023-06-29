@@ -1,14 +1,10 @@
 ﻿using Acr.UserDialogs;
 using CommunityToolkit.Maui;
 using FFImageLoading.Maui;
-using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
-using System.ComponentModel;
-using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Managers.UserManagers;
-using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 using UCG.siteTRAXLite.Views;
@@ -60,10 +56,6 @@ namespace UCG.siteTRAXLite
                     events.AddAndroid(android => android.OnApplicationCreate(app => UserDialogs.Init(app)));
 #endif
                 });
-
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
 
             return builder.Build();
         }

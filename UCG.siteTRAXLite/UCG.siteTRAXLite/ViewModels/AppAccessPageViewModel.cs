@@ -39,6 +39,8 @@ namespace UCG.siteTRAXLite.ViewModels
 
 #if ANDROID
                 isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name);
+#elif IOS
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, $"{MessageStrings.SiteTraxAir_Package_Name}://");
 #endif
 
                 if (!isSuccess)

@@ -63,6 +63,17 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
+        private ICommand submitCommand;
+
+
+        public ICommand SubmitCommand
+        {
+            get
+            {
+                return this.submitCommand ?? (this.submitCommand = new Command(() => Submit()));
+            }
+        }
+
         public SorEformPageViewModel(INavigationService navigationService,
             IAlertService alertService,
             IOpenAppService openAppService) : base(navigationService, alertService)
@@ -122,6 +133,11 @@ namespace UCG.siteTRAXLite.ViewModels
             });
         }
 
+        private void Submit()
+        {
+
+        }
+
         private async Task GoToSiteTraxAir()
         {
             try
@@ -130,6 +146,8 @@ namespace UCG.siteTRAXLite.ViewModels
 
 #if ANDROID
                 isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name);
+#elif IOS
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, $"{MessageStrings.SiteTraxAir_Package_Name}://");
 #endif
 
                 if (!isSuccess)
