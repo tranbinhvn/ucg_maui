@@ -6,8 +6,8 @@
              xmlns:behaviors="clr-namespace:UCG.siteTRAXLite.Behaviors"
              Shell.NavBarIsVisible="False">
     <ScrollView>
-        <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0">
+        <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="5">
+            <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0" Margin="5">
                 <StackLayout Padding="0" Spacing="0" VerticalOptions="Start">
                     <Label Text="siteTRAX Lite" FontAttributes="Bold" FontSize="30" HorizontalOptions="CenterAndExpand">
                         <Label.GestureRecognizers>
