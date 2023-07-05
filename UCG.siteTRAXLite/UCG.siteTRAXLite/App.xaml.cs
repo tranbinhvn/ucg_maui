@@ -1,12 +1,14 @@
-﻿namespace UCG.siteTRAXLite
+﻿using UCG.siteTRAXLite.Views;
+
+namespace UCG.siteTRAXLite
 {
     public partial class App : Application
     {
-        public App()
+        public App(SorEformPage sorEformPage)
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new NavigationPage(sorEformPage);
         }
     }
 }

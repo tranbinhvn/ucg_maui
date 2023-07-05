@@ -153,7 +153,7 @@ namespace UCG.siteTRAXLite.ViewModels
                     Settings.JobReferenceSetting = string.Empty;
                 }
 
-                NavigationService.PopAsync();
+                NavigationService.NavigateBackAsync();
             }
         }
 
@@ -196,7 +196,7 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private async void GoBack()
         {
-            await NavigationService.PopAsync();
+            await NavigationService.NavigateBackAsync();
         }
     }
 }

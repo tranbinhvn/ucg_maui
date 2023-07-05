@@ -7,6 +7,7 @@ using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;
+using UCG.siteTRAXLite.Views;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.Exceptions;
 using UCG.siteTRAXLite.WebServices.Helper;
@@ -147,7 +148,7 @@ namespace UCG.siteTRAXLite.ViewModels
 
                     MainThread.BeginInvokeOnMainThread(async () => 
                     {
-                        await NavigationService.NavigateToAsync(PageNames.AppAccessPage);
+                        await NavigationService.NavigateToPageAsync<AppAccessPage>();
                     });
                 }
                 else
@@ -195,7 +196,7 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private async Task Setting()
         {
-            await NavigationService.NavigateToAsync(PageNames.SettingsPage);
+            await NavigationService.NavigateToPageAsync<SettingsPage>();
         }
     }
 }

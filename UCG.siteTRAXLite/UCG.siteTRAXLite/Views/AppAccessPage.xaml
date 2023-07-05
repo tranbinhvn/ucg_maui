@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UCG.siteTRAXLite.Views.AppAccessPage"
              Title="AppAccessPage"
-             Shell.NavBarIsVisible="False">
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False">
     <VerticalStackLayout
             VerticalOptions="CenterAndExpand" 
             HorizontalOptions="CenterAndExpand">

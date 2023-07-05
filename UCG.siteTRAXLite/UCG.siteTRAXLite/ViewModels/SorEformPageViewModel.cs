@@ -6,6 +6,7 @@ using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Models.SorEformModels;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;
+using UCG.siteTRAXLite.Views;
 
 namespace UCG.siteTRAXLite.ViewModels
 {
@@ -129,7 +130,7 @@ namespace UCG.siteTRAXLite.ViewModels
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                await NavigationService.NavigateToAsync($"/{PageNames.LoginPage}");
+                await NavigationService.NavigateToPageAsync<LoginPage>();
             });
         }
 
@@ -143,11 +144,12 @@ namespace UCG.siteTRAXLite.ViewModels
             try
             {
                 var isSuccess = false;
+                var text = "Data from SiteTRAX Lite";
 
 #if ANDROID
-                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name);
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name, text);
 #elif IOS
-                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, $"{MessageStrings.SiteTraxAir_Package_Name}://");
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Uri , text);
 #endif
 
                 if (!isSuccess)

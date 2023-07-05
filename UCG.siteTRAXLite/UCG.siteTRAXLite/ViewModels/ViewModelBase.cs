@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
+using CommunityToolkit.Mvvm.Messaging;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
+using UCG.siteTRAXLite.Messages;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;
 using UCG.siteTRAXLite.WebServices.Exceptions;
@@ -32,7 +34,27 @@ namespace UCG.siteTRAXLite.ViewModels
 
             IsNetworkConnected = accessType == NetworkAccess.Internet;
             AlertService = alertService;
+
+
+            WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
+            WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
+            {
+#if WINDOWS
+                AlertService.ShowAlert(data.Value);
+#else
+                UserDialogs.Instance.Alert(data.Value);
+#endif
+            });
         }
+
+        public virtual Task OnNavigatingTo(object parameter)
+            => Task.CompletedTask;
+
+        public virtual Task OnNavigatedFrom(bool isForwardNavigation)
+            => Task.CompletedTask;
+
+        public virtual Task OnNavigatedTo()
+            => Task.CompletedTask;
 
         public void HandleNetworkException(NetworkException e)
         {

@@ -4,7 +4,8 @@
              x:Class="UCG.siteTRAXLite.Views.SorEformPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:behaviors="clr-namespace:UCG.siteTRAXLite.Behaviors"
-             Shell.NavBarIsVisible="False">
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
     <ScrollView>
         <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="5">
             <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0" Margin="5">

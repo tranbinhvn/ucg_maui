@@ -2,6 +2,6 @@
 {
     public interface IOpenAppService
     {
-        Task<bool> LaunchApp(string packageName);
+        Task<bool> LaunchApp(string packageName, string data = null);
     }
 }

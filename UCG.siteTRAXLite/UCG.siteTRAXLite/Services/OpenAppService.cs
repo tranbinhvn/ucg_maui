@@ -3,11 +3,6 @@ using Android.Content.PM;
 using Android.Content;
 #endif
 
-#if IOS
-using Foundation;
-using UIKit;
-#endif
-
 namespace UCG.siteTRAXLite.Services
 {
     public class OpenAppService : IOpenAppService
@@ -30,7 +25,7 @@ namespace UCG.siteTRAXLite.Services
         }
 #endif
 
-        public Task<bool> LaunchApp(string packageName)
+        public Task<bool> LaunchApp(string packageName, string data = null)
         {
             bool result = false;
 #if ANDROID
@@ -44,6 +39,10 @@ namespace UCG.siteTRAXLite.Services
                     if (intent != null)
                     {
                         intent.SetFlags(ActivityFlags.NewTask);
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            intent.PutExtra("data", data);
+                        }
                         Android.App.Application.Context.StartActivity(intent);
                         result = true;
                     }
@@ -54,17 +53,7 @@ namespace UCG.siteTRAXLite.Services
                 result = false;
             }
 #elif IOS
-            try
-            {
-                var canOpen = UIApplication.SharedApplication.CanOpenUrl(new NSUrl(packageName));
-                if (!canOpen)
-                    return Task.FromResult(false);
-                return Task.FromResult(UIApplication.SharedApplication.OpenUrl(new NSUrl(packageName)));
-            }
-            catch (Exception ex)
-            {
-                return Task.FromResult(false);
-            }
+            return Launcher.Default.TryOpenAsync(packageName + $"?data={data}");
 #endif
             return Task.FromResult(result);
         }
