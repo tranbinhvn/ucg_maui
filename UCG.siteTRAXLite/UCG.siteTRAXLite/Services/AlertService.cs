@@ -2,11 +2,19 @@
 {
     public class AlertService : IAlertService
     {
+        private Page MainPage
+        {
+            get
+            {
+                return Application.Current.MainPage;
+            }
+        }
+
         public void ShowAlert(string message, string title = "", string cancel = "OK")
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Shell.Current.DisplayAlert(title, message, cancel);
+                MainPage.DisplayAlert(title, message, cancel);
             });
         }
 
@@ -14,7 +22,7 @@
         {
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
-                Shell.Current.DisplayAlert(title, message, cancel);
+                MainPage.DisplayAlert(title, message, cancel);
             });
         }
     }
