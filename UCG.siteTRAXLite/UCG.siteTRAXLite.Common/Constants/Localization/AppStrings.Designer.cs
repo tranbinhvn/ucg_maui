@@ -79,6 +79,24 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to st-lite-poc-config.json.
+        /// </summary>
+        internal static string ConfigFileName {
+            get {
+                return ResourceManager.GetString("ConfigFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configs.
+        /// </summary>
+        internal static string ConfigFolderName {
+            get {
+                return ResourceManager.GetString("ConfigFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad Request.
         /// </summary>
         internal static string Error_BadRequest {

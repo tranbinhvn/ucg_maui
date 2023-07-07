@@ -3,6 +3,7 @@ using CommunityToolkit.Maui;
 using FFImageLoading.Maui;
 using Microsoft.Maui.LifecycleEvents;
 using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Services;
@@ -10,6 +11,8 @@ using UCG.siteTRAXLite.ViewModels;
 using UCG.siteTRAXLite.Views;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.CrewServices;
+using UCG.siteTRAXLite.WebServices.DependencyServices;
+using UCG.siteTRAXLite.WebServices.SorEformServices;
 
 namespace UCG.siteTRAXLite
 {
@@ -63,6 +66,7 @@ namespace UCG.siteTRAXLite
         private static MauiAppBuilder RegisterManagers(this MauiAppBuilder mauiAppBuilder)
         {
             mauiAppBuilder.Services.AddSingleton<IUserManager, UserManager>();
+            mauiAppBuilder.Services.AddSingleton<ISorEformManager, SorEformManager>();
 
             return mauiAppBuilder;
         }
@@ -79,6 +83,8 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddSingleton<IUserData, UserData>();
             mauiAppBuilder.Services.AddSingleton<IOpenAppService, OpenAppService>();
             mauiAppBuilder.Services.AddSingleton<IAlertService, AlertService>();
+            mauiAppBuilder.Services.AddSingleton<ISorEformService, SorEformService>();
+            mauiAppBuilder.Services.AddSingleton<IFileService, FileService>();
 
             return mauiAppBuilder;
         }

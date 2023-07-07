@@ -20,5 +20,7 @@ namespace UCG.siteTRAXLite.Common.Constants
         public static string Not_Installed_App = AppStrings.Not_Installed_app;
         public static string SiteTraxAir_Package_Name = AppStrings.SiteTraxAir_Package_Name;
         public static string SiteTraxAir_Uri = AppStrings.SiteTraxAir_Uri;
+        public static string ConfigFolderName = AppStrings.ConfigFolderName;
+        public static string ConfigFileName = AppStrings.ConfigFileName;
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Acr.UserDialogs;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
+using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Extensions;
+using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Models.SorEformModels;
 using UCG.siteTRAXLite.Services;
@@ -13,14 +15,12 @@ namespace UCG.siteTRAXLite.ViewModels
     public class SorEformPageViewModel : ViewModelBase
     {
         private readonly IOpenAppService _openAppService;
+        private readonly ISorEformManager _sorEformManager;
 
         public string CRN { get; set; }
         public string SiteName { get; set; }
-        public ConcurrentObservableCollection<SorEform> SORs { get; set; }
-        public ConcurrentObservableCollection<Question> Questions { get; set; }
-        public List<Question> QuestionsSource { get; set; }
-
-        public IList<object> SelectedSORs { get; set; }
+        public ConcurrentObservableCollection<string> OutcomeOptions { get; set; }
+        public ConcurrentObservableCollection<ActionItemEntity> Actions { get; set; }
 
         private bool showQuestions;
         public bool ShowQuestions
@@ -32,14 +32,32 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        private ICommand sorSelectionChangedCommand;
-
-
-        public ICommand SorSelectionChangedCommand
+        private string selectedOutcomeOption;
+        public string SelectedOutcomeOption
         {
-            get
+            get { return selectedOutcomeOption; }
+            set
             {
-                return this.sorSelectionChangedCommand ?? (this.sorSelectionChangedCommand = new Command(async () => await SorSelectionChanged()));
+                if (value != null)
+                {
+                    ShowQuestions = true;
+                    GetActionsByOutcomeName(value);
+                }
+                else
+                {
+                    ShowQuestions = false;
+                }
+                SetProperty(ref selectedOutcomeOption, value);
+            }
+        }
+
+        private async Task GetActionsByOutcomeName(string outcome)
+        {
+            Actions.Clear();
+            var actions = await _sorEformManager.GetActionsByOutcome(outcome);
+            foreach (var item in actions)
+            {
+                Actions.Add(item);
             }
         }
 
@@ -55,7 +73,6 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private ICommand goToSiteTraxAirCommand;
 
-
         public ICommand GoToSiteTraxAirCommand
         {
             get
@@ -66,7 +83,6 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private ICommand submitCommand;
 
-
         public ICommand SubmitCommand
         {
             get
@@ -75,56 +91,42 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
+        private ICommand updateActionListCommand;
+
+        public ICommand UpdateActionListCommand
+        {
+            get
+            {
+                return this.updateActionListCommand ?? (this.updateActionListCommand = new Command<ActionItemEntity>(async(actionItemEntity) => await UpdateActionList(actionItemEntity)));
+            }
+        }
+
         public SorEformPageViewModel(INavigationService navigationService,
             IAlertService alertService,
-            IOpenAppService openAppService) : base(navigationService, alertService)
+            IOpenAppService openAppService,
+            ISorEformManager sorEformManager) : base(navigationService, alertService)
         {
-            this._openAppService = openAppService;
-            this.CRN = "241226808423";
-            this.SiteName = "123 FINLENNE ROAD Waipu 0582";
-            this.SORs = new ConcurrentObservableCollection<SorEform>
-            {
-                new SorEform {Id = 1, Name = "577"},
-                new SorEform {Id = 2, Name = "Z04"},
-                new SorEform {Id = 3, Name = "Z320"},
-            };
-            this.QuestionsSource = new List<Question>
-            {
-                new Question { Id = 1, Description = "DETAILED EXPLANATION OF WORK YOU HAVE DONE?", Response = "" , SorId = 1},
-                new Question { Id = 2, Description = "Do you have any S01 or S02 codes to be claimed?", Response = "", SorId = 1 },
-                new Question { Id = 3, Description = "Are you carrying out work outside the customer's boundary?", Response = "", SorId = 1},
-                new Question { Id = 4, Description = "Is there any change from the field?", Response = "" , SorId = 2},
-                new Question { Id = 5, Description = "Detailed Work Description?", Response = "", SorId = 2},
-                new Question { Id = 6, Description = "Site tidy, no task waste?", Response = "", SorId = 3 }
-            };
-            this.Questions = new ConcurrentObservableCollection<Question>();
+            _openAppService = openAppService;
+            _sorEformManager = sorEformManager;
+            CRN = "241226808423";
+            SiteName = "123 FINLENNE ROAD Waipu 0582";
+            OutcomeOptions = new ConcurrentObservableCollection<string>();
+            Actions = new ConcurrentObservableCollection<ActionItemEntity>();
         }
 
-        private async Task SorSelectionChanged()
+        public async override Task OnNavigatedTo()
         {
-            Questions.Clear();
-
-            if (SelectedSORs != null && SelectedSORs.Count > 0)
-            {
-                ShowQuestions = true;
-                var selectedSORs = SelectedSORs.OrderBy(s => (s as SorEform).Id);
-                foreach (var sor in selectedSORs)
-                {
-                    var questionBySor = QuestionsSource.Where(q => q.SorId == (sor as SorEform).Id)
-                        .OrderBy(q => q.Id)
-                        .ToList();
-                    foreach (var question in questionBySor)
-                    {
-
-                        Questions.Add(question);
-                    }
-                }
-            }
-            else
-            {
-                ShowQuestions = false;
-            }
+            await LoadData();
         }
+
+        private async Task LoadData()
+        {
+            var options = await _sorEformManager.GetOutcomeNames(); ;
+            foreach (var option in options)
+            {
+                OutcomeOptions.Add(option);
+            }
+        } 
 
         private void GoToLoginPage()
         {
@@ -171,5 +173,26 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
+        private async Task UpdateActionList(ActionItemEntity actionItemEntity)
+        {
+            if (actionItemEntity != null)
+            {
+                var currentIndex = Actions.IndexOf(actionItemEntity);
+                var currentSubList = Actions.Where(a => actionItemEntity.SubActionList.Contains(a))
+                    .ToList();
+
+                foreach(var action in currentSubList)
+                {
+                    Actions.Remove(action);
+                }
+
+                var newActions = actionItemEntity.SubActionList.Where(a => a.Condition.ResponseData.Equals(actionItemEntity.Responses, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                foreach (var action in newActions)
+                {
+                    Actions.Insert(currentIndex + 1, action);
+                }
+            }
+        }
     }
 }
