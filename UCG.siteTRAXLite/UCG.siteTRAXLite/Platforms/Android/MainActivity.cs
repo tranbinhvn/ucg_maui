@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,16 +14,22 @@ namespace UCG.siteTRAXLite
         {
             base.OnCreate(savedInstanceState);
 
-            GetDataFromSiteTraxAir();
+            GetDataFromSiteTraxAir(Intent);
         }
 
-        private void GetDataFromSiteTraxAir()
+        private void GetDataFromSiteTraxAir(Intent intent)
         {
-            if (Intent != null && Intent.HasExtra("data"))
+            if (intent != null && intent.HasExtra("data"))
             {
-                var data = Intent.GetStringExtra("data");
+                var data = intent.GetStringExtra("data");
                 WeakReferenceMessenger.Default.Send(new LaunchingAppMessage(data));
             }
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+            GetDataFromSiteTraxAir(intent);
         }
     }
 }

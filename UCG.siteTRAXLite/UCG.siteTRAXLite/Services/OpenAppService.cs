@@ -38,7 +38,7 @@ namespace UCG.siteTRAXLite.Services
                     var intent = pm.GetLaunchIntentForPackage(packageName);
                     if (intent != null)
                     {
-                        intent.SetFlags(ActivityFlags.NewTask);
+                        intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.SingleTop);
                         if (!string.IsNullOrEmpty(data))
                         {
                             intent.PutExtra("data", data);
