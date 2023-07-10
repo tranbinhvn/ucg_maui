@@ -1,9 +1,15 @@
 ﻿using Acr.UserDialogs;
+using CommunityToolkit.Mvvm.Messaging;
+using Newtonsoft.Json;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
+using UCG.siteTRAXLite.DataContracts;
+using UCG.siteTRAXLite.Entities;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Extensions;
+using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.SorEformManager;
+using UCG.siteTRAXLite.Messages;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Models.SorEformModels;
 using UCG.siteTRAXLite.Services;
@@ -16,9 +22,26 @@ namespace UCG.siteTRAXLite.ViewModels
     {
         private readonly IOpenAppService _openAppService;
         private readonly ISorEformManager _sorEformManager;
+        private readonly IServiceEntityMapper _mapper;
 
-        public string CRN { get; set; }
-        public string SiteName { get; set; }
+        private string crn;
+        public string CRN
+        {
+            get { return crn; }
+            set
+            {
+                SetProperty(ref crn, value);
+            }
+        }
+
+        private string siteName;
+        public string SiteName { 
+            get { return siteName; }
+            set 
+            {
+                SetProperty(ref siteName, value);
+            } 
+        }
         public ConcurrentObservableCollection<string> OutcomeOptions { get; set; }
         public ConcurrentObservableCollection<ActionItemEntity> Actions { get; set; }
 
@@ -104,22 +127,37 @@ namespace UCG.siteTRAXLite.ViewModels
         public SorEformPageViewModel(INavigationService navigationService,
             IAlertService alertService,
             IOpenAppService openAppService,
-            ISorEformManager sorEformManager) : base(navigationService, alertService)
+            ISorEformManager sorEformManager,
+            IServiceEntityMapper mapper) : base(navigationService, alertService)
         {
             _openAppService = openAppService;
             _sorEformManager = sorEformManager;
-            CRN = "241226808423";
-            SiteName = "123 FINLENNE ROAD Waipu 0582";
+            _mapper = mapper;
             OutcomeOptions = new ConcurrentObservableCollection<string>();
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
+
+            WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
+            WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
+            {
+                if (!string.IsNullOrEmpty(data.Value))
+                {
+                    ClearData();
+                    var launchDataDto = JsonConvert.DeserializeObject<LaunchDataDTO>(data.Value);
+                    var launchDataEntity = _mapper.Map<LaunchDataEntity>(launchDataDto);
+
+                    CRN = launchDataEntity.CRN;
+                    SiteName = launchDataEntity.SiteName;
+                    LoadData();
+                }
+            });
         }
 
         public async override Task OnNavigatedTo()
         {
-            await LoadData();
+            LoadData();
         }
 
-        private async Task LoadData()
+        private async void LoadData()
         {
             var options = await _sorEformManager.GetOutcomeNames(); ;
             foreach (var option in options)
@@ -127,6 +165,13 @@ namespace UCG.siteTRAXLite.ViewModels
                 OutcomeOptions.Add(option);
             }
         } 
+
+        private void ClearData()
+        {
+            SelectedOutcomeOption = null;
+            OutcomeOptions.Clear();
+            Actions.Clear();
+        }
 
         private void GoToLoginPage()
         {

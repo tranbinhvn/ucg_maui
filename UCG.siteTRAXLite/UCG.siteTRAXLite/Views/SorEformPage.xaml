@@ -59,6 +59,7 @@
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                             <Label FontAttributes="Bold" Text="Select an Outcome" Margin="0,10,0,0"  FontSize="16"  HorizontalOptions="FillAndExpand"/>
                             <Picker x:Name="picker"
+                                    Margin="0,10,0,0"
                                     Title="Select an Outcome"
                                     HorizontalOptions="FillAndExpand"
                                     ItemsSource="{Binding OutcomeOptions}"

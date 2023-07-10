@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.DataContracts.SorEformContracts;
 using UCG.siteTRAXLite.DataContracts.UserInfoContracts;
 using UCG.siteTRAXLite.Entities;
@@ -13,17 +14,19 @@ namespace UCG.siteTRAXLite.Managers.Mappers
             CreateMap<UserInfoDto, UserInfoEntity>(MemberList.None)
                 .ReverseMap();
             CreateMap<SorEformConfigDto, SorEformConfigEntity>(MemberList.None)
-             .ReverseMap();
+                .ReverseMap();
             CreateMap<ConfigInfoDto, ConfigInfoEntity>(MemberList.None)
-             .ReverseMap();
+                .ReverseMap();
             CreateMap<SettingsDto, SettingsEntity>(MemberList.None)
-             .ReverseMap();
+                .ReverseMap();
             CreateMap<OutcomeOptionDto, OutcomeOptionEntity>(MemberList.None)
-             .ReverseMap();
+                .ReverseMap();
             CreateMap<ActionItemDto, ActionItemEntity>(MemberList.None)
-             .ReverseMap();
+                .ReverseMap();
             CreateMap<ConditionDto, ConditionEntity>(MemberList.None)
-             .ReverseMap();
+                .ReverseMap();
+            CreateMap<LaunchDataDTO, LaunchDataEntity>(MemberList.None)
+                .ReverseMap();
         }
     }
 }

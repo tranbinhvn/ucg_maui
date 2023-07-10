@@ -34,17 +34,6 @@ namespace UCG.siteTRAXLite.ViewModels
 
             IsNetworkConnected = accessType == NetworkAccess.Internet;
             AlertService = alertService;
-
-
-            WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
-            WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
-            {
-#if WINDOWS
-                AlertService.ShowAlert(data.Value);
-#else
-                UserDialogs.Instance.Alert(data.Value);
-#endif
-            });
         }
 
         public virtual Task OnNavigatingTo(object parameter)
