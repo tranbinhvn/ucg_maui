@@ -49,6 +49,15 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
                 SetProperty(ref responses, value);
             }
         }
+        private int level;
+        public int Level
+        {
+            get { return level; }
+            set
+            {
+                SetProperty(ref level, value);
+            }
+        }
         public List<string> ResponseData { get; set; }
 
         public List<ActionItemEntity> SubActionList { get; set; }

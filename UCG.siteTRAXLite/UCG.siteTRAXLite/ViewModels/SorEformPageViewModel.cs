@@ -24,6 +24,8 @@ namespace UCG.siteTRAXLite.ViewModels
         private readonly ISorEformManager _sorEformManager;
         private readonly IServiceEntityMapper _mapper;
 
+        private bool IsFirstInitPage = true;
+
         private string crn;
         public string CRN
         {
@@ -78,6 +80,7 @@ namespace UCG.siteTRAXLite.ViewModels
         {
             Actions.Clear();
             var actions = await _sorEformManager.GetActionsByOutcome(outcome);
+            SetLevels(actions);
             foreach (var item in actions)
             {
                 Actions.Add(item);
@@ -139,32 +142,37 @@ namespace UCG.siteTRAXLite.ViewModels
             WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
             WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
             {
-                if (!string.IsNullOrEmpty(data.Value))
+                MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    ClearData();
-                    var launchDataDto = JsonConvert.DeserializeObject<LaunchDataDTO>(data.Value);
-                    var launchDataEntity = _mapper.Map<LaunchDataEntity>(launchDataDto);
+                    if (!string.IsNullOrEmpty(data.Value))
+                    {
+                        ClearData();
+                        var launchDataDto = JsonConvert.DeserializeObject<LaunchDataDTO>(data.Value);
+                        var launchDataEntity = _mapper.Map<LaunchDataEntity>(launchDataDto);
 
-                    CRN = launchDataEntity.CRN;
-                    SiteName = launchDataEntity.SiteName;
-                    LoadData();
-                }
+                        CRN = launchDataEntity.CRN;
+                        SiteName = launchDataEntity.SiteName;
+                        if (!IsFirstInitPage)
+                            await LoadData();
+                    }
+                });
             });
         }
 
         public async override Task OnNavigatedTo()
         {
-            LoadData();
+            await LoadData();
+            IsFirstInitPage = false;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             var options = await _sorEformManager.GetOutcomeNames(); ;
             foreach (var option in options)
             {
                 OutcomeOptions.Add(option);
             }
-        } 
+        }
 
         private void ClearData()
         {
@@ -223,19 +231,45 @@ namespace UCG.siteTRAXLite.ViewModels
             if (actionItemEntity != null)
             {
                 var currentIndex = Actions.IndexOf(actionItemEntity);
-                var currentSubList = Actions.Where(a => actionItemEntity.SubActionList.Contains(a))
-                    .ToList();
-
-                foreach(var action in currentSubList)
-                {
-                    Actions.Remove(action);
-                }
+                RemoveSubList(actionItemEntity);
 
                 var newActions = actionItemEntity.SubActionList.Where(a => a.Condition.ResponseData.Equals(actionItemEntity.Responses, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 foreach (var action in newActions)
                 {
                     Actions.Insert(currentIndex + 1, action);
+                }
+            }
+        }
+
+        public void RemoveSubList(ActionItemEntity actionItemEntity)
+        {
+            if (actionItemEntity.SubActionList != null && actionItemEntity.SubActionList.Any())
+            {
+                foreach (var action in actionItemEntity.SubActionList)
+                {
+                    if (action.EResponseType == SorEformsResponseType.List)
+                        RemoveSubList(action);
+
+                    if (!Actions.Contains(action))
+                        continue;
+
+                    action.Responses = null;
+
+                    Actions.Remove(action);
+                }
+            }
+        }
+
+        private void SetLevels(List<ActionItemEntity> actions, int level = 0)
+        {
+            foreach (var action in actions)
+            {
+                action.Level = level;
+
+                if (action.SubActionList != null)
+                {
+                    SetLevels(action.SubActionList, level + 1);
                 }
             }
         }
