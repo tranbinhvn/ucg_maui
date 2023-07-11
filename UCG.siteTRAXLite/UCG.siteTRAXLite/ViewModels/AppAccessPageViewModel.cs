@@ -37,10 +37,12 @@ namespace UCG.siteTRAXLite.ViewModels
             {
                 var isSuccess = false;
 
+                var text = "Data from SiteTRAX Lite";
+
 #if ANDROID
-                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name);
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name, text);
 #elif IOS
-                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, $"{MessageStrings.SiteTraxAir_Package_Name}://");
+                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Uri, text);
 #endif
 
                 if (!isSuccess)

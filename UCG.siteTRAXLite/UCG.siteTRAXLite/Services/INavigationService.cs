@@ -2,11 +2,8 @@
 {
     public interface INavigationService
     {
-        Task NavigateToAsync(string route);
+        Task NavigateToPageAsync<T>(object parameter = null) where T : Page;
 
-        Task NavigateToAsync(string route, IDictionary<string, object> routeParameters);
-
-        Task PopAsync();
-        Task PopAsync(IDictionary<string, object> routeParameters);
+        Task NavigateBackAsync();
     }
 }

@@ -79,6 +79,24 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to st-lite-poc-config.json.
+        /// </summary>
+        internal static string ConfigFileName {
+            get {
+                return ResourceManager.GetString("ConfigFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configs.
+        /// </summary>
+        internal static string ConfigFolderName {
+            get {
+                return ResourceManager.GetString("ConfigFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad Request.
         /// </summary>
         internal static string Error_BadRequest {
@@ -178,7 +196,7 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The app is not installed on your device.
+        ///   Looks up a localized string similar to The app is not installed on your device or can&apos;t open the app due to some error.
         /// </summary>
         internal static string Not_Installed_app {
             get {
@@ -192,6 +210,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         internal static string SiteTraxAir_Package_Name {
             get {
                 return ResourceManager.GetString("SiteTraxAir_Package_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to com.ucg.sitetraxair://launchapp.
+        /// </summary>
+        internal static string SiteTraxAir_Uri {
+            get {
+                return ResourceManager.GetString("SiteTraxAir_Uri", resourceCulture);
             }
         }
     }

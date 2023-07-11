@@ -20,7 +20,7 @@ namespace UCG.siteTRAXLite.Utils
                     CanBeDismissedByTappingOutsideOfPopup = false
                 };
 
-                Shell.Current.ShowPopup(popup);
+                Application.Current.MainPage.ShowPopup(popup);
             });
 
             return popup;

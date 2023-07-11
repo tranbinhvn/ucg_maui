@@ -7,9 +7,4 @@
     xmlns:views="clr-namespace:UCG.siteTRAXLite.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="UCG.siteTRAXLite">
-
-    <ShellContent
-        ContentTemplate="{DataTemplate views:SorEformPage}"
-        Route="SorEformPage"/>
-
 </Shell>

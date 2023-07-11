@@ -43,6 +43,8 @@
 			<array>
 				<string>com.ucg.sitetraxlite</string>
 			</array>
+      <key>CFBundleURLPath</key>
+      <string>launchapp</string>
 		</dict>
 	</array>
 </dict>

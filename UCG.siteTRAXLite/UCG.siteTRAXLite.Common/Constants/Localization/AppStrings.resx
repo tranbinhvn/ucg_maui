@@ -123,6 +123,12 @@
   <data name="APINotFoundTitle" xml:space="preserve">
     <value>Cannot connect to the siteTRAX service at this time.</value>
   </data>
+  <data name="ConfigFileName" xml:space="preserve">
+    <value>st-lite-poc-config.json</value>
+  </data>
+  <data name="ConfigFolderName" xml:space="preserve">
+    <value>Configs</value>
+  </data>
   <data name="Error_BadRequest" xml:space="preserve">
     <value>Bad Request</value>
   </data>
@@ -157,9 +163,12 @@
     <value>No Endpoint is selected, please choose an endpoint.</value>
   </data>
   <data name="Not_Installed_app" xml:space="preserve">
-    <value>The app is not installed on your device</value>
+    <value>The app is not installed on your device or can't open the app due to some error</value>
   </data>
   <data name="SiteTraxAir_Package_Name" xml:space="preserve">
     <value>com.ucg.sitetraxair</value>
+  </data>
+  <data name="SiteTraxAir_Uri" xml:space="preserve">
+    <value>com.ucg.sitetraxair://launchapp</value>
   </data>
 </root>
