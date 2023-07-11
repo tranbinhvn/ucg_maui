@@ -42,7 +42,29 @@
                 },
                 "title": "gravida pellentesque tortor?",
                 "description": "desc...",
-                "responseType": "Text"
+                "responseType": "List",
+                "responseData": [
+                  "Yes",
+                  "No"
+                ],
+                "actionList": [
+                  {
+                    "condition": {
+                      "responseData": "Yes"
+                    },
+                    "title": "gravida pellentesque tortor?",
+                    "description": "desc...",
+                    "responseType": "Text"
+                  },
+                  {
+                    "condition": {
+                      "responseData": "No"
+                    },
+                    "title": "Suspendisse sit amet sem et odio tincidunt sodales vel non quam?",
+                    "description": "desc...",
+                    "responseType": "Text"
+                  }
+                ]
               },
               {
                 "condition": {
