@@ -6,6 +6,7 @@ namespace UCG.siteTRAXLite.CustomSelectors
     {
         public DataTemplate ResponseText { get; set; }
         public DataTemplate ResponseList { get; set; }
+        public DataTemplate ResponseNumber { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -16,6 +17,8 @@ namespace UCG.siteTRAXLite.CustomSelectors
                     return ResponseText;
                 case SorEformsResponseType.List:
                     return ResponseList;
+                case SorEformsResponseType.Number:
+                    return ResponseNumber;
                 default:
                     return ResponseText;
             }

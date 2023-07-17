@@ -153,6 +153,12 @@
   <data name="Error_WrongAPIVerion" xml:space="preserve">
     <value>The api does not exist in server version</value>
   </data>
+  <data name="Fill_The_Form" xml:space="preserve">
+    <value>Please fill out the form</value>
+  </data>
+  <data name="Logic_Price_Code_777" xml:space="preserve">
+    <value>LogicPriceCode777</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Logging in</value>
   </data>
@@ -165,10 +171,16 @@
   <data name="Not_Installed_app" xml:space="preserve">
     <value>The app is not installed on your device or can't open the app due to some error</value>
   </data>
+  <data name="Number_Of_Meters_Question" xml:space="preserve">
+    <value>number of meters of xxxxx?</value>
+  </data>
   <data name="SiteTraxAir_Package_Name" xml:space="preserve">
     <value>com.ucg.sitetraxair</value>
   </data>
   <data name="SiteTraxAir_Uri" xml:space="preserve">
     <value>com.ucg.sitetraxair://launchapp</value>
+  </data>
+  <data name="Submitted_Successfully" xml:space="preserve">
+    <value>Submitted successfully</value>
   </data>
 </root>

@@ -49,6 +49,15 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
                 SetProperty(ref responses, value);
             }
         }
+        private string logic;
+        public string Logic
+        {
+            get { return logic; }
+            set
+            {
+                SetProperty(ref logic, value);
+            }
+        }
         private int level;
         public int Level
         {
@@ -71,6 +80,10 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             else if (type.ToLower().Equals("list"))
             {
                 return SorEformsResponseType.List;
+            }
+            else if (type.ToLower().Equals("number"))
+            {
+                return SorEformsResponseType.Number;
             }
             
             return SorEformsResponseType.Text;

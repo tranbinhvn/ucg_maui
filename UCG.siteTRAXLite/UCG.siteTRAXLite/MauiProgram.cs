@@ -95,6 +95,7 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<SettingsPageViewModel>();
             mauiAppBuilder.Services.AddTransient<AppAccessPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SorEformPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<SummaryPageViewModel>();
 
             return mauiAppBuilder;
         }
@@ -105,6 +106,7 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<SettingsPage>();
             mauiAppBuilder.Services.AddTransient<AppAccessPage>();
             mauiAppBuilder.Services.AddTransient<SorEformPage>();
+            mauiAppBuilder.Services.AddTransient<SummaryPage>();
 
             return mauiAppBuilder;
         }

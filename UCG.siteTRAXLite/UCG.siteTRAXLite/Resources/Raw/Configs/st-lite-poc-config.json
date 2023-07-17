@@ -132,6 +132,17 @@
             "responseType": "Text"
           }
         ]
+      },
+      {
+        "name": "PRICECODE 777",
+        "actionList": [
+          {
+            "title": "number of meters of xxxxx?",
+            "logic": "LogicPriceCode777",
+            "description": "desc...",
+            "responseType": "Number"
+          }
+        ]
       }
     ]
   }

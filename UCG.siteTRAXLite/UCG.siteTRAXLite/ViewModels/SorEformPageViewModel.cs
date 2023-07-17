@@ -12,6 +12,7 @@ using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Messages;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Models.SorEformModels;
+using UCG.siteTRAXLite.Models.SummaryModels;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;
 using UCG.siteTRAXLite.Views;
@@ -113,7 +114,7 @@ namespace UCG.siteTRAXLite.ViewModels
         {
             get
             {
-                return this.submitCommand ?? (this.submitCommand = new Command(() => Submit()));
+                return this.submitCommand ?? (this.submitCommand = new Command(async () => await Submit()));
             }
         }
 
@@ -161,6 +162,7 @@ namespace UCG.siteTRAXLite.ViewModels
 
         public async override Task OnNavigatedTo()
         {
+            ClearData();
             await LoadData();
             IsFirstInitPage = false;
         }
@@ -189,9 +191,27 @@ namespace UCG.siteTRAXLite.ViewModels
             });
         }
 
-        private void Submit()
+        private async Task Submit()
         {
+            if (!Validate())
+            {
+#if WINDOWS
+                await AlertService.ShowAlertAsync(MessageStrings.Fill_The_Form);
+#else
+                await UserDialogs.Instance.AlertAsync(MessageStrings.Fill_The_Form);
+#endif
+                return;
+            }
 
+            var param = new SummaryModel
+            {
+                CRN = CRN,
+                SiteName = SiteName,
+                Actions = Actions.ToList(),
+                SelectedOutcomeOption = SelectedOutcomeOption
+            };
+
+            await NavigationService.NavigateToPageAsync<SummaryPage>(param);
         }
 
         private async Task GoToSiteTraxAir()
@@ -272,6 +292,19 @@ namespace UCG.siteTRAXLite.ViewModels
                     SetLevels(action.SubActionList, level + 1);
                 }
             }
+        }
+
+        private bool Validate()
+        {
+            if (string.IsNullOrEmpty(CRN) ||
+                string.IsNullOrEmpty(SiteName) ||
+                string.IsNullOrEmpty(SelectedOutcomeOption) ||
+                Actions.Any(a => string.IsNullOrEmpty(a.Responses)))
+            { 
+                return false; 
+            }
+
+            return true;
         }
     }
 }
