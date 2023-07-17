@@ -169,6 +169,24 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please fill out the form.
+        /// </summary>
+        internal static string Fill_The_Form {
+            get {
+                return ResourceManager.GetString("Fill_The_Form", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogicPriceCode777.
+        /// </summary>
+        internal static string Logic_Price_Code_777 {
+            get {
+                return ResourceManager.GetString("Logic_Price_Code_777", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logging in.
         /// </summary>
         internal static string Login {
@@ -205,6 +223,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to number of meters of xxxxx?.
+        /// </summary>
+        internal static string Number_Of_Meters_Question {
+            get {
+                return ResourceManager.GetString("Number_Of_Meters_Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to com.ucg.sitetraxair.
         /// </summary>
         internal static string SiteTraxAir_Package_Name {
@@ -219,6 +246,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         internal static string SiteTraxAir_Uri {
             get {
                 return ResourceManager.GetString("SiteTraxAir_Uri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submitted successfully.
+        /// </summary>
+        internal static string Submitted_Successfully {
+            get {
+                return ResourceManager.GetString("Submitted_Successfully", resourceCulture);
             }
         }
     }

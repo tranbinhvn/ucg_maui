@@ -22,5 +22,9 @@ namespace UCG.siteTRAXLite.Common.Constants
         public static string SiteTraxAir_Uri = AppStrings.SiteTraxAir_Uri;
         public static string ConfigFolderName = AppStrings.ConfigFolderName;
         public static string ConfigFileName = AppStrings.ConfigFileName;
+        public static string Submitted_Successfully = AppStrings.Submitted_Successfully;
+        public static string Fill_The_Form = AppStrings.Fill_The_Form;
+        public static string Logic_Price_Code_777 = AppStrings.Logic_Price_Code_777;
+        public static string Number_Of_Meters_Question = AppStrings.Number_Of_Meters_Question;
     }
 }

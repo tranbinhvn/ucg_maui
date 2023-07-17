@@ -40,6 +40,8 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         public string Description { get; set; }
         [JsonProperty("responseType")]
         public string ResponseType { get; set; }
+        [JsonProperty("logic")]
+        public string Logic { get; set; }
         [JsonProperty("responseData")]
         public List<string> ResponseData { get; set; }
         [JsonProperty("actionList")]
