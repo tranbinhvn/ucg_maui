@@ -9,11 +9,11 @@
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
     <ContentPage.Resources>
-        <converters:LevelToDotConverter x:Key="LevelToDotConverter"/>
+        <converters:ActionLevelsConverter x:Key="ActionLevelsConverter"/>
         <DataTemplate x:Key="responseText">
             <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
-                    <Label Text="{Binding Level, Converter={StaticResource LevelToDotConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                    <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
                                 <Setter Property="IsVisible" Value="False" />
@@ -29,7 +29,7 @@
             <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Vertical">
                 <StackLayout Margin="{OnPlatform WinUI='0,20,0,40', Android='0,20,0,0', iOS='0,20,0,0'}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
-                        <Label Text="{Binding Level, Converter={StaticResource LevelToDotConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                        <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
                             <Label.Triggers>
                                 <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
                                     <Setter Property="IsVisible" Value="False" />
@@ -51,7 +51,7 @@
         <DataTemplate x:Key="responseNumber">
             <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
-                    <Label Text="{Binding Level, Converter={StaticResource LevelToDotConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                    <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
                                 <Setter Property="IsVisible" Value="False" />

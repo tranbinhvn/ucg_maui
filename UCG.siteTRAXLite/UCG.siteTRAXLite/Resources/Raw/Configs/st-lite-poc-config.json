@@ -70,6 +70,15 @@
                 "condition": {
                   "responseData": "No"
                 },
+                "title": "number of meters of xxxxx?",
+                "logic": "LogicPriceCode777",
+                "description": "desc...",
+                "responseType": "Number"
+              },
+              {
+                "condition": {
+                  "responseData": "No"
+                },
                 "title": "Suspendisse sit amet sem et odio tincidunt sodales vel non quam?",
                 "description": "desc...",
                 "responseType": "Text"
@@ -130,17 +139,6 @@
             "title": "Pellentesque dictum interdum diam, nec cursus nunc varius?",
             "description": "desc...",
             "responseType": "Text"
-          }
-        ]
-      },
-      {
-        "name": "PRICECODE 777",
-        "actionList": [
-          {
-            "title": "number of meters of xxxxx?",
-            "logic": "LogicPriceCode777",
-            "description": "desc...",
-            "responseType": "Number"
           }
         ]
       }

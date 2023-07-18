@@ -2,19 +2,13 @@
 
 namespace UCG.siteTRAXLite.Converters
 {
-    public class LevelToDotConverter : IValueConverter
+    public class ActionLevelsConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is int levels)
             {
-                var result = "";
-                for(var i  = 0; i < levels; i++)
-                {
-                    result += "\u00B7";
-                }
-
-                return result;
+                return new string(' ', levels);
             }
 
             return string.Empty;
