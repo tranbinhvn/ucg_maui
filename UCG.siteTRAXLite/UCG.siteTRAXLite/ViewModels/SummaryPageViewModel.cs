@@ -12,6 +12,16 @@ namespace UCG.siteTRAXLite.ViewModels
 {
     public class SummaryPageViewModel : ViewModelBase
     {
+        private int heightPriceCode;
+        public int HeightPriceCode
+        {
+            get { return heightPriceCode; }
+            set
+            {
+                SetProperty(ref heightPriceCode, value);
+            }
+        }
+
         private string crn;
         public string CRN
         {
@@ -32,6 +42,7 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
         public ConcurrentObservableCollection<ActionItemEntity> Actions { get; set; }
+        public ConcurrentObservableCollection<PriceCodeEntity> PriceCodes { get; set; }
 
         private bool showQuestions;
         public bool ShowQuestions
@@ -105,6 +116,7 @@ namespace UCG.siteTRAXLite.ViewModels
             IAlertService alertService) : base(navigationService, alertService)
         {
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
+            PriceCodes = new ConcurrentObservableCollection<PriceCodeEntity>();
         }
 
         public async override Task OnNavigatingTo(object parameter)
@@ -144,6 +156,12 @@ namespace UCG.siteTRAXLite.ViewModels
 
             if (priceCodeQuestions != null && priceCodeQuestions.Any())
             {
+                IsShowPriceCodeQTY = true;
+                var priceCode777 = new PriceCodeEntity
+                {
+                    PriceCode = "777"
+                };
+
                 var numberOfMeterQuestions = priceCodeQuestions.FirstOrDefault(a => a.Title.Equals(MessageStrings.Number_Of_Meters_Question, StringComparison.OrdinalIgnoreCase));
                 if (numberOfMeterQuestions != null && numberOfMeterQuestions.EResponseType == SorEformsResponseType.Number)
                 {
@@ -153,19 +171,23 @@ namespace UCG.siteTRAXLite.ViewModels
 
                         if (response < 5)
                         {
-                            PriceCodeQTY = "1";
+                            priceCode777.QTY = "1";
                         }
                         else if (response >= 5 && response <= 10)
                         {
-                            PriceCodeQTY = "3";
+                            priceCode777.QTY = "3";
                         }
                         else
                         {
-                            PriceCodeQTY = "submit for review PriceCode777";
+                            priceCode777.QTY = "submit for review";
                         }
                     }
                 }
+
+                PriceCodes.Add(priceCode777);
             }
+
+            HeightPriceCode = PriceCodes.Count() * 50 + 50 > 150 ? 200 : PriceCodes.Count() * 50 + 50;
         }
     }
 }

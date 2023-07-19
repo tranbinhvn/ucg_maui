@@ -70,6 +70,15 @@
                 "condition": {
                   "responseData": "No"
                 },
+                "title": "number of meters of xxxxx?",
+                "logic": "LogicPriceCode777",
+                "description": "desc...",
+                "responseType": "Number"
+              },
+              {
+                "condition": {
+                  "responseData": "No"
+                },
                 "title": "Suspendisse sit amet sem et odio tincidunt sodales vel non quam?",
                 "description": "desc...",
                 "responseType": "Text"
