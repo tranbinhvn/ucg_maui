@@ -12,6 +12,16 @@ namespace UCG.siteTRAXLite.ViewModels
 {
     public class SummaryPageViewModel : ViewModelBase
     {
+        private int heightPriceCode;
+        public int HeightPriceCode
+        {
+            get { return heightPriceCode; }
+            set
+            {
+                SetProperty(ref heightPriceCode, value);
+            }
+        }
+
         private string crn;
         public string CRN
         {
@@ -149,7 +159,7 @@ namespace UCG.siteTRAXLite.ViewModels
                     {
                         if (response < 5)
                         {
-                             priceCode777.QTY = "1";
+                            priceCode777.QTY = "1";
                         }
                         else if (response >= 5 && response <= 10)
                         {
@@ -157,13 +167,15 @@ namespace UCG.siteTRAXLite.ViewModels
                         }
                         else
                         {
-                            priceCode777.QTY = "submit for review PriceCode777";
+                            priceCode777.QTY = "submit for review";
                         }
                     }
                 }
 
                 PriceCodes.Add(priceCode777);
             }
+
+            HeightPriceCode = PriceCodes.Count() * 50 + 50 > 150 ? 200 : PriceCodes.Count() * 50 + 50;
         }
     }
 }
