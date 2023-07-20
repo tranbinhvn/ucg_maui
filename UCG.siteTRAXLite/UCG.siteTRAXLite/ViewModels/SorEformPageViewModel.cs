@@ -140,8 +140,8 @@ namespace UCG.siteTRAXLite.ViewModels
             OutcomeOptions = new ConcurrentObservableCollection<string>();
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
 
-            SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582";
-            CRN = "221226808423";
+            SiteName = "123 FINLENNE ROAD Waipu 0582";
+            CRN = "221226800000";
 
             WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
             WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
