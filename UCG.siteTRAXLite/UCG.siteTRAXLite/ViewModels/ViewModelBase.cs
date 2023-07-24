@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
+using UCG.siteTRAXLite.Entities;
 using UCG.siteTRAXLite.Messages;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.Utils;
@@ -24,6 +25,26 @@ namespace UCG.siteTRAXLite.ViewModels
         public bool NetworkDisconnected
         {
             get { return !_isNetworkConnected; }
+        }
+
+        private string _pageTitle;
+        public string PageTitle
+        {
+            get { return _pageTitle; }
+            set { SetProperty(ref _pageTitle, value); }
+        }
+
+        private JobDetailEntity jobDetail;
+        public JobDetailEntity JobDetail
+        {
+            get
+            {
+                return jobDetail;
+            }
+            set
+            {
+                SetProperty(ref jobDetail, value);
+            }
         }
 
         public ViewModelBase(INavigationService navigationService, IAlertService alertService)

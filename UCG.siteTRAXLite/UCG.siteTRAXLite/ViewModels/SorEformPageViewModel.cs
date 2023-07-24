@@ -27,24 +27,6 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private bool IsFirstInitPage = true;
 
-        private string crn;
-        public string CRN
-        {
-            get { return crn; }
-            set
-            {
-                SetProperty(ref crn, value);
-            }
-        }
-
-        private string siteName;
-        public string SiteName { 
-            get { return siteName; }
-            set 
-            {
-                SetProperty(ref siteName, value);
-            } 
-        }
         public ConcurrentObservableCollection<string> OutcomeOptions { get; set; }
         public ConcurrentObservableCollection<ActionItemEntity> Actions { get; set; }
 
@@ -128,6 +110,19 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
+        private JobDetailEntity jobDetail;
+        public JobDetailEntity JobDetail
+        {
+            get
+            {
+                return jobDetail;
+            }
+            set
+            {
+                SetProperty(ref jobDetail, value);
+            }
+        }
+
         public SorEformPageViewModel(INavigationService navigationService,
             IAlertService alertService,
             IOpenAppService openAppService,
@@ -139,9 +134,11 @@ namespace UCG.siteTRAXLite.ViewModels
             _mapper = mapper;
             OutcomeOptions = new ConcurrentObservableCollection<string>();
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
+            JobDetail = new JobDetailEntity();
 
-            SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582";
-            CRN = "221226808423";
+            JobDetail.SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582";
+            JobDetail.CRN = "221226808423";
+            PageTitle = "Jobs";
 
             WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
             WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
@@ -154,8 +151,12 @@ namespace UCG.siteTRAXLite.ViewModels
                         var launchDataDto = JsonConvert.DeserializeObject<LaunchDataDTO>(data.Value);
                         var launchDataEntity = _mapper.Map<LaunchDataEntity>(launchDataDto);
 
-                        CRN = launchDataEntity.CRN;
-                        SiteName = launchDataEntity.SiteName;
+                        if (launchDataEntity != null)
+                        {
+                            JobDetail.CRN = launchDataEntity?.JobDetail?.CRN;
+                            JobDetail.SiteName = launchDataEntity?.JobDetail?.SiteName;
+                        }
+
                         if (!IsFirstInitPage)
                             await LoadData();
                     }
@@ -208,8 +209,7 @@ namespace UCG.siteTRAXLite.ViewModels
 
             var param = new SummaryModel
             {
-                CRN = CRN,
-                SiteName = SiteName,
+                JobDetail = JobDetail,
                 Actions = Actions.ToList(),
                 SelectedOutcomeOption = SelectedOutcomeOption
             };
@@ -299,8 +299,8 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private bool Validate()
         {
-            if (string.IsNullOrEmpty(CRN) ||
-                string.IsNullOrEmpty(SiteName) ||
+            if (string.IsNullOrEmpty(JobDetail.CRN) ||
+                string.IsNullOrEmpty(JobDetail.SiteName) ||
                 string.IsNullOrEmpty(SelectedOutcomeOption) ||
                 Actions.Any(a => string.IsNullOrEmpty(a.Responses)))
             { 

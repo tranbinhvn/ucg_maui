@@ -2,7 +2,16 @@
 {
     public class LaunchDataEntity : EntityBase
     {
-        public string CRN { get; set; }
-        public string SiteName { get; set; }
+        private JobDetailEntity jobDetail;
+        public JobDetailEntity JobDetail { 
+            get 
+            { 
+                return jobDetail; 
+            }
+            set
+            {
+                SetProperty(ref jobDetail, value);
+            }
+        }
     }
 }

@@ -22,25 +22,6 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        private string crn;
-        public string CRN
-        {
-            get { return crn; }
-            set
-            {
-                SetProperty(ref crn, value);
-            }
-        }
-
-        private string siteName;
-        public string SiteName
-        {
-            get { return siteName; }
-            set
-            {
-                SetProperty(ref siteName, value);
-            }
-        }
         public ConcurrentObservableCollection<ActionItemEntity> Actions { get; set; }
         public ConcurrentObservableCollection<PriceCodeEntity> PriceCodes { get; set; }
 
@@ -107,14 +88,14 @@ namespace UCG.siteTRAXLite.ViewModels
         {
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
             PriceCodes = new ConcurrentObservableCollection<PriceCodeEntity>();
+            PageTitle = "Jobs";
         }
 
         public async override Task OnNavigatingTo(object parameter)
         {
             if (parameter != null && parameter is SummaryModel model)
             {
-                CRN = model.CRN;
-                SiteName = model.SiteName;
+                JobDetail = model.JobDetail;
                 foreach (var action in model.Actions)
                 {
                     Actions.Add(action);

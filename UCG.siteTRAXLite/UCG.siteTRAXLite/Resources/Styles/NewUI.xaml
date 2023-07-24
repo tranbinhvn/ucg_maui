@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffImageLoading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Compat.Maui">
+             xmlns:ffImageLoading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Compat.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    
     <!--  Colors  -->
     <Color x:Key="MediumDarkBlue">#3D4872</Color>
     <Color x:Key="MediumLightBlue">#9FB6D4</Color>
@@ -14,7 +16,63 @@
     <Color x:Key="SecondaryBlue">#0E67CC</Color>
     <Color x:Key="TertiaryBlue">#0286DF</Color>
 
-    <Style x:Key="ActiveButton" TargetType="Button">
+    <DataTemplate x:Key="MenuItemTemplate">
+        <RadioButton Content="{Binding .}" WidthRequest="{OnPlatform WinUI='150'}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <RadioButton.ControlTemplate>
+                <ControlTemplate>
+                    <StackLayout Margin="2,0,2,0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup x:Name="CheckedStates">
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter
+                                            TargetName="ItemLayout"
+                                            Property="StackLayout.BackgroundColor"
+                                            Value="{StaticResource SecondaryBlue}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Unchecked">
+                                        <VisualState.Setters>
+                                            <Setter
+                                            TargetName="ItemLayout"
+                                            Property="StackLayout.BackgroundColor"
+                                            Value="{StaticResource VeryDarkBlue}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                        <StackLayout
+                            x:Name="ItemLayout"
+                            BackgroundColor="#1E264C"
+                            HorizontalOptions="FillAndExpand">
+                            <StackLayout Padding="10" HorizontalOptions="FillAndExpand">
+                                <Image
+                                Aspect="AspectFit"
+                                AutomationId="settingBtn"
+                                Source="{TemplateBinding Content.MenuIcon}"
+                                WidthRequest="24"
+                                HeightRequest="24" />
+                                <Label
+                                FontFamily="FS-Medium"
+                                FontSize="12"
+                                Text="{TemplateBinding Content.MenuTitle}"
+                                TextColor="White"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center"
+                                HorizontalTextAlignment="Center"
+                                Margin="0,5,0,0"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </ControlTemplate>
+            </RadioButton.ControlTemplate>
+        </RadioButton>
+    </DataTemplate>
+
+    <!--<Style x:Key="ActiveButton" TargetType="Button">
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontFamily" Value="FS-Medium" />
         <Setter Property="FontSize" Value="26" />
@@ -98,14 +156,14 @@
     <ControlTemplate x:Key="PageWithBackTitleAndLogout">
         <ContentPresenter HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
 
-        <!--<Grid ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <BoxView Grid.Row="0" BackgroundColor="Blue" />
         <ContentPresenter Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-    </Grid>-->
-    </ControlTemplate>
+    </Grid>
+    </ControlTemplate>-->
 
 </ResourceDictionary>

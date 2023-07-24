@@ -2,7 +2,7 @@ using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Views;
 
-public partial class SorEformPage : ContentPage
+public partial class SorEformPage : MasterContentPage
 {
     public SorEformPage(SorEformPageViewModel viewModel)
 	{
