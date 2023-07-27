@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
+using UCG.siteTRAXLite.Entities;
 
 namespace UCG.siteTRAXLite.DataContracts
 {
     public class LaunchDataDTO
     {
-        [JsonProperty("CRN")]
-        public string CRN { get; set; }
-        [JsonProperty("SiteName")]
-        public string SiteName { get; set; }
+        [JsonProperty("JobDetail")]
+        public JobDetailDTO JobDetail { get; set; }
     }
 }

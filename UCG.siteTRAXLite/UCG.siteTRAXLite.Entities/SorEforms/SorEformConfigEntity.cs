@@ -5,7 +5,7 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
     public class SorEformConfigEntity: EntityBase
     {
         public ConfigInfoEntity ConfigInfo { get; set; }
-        public SettingsEntity Settings { get; set; }
+        public JobTabEntity JobTab { get; set; }
     }
 
     public class ConfigInfoEntity : EntityBase
@@ -13,14 +13,59 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
         public int ConfigVersion { get; set; }
     }
 
-    public class SettingsEntity : EntityBase
+    public class JobTabEntity : EntityBase
     {
-        public List<OutcomeOptionEntity> OutcomeOptions { get; set; }
+        public List<SectionEntity> Sections { get; set; }
     }
 
-    public class OutcomeOptionEntity : EntityBase
+    public class SectionEntity : EntityBase
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
+
+        private string sectionType;
+        public string SectionType
+        {
+            get { return sectionType; }
+            set
+            {
+                sectionType = value;
+                if (value != null)
+                    ESectionType = GetSectionType(value);
+            }
+        }
+
+        public List<BreadcrumbEntity> Breadcrumbs { get; set; }
+
+        public JobSectionType ESectionType { get; set; }
+
+        private JobSectionType GetSectionType(string type)
+        {
+            if (type.ToLower().Equals("generic"))
+            {
+                return JobSectionType.Generic;
+            }
+            else if (type.ToLower().Equals("take5"))
+            {
+                return JobSectionType.Take5;
+            }
+            else if (type.ToLower().Equals("claims"))
+            {
+                return JobSectionType.Claims;
+            }
+
+            return JobSectionType.Generic;
+        }
+    }
+
+    public class BreadcrumbEntity : EntityBase
+    {
+        public string Title { get; set; }
+        public bool isChecked;
+        public bool IsChecked
+        {
+            get { return isChecked; }
+            set { SetProperty(ref isChecked, value); }
+        }
         public List<ActionItemEntity> ActionList { get; set; }
     }
 

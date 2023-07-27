@@ -79,7 +79,7 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to st-lite-poc-config.json.
+        ///   Looks up a localized string similar to st-lite-poc-config-v3.json.
         /// </summary>
         internal static string ConfigFileName {
             get {

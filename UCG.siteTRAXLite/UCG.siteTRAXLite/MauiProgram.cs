@@ -8,6 +8,7 @@ using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
+using UCG.siteTRAXLite.ViewModels.Sections;
 using UCG.siteTRAXLite.Views;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.CrewServices;
@@ -96,6 +97,8 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<AppAccessPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SorEformPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SummaryPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<SectionPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<GenericSamplePageViewModel>();
 
             return mauiAppBuilder;
         }
@@ -107,6 +110,8 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<AppAccessPage>();
             mauiAppBuilder.Services.AddTransient<SorEformPage>();
             mauiAppBuilder.Services.AddTransient<SummaryPage>();
+            mauiAppBuilder.Services.AddTransient<SectionPage>();
+            mauiAppBuilder.Services.AddTransient<GenericSamplePage>();
 
             return mauiAppBuilder;
         }

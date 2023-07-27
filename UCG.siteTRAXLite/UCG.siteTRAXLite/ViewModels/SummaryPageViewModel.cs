@@ -22,25 +22,6 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        private string crn;
-        public string CRN
-        {
-            get { return crn; }
-            set
-            {
-                SetProperty(ref crn, value);
-            }
-        }
-
-        private string siteName;
-        public string SiteName
-        {
-            get { return siteName; }
-            set
-            {
-                SetProperty(ref siteName, value);
-            }
-        }
         public ConcurrentObservableCollection<ActionItemEntity> Actions { get; set; }
         public ConcurrentObservableCollection<PriceCodeEntity> PriceCodes { get; set; }
 
@@ -82,15 +63,6 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        private string priceCodeQTY;
-        public string PriceCodeQTY
-        {
-            get { return priceCodeQTY; }
-            set
-            {
-                SetProperty(ref priceCodeQTY, value);
-            }
-        }
 
         private ICommand cancelCommand;
 
@@ -112,19 +84,22 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        public SummaryPageViewModel(INavigationService navigationService,
-            IAlertService alertService) : base(navigationService, alertService)
+        public SummaryPageViewModel(
+            INavigationService navigationService, 
+            IAlertService alertService, 
+            IOpenAppService openAppService, 
+            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
         {
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
             PriceCodes = new ConcurrentObservableCollection<PriceCodeEntity>();
+            PageTitle = "Jobs";
         }
 
         public async override Task OnNavigatingTo(object parameter)
         {
             if (parameter != null && parameter is SummaryModel model)
             {
-                CRN = model.CRN;
-                SiteName = model.SiteName;
+                JobDetail = model.JobDetail;
                 foreach (var action in model.Actions)
                 {
                     Actions.Add(action);
@@ -167,7 +142,6 @@ namespace UCG.siteTRAXLite.ViewModels
                 {
                     if (int.TryParse(numberOfMeterQuestions.Responses, out int response))
                     {
-                        IsShowPriceCodeQTY = true;
 
                         if (response < 5)
                         {

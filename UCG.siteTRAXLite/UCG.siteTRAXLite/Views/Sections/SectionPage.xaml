@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:MasterContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UCG.siteTRAXLite.Views.SectionPage"
+             xmlns:views="clr-namespace:UCG.siteTRAXLite.Views"
+             Title="SectionPage"
+             JobDetail="{Binding JobDetail}"
+             PageTitle="{Binding PageTitle}"
+             GoBackCommand="{Binding GoBackCommand}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start" Spacing="0">
+                <StackLayout 
+                    BindableLayout.ItemsSource="{Binding Sections}"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Section_Tapped" NumberOfTapsRequired="1"/>
+                                </StackLayout.GestureRecognizers>
+                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="15,10,5,10" Orientation="Horizontal">
+                                    <Label Text="{Binding Title}" FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}" HorizontalOptions="Start" FontSize="{OnPlatform Android=18, iOS=14}"/>
+                                    <Image Source="arrow_right_png.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="1" BackgroundColor="#9FB6D4" HorizontalOptions="FillAndExpand"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</views:MasterContentPage>

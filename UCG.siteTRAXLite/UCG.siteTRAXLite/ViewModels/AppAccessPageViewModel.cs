@@ -3,6 +3,7 @@ using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Extensions;
 using UCG.siteTRAXLite.Managers;
+using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Services;
 
@@ -25,7 +26,8 @@ namespace UCG.siteTRAXLite.ViewModels
         public AppAccessPageViewModel(INavigationService navigationService, 
             IUserData userData, 
             IOpenAppService openAppService,
-            IAlertService alertService) : base(navigationService, alertService)
+            IAlertService alertService,
+            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
         {
             _userData = userData;
             _openAppService = openAppService;

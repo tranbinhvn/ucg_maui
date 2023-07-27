@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:MasterContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UCG.siteTRAXLite.Views.GenericSamplePage"
+                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behaviors="clr-namespace:UCG.siteTRAXLite.Behaviors"
+             xmlns:customselectors="clr-namespace:UCG.siteTRAXLite.CustomSelectors"
+             xmlns:converters="clr-namespace:UCG.siteTRAXLite.Converters"
+             xmlns:customcontrols="clr-namespace:UCG.siteTRAXLite.CustomControls"
+             xmlns:views="clr-namespace:UCG.siteTRAXLite.Views"
+             JobDetail="{Binding JobDetail}"
+             PageTitle="{Binding PageTitle}"
+             GoBackCommand="{Binding GoBackCommand}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+    <ContentPage.Resources>
+        <converters:ActionLevelsConverter x:Key="ActionLevelsConverter"/>
+        <DataTemplate x:Key="responseText">
+            <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
+                    <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
+                </StackLayout>
+                <Entry Placeholder="Response" Text="{Binding Responses}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseList">
+            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                <StackLayout Margin="{OnPlatform WinUI='0,20,0,40', Android='0,20,0,0', iOS='0,20,0,0'}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
+                        <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                            <Label.Triggers>
+                                <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
+                    </StackLayout>
+                    <Picker x:Name="responsePicker"
+                        Title="Select an Option"
+                        HorizontalOptions="FillAndExpand"
+                        ItemsSource="{Binding ResponseData}"
+                        SelectedItem="{Binding Responses}"
+                        SelectedIndexChanged="responsePicker_SelectedIndexChanged">
+                    </Picker>
+                </StackLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseNumber">
+            <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
+                    <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
+                </StackLayout>
+                <Entry Keyboard="Numeric" Placeholder="Response" Text="{Binding Responses}" HorizontalOptions="FillAndExpand">
+                    <Entry.Behaviors>
+                        <behaviors:NonNegativeNumberBehavior/>
+                    </Entry.Behaviors>
+                </Entry>
+            </StackLayout>
+        </DataTemplate>
+        <customselectors:SorResponseDataTemplateSelector x:Key="sorResponseDataTemplateSelector"
+                                                    ResponseText="{StaticResource responseText}"
+                                                    ResponseList="{StaticResource responseList}" 
+                                                    ResponseNumber="{StaticResource responseNumber}" />
+    </ContentPage.Resources>
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <FlexLayout  
+                        Padding="0" 
+                        Margin="5" 
+                        JustifyContent="Center" 
+                        Wrap="Wrap"
+                        BindableLayout.ItemsSource="{Binding Breadcrumbs}"
+                        RadioButtonGroup.GroupName="Breadcrumbs"
+                        RadioButtonGroup.SelectedValue="{Binding SelectedBreadcrumb}"
+                        HorizontalOptions="FillAndExpand" >
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton Content="{Binding .}" Value="{Binding .}" WidthRequest="{OnPlatform WinUI='150'}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <RadioButton.ControlTemplate>
+                            <ControlTemplate>
+                                <StackLayout Spacing="0" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroupList>
+                                            <VisualStateGroup x:Name="CheckedStates">
+                                                <VisualState x:Name="Checked">
+                                                    <VisualState.Setters>
+                                                        <Setter
+                                                                    TargetName="breadcrumbLayout"
+                                                                    Property="Path.Fill"
+                                                                    Value="{StaticResource MediumLightBlue}"/>
+                                                        <Setter
+                                                                    TargetName="breadcrumbLayout"
+                                                                    Property="Path.Stroke"
+                                                                    Value="{StaticResource MediumLightBlue}"/>
+                                                        <Setter
+                                                                    TargetName="breadcrumbTitle"
+                                                                    Property="Label.TextColor"
+                                                                    Value="{StaticResource MediumDarkBlue}"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Unchecked">
+                                                    <VisualState.Setters>
+                                                        <Setter
+                                                                    TargetName="breadcrumbLayout"
+                                                                    Property="Path.Fill"
+                                                                    Value="{StaticResource MediumDarkBlue}"/>
+                                                        <Setter
+                                                                    TargetName="breadcrumbLayout"
+                                                                    Property="Path.Stroke"
+                                                                    Value="{StaticResource MediumDarkBlue}"/>
+                                                        <Setter
+                                                                    TargetName="breadcrumbTitle"
+                                                                    Property="Label.TextColor"
+                                                                    Value="{StaticResource MediumLightBlue}"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <AbsoluteLayout Padding="0" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                        <Path
+                                                    x:Name="breadcrumbLayout"
+                                                    AbsoluteLayout.LayoutBounds="0,0"
+                                                    Stroke="{StaticResource VeryDarkBlue}"
+                                                    Aspect="Uniform"
+                                                    HorizontalOptions="CenterAndExpand"
+                                                    Fill="{StaticResource VeryDarkBlue}">
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathGeometry.Figures>
+                                                        <PathFigureCollection>
+                                                            <PathFigure
+                                                                        IsClosed="False"
+                                                                        StartPoint="0,0">
+                                                                <PathFigure.Segments>
+                                                                    <LineSegment Point="110,0"></LineSegment>
+                                                                    <LineSegment Point="120,25"></LineSegment>
+                                                                    <LineSegment Point="110,50"></LineSegment>
+                                                                    <LineSegment Point="0,50"></LineSegment>
+                                                                    <LineSegment Point="10,25"></LineSegment>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathFigureCollection>
+                                                    </PathGeometry.Figures>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+                                        <Label
+                                                    x:Name="breadcrumbTitle"
+                                                    Text="{TemplateBinding Content.Title}"
+                                                    FontSize="14"
+                                                    TextColor="{StaticResource MediumLightBlue}"
+                                                    FontFamily="FS-SemiBold"
+                                                    TextTransform="Uppercase"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    AbsoluteLayout.LayoutBounds="0,0,120,50" />
+                                    </AbsoluteLayout>
+                                </StackLayout>
+                            </ControlTemplate>
+                        </RadioButton.ControlTemplate>
+                    </RadioButton>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+        <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="5">
+                <StackLayout IsVisible="{Binding ShowQuestions}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <StackLayout Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                                <StackLayout HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"
+                                        BindableLayout.ItemsSource="{Binding Questions}"
+                                        BindableLayout.ItemTemplateSelector="{StaticResource sorResponseDataTemplateSelector}">
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding ShowSummary}" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <StackLayout Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                            <StackLayout HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="FillAndExpand"
+                                            BindableLayout.ItemsSource="{Binding SummaryQuestions}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
+                                                <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                                                    <Label.Triggers>
+                                                        <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
+                                                            <Setter Property="IsVisible" Value="False" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                                <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
+                                            </StackLayout>
+                                            <Editor IsEnabled="False" Text="{Binding Responses}" HorizontalOptions="FillAndExpand"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout IsVisible="{Binding IsShowPriceCodeQTY}" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                    <Label FontSize="16" FontAttributes="Bold" Text="Price Code" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
+                                    <Frame Margin="10" Padding="10,10,10,5" BackgroundColor="White" CornerRadius="5">
+                                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <StackLayout HorizontalOptions="FillAndExpand" >
+                                                <Grid Padding="0,10,0,10" VerticalOptions="CenterAndExpand">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackLayout Grid.Column="0" VerticalOptions="CenterAndExpand">
+                                                        <Label Text="Price Code" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                                    </StackLayout>
+                                                    <StackLayout Grid.Column="1" VerticalOptions="CenterAndExpand">
+                                                        <Label Text="QTY" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                                    </StackLayout>
+                                                </Grid>
+                                            </StackLayout>
+                                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                <OnPlatform x:TypeArguments="View">
+                                                    <On Platform="WinUI">
+                                                        <StackLayout BindableLayout.ItemsSource="{Binding PriceCodes}">
+                                                            <BindableLayout.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackLayout>
+                                                                        <Grid Padding="0,10,0,10" VerticalOptions="CenterAndExpand">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="1*" />
+                                                                                <ColumnDefinition Width="2*" />
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackLayout Padding="10,0,0,0" Grid.Column="0" VerticalOptions="CenterAndExpand">
+                                                                                <Label Text="{Binding PriceCode}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                                                            </StackLayout>
+                                                                            <StackLayout Grid.Column="1" VerticalOptions="CenterAndExpand">
+                                                                                <Label Text="{Binding QTY}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                                                            </StackLayout>
+                                                                        </Grid>
+                                                                    </StackLayout>
+                                                                </DataTemplate>
+                                                            </BindableLayout.ItemTemplate>
+                                                        </StackLayout>
+                                                    </On>
+                                                    <On Platform="iOS, Android, MacCatalyst, Tizen">
+                                                        <ListView HasUnevenRows="True" ItemsSource="{Binding PriceCodes}">
+                                                            <ListView.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <ViewCell>
+                                                                        <StackLayout>
+                                                                            <Grid Padding="0,10,0,10" VerticalOptions="CenterAndExpand">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="1*" />
+                                                                                    <ColumnDefinition Width="2*" />
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <StackLayout Padding="10,0,0,0" Grid.Column="0" VerticalOptions="CenterAndExpand">
+                                                                                    <Label Text="{Binding PriceCode}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                                                                </StackLayout>
+                                                                                <StackLayout Grid.Column="1" VerticalOptions="CenterAndExpand">
+                                                                                    <Label Text="{Binding QTY}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                                                                </StackLayout>
+                                                                            </Grid>
+                                                                        </StackLayout>
+                                                                    </ViewCell>
+                                                                </DataTemplate>
+                                                            </ListView.ItemTemplate>
+                                                            <ListView.Footer>
+                                                                <StackLayout />
+                                                            </ListView.Footer>
+                                                        </ListView>
+                                                    </On>
+                                                </OnPlatform>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Margin="0,20,0,0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Button Margin="10" Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"/>
+                            <Button Margin="10" Text="Confirm" Command="{Binding ConfirmCommand}" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</views:MasterContentPage>
