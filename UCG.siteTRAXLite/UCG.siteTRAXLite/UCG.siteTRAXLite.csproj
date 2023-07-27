@@ -80,6 +80,7 @@
 	  <None Remove="Resources\Fonts\FiraSans-Thin.ttf" />
 	  <None Remove="Resources\Fonts\FiraSans-ThinItalic.ttf" />
 	  <None Remove="Resources\Images\arrow_back.svg" />
+	  <None Remove="Resources\Images\arrow_right_png.png" />
 	  <None Remove="Resources\Images\cogwheel.png" />
 	  <None Remove="Resources\Images\expander_expand.svg" />
 	  <None Remove="Resources\Images\expander_expand_png.png" />
@@ -89,6 +90,7 @@
 	  <None Remove="Resources\Images\icon_STA.png" />
 	  <None Remove="Resources\Images\sitetraxair_logo_v2.png" />
 	  <None Remove="Resources\Images\ucglogo.png" />
+	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v3.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -108,10 +110,16 @@
 	  <MauiXaml Update="Views\AppAccessPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Sections\GenericSamplePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MasterContentPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Sections\SectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SettingsPage.xaml">

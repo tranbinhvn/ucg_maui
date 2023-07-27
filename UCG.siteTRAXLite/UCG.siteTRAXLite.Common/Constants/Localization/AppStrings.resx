@@ -124,7 +124,7 @@
     <value>Cannot connect to the siteTRAX service at this time.</value>
   </data>
   <data name="ConfigFileName" xml:space="preserve">
-    <value>st-lite-poc-config.json</value>
+    <value>st-lite-poc-config-v3.json</value>
   </data>
   <data name="ConfigFolderName" xml:space="preserve">
     <value>Configs</value>

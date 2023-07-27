@@ -2,38 +2,48 @@
 
 namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
 {
-    public class SorEformConfigDto
+    public class SorEformConfigDTO
     {
         [JsonProperty("configInfo")]
-        public ConfigInfoDto ConfigInfo { get; set; }
-        [JsonProperty("settings")]
-        public SettingsDto Settings { get; set; }
+        public ConfigInfoDTO ConfigInfo { get; set; }
+        [JsonProperty("jobTab")]
+        public JobTabDTO JobTab { get; set; }
     }
 
-    public class ConfigInfoDto
+    public class ConfigInfoDTO
     {
         [JsonProperty("configVersion")]
         public int ConfigVersion { get; set; }
     }
 
-    public class SettingsDto
+    public class JobTabDTO
     {
-        [JsonProperty("outcomeOptions")]
-        public List<OutcomeOptionDto> OutcomeOptions { get; set; }
+        [JsonProperty("sections")]
+        public List<SectionDTO> Sections { get; set; }
     }
 
-    public class OutcomeOptionDto
+    public class SectionDTO
     {
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
+        [JsonProperty("sectionType")]
+        public string SectionType { get; set; }
+        [JsonProperty("breadcrumbs")]
+        public List<BreadcrumbDTO> Breadcrumbs { get; set; }
+    }
+
+    public class BreadcrumbDTO
+    {
+        [JsonProperty("title")]
+        public string Title { get; set; }
         [JsonProperty("actionList")]
-        public List<ActionItemDto> ActionList { get; set; }
+        public List<ActionItemDTO> ActionList { get; set; }
     }
 
-    public class ActionItemDto
-    {
+    public class ActionItemDTO
+        {
         [JsonProperty("condition")]
-        public ConditionDto Condition { get; set; }
+        public ConditionDTO Condition { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
         [JsonProperty("description")]
@@ -45,10 +55,10 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         [JsonProperty("responseData")]
         public List<string> ResponseData { get; set; }
         [JsonProperty("actionList")]
-        public List<ActionItemDto> SubActionList { get; set; }
+        public List<ActionItemDTO> SubActionList { get; set; }
     }
 
-    public class ConditionDto
+    public class ConditionDTO
     {
         [JsonProperty("responseData")]
         public string ResponseData { get; set; }

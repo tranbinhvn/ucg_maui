@@ -16,44 +16,33 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
             iSorEformService = _iSorEformService;
         }
 
-        public async Task<List<string>> GetOutcomeNames( bool isConnected = true)
+        public async Task<List<BreadcrumbEntity>> GetGenericSectionBreadcrumbs(bool isConnected = true)
         {
-            if (isConnected)
+            try
             {
-                try
-                {
-                    var response = await iSorEformService.GetOutcomeNames();
-                    CheckIfNetWorkOk(response.Message);
+                var section = await iSorEformService.GetGenericSectionBreadcrumbs();
 
-                    return Mapper.Map<List<string>>(response.Result);
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
+                return Mapper.Map<List<BreadcrumbEntity>>(section.Result);
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public async Task<List<ActionItemEntity>> GetActionsByOutcome(string outcomeName, bool isConnected = true)
+        public async Task<List<SectionEntity>> GetSections(bool isConnected = true)
         {
-            if (isConnected)
+            try
             {
-                try
-                {
-                    var response = await iSorEformService.GetActionsByOutcome(outcomeName);
-                    CheckIfNetWorkOk(response.Message);
+                var section = await iSorEformService.GetSections();
 
-                    return Mapper.Map<List<ActionItemEntity>>(response.Result);
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
+                return Mapper.Map<List<SectionEntity>>(section.Result);
+            }
+            catch(Exception ex)
+            {
+                return null;
             }
 
-            return null;
         }
     }
 }

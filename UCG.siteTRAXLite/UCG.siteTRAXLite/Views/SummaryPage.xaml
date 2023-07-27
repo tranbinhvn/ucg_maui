@@ -10,6 +10,7 @@
              xmlns:views="clr-namespace:UCG.siteTRAXLite.Views"
              JobDetail="{Binding JobDetail}"
              PageTitle="{Binding PageTitle}"
+             GoBackCommand="{Binding GoBackCommand}"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
     <ContentPage.Resources>

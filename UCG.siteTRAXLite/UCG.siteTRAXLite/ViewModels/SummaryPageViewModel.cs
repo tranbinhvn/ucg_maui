@@ -83,8 +83,11 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
-        public SummaryPageViewModel(INavigationService navigationService,
-            IAlertService alertService) : base(navigationService, alertService)
+        public SummaryPageViewModel(
+            INavigationService navigationService, 
+            IAlertService alertService, 
+            IOpenAppService openAppService, 
+            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
         {
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
             PriceCodes = new ConcurrentObservableCollection<PriceCodeEntity>();

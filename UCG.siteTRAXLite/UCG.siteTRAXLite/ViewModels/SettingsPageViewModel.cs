@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
+using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.WebServices.Helper;
@@ -106,7 +107,11 @@ namespace UCG.siteTRAXLite.ViewModels
         }
         #endregion
 
-        public SettingsPageViewModel(INavigationService navigationService, IAlertService alertService) : base(navigationService, alertService)
+        public SettingsPageViewModel(
+            INavigationService navigationService, 
+            IAlertService alertService, 
+            IOpenAppService openAppService,
+            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
         {
             var countries = Endpoints.GetAllCountries();
             TabCount = 0;

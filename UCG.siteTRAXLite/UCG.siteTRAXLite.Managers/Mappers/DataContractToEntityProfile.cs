@@ -13,17 +13,19 @@ namespace UCG.siteTRAXLite.Managers.Mappers
         {
             CreateMap<UserInfoDto, UserInfoEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<SorEformConfigDto, SorEformConfigEntity>(MemberList.None)
+            CreateMap<SorEformConfigDTO, SorEformConfigEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<ConfigInfoDto, ConfigInfoEntity>(MemberList.None)
+            CreateMap<ConfigInfoDTO, ConfigInfoEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<SettingsDto, SettingsEntity>(MemberList.None)
+            CreateMap<JobTabDTO, JobTabEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<OutcomeOptionDto, OutcomeOptionEntity>(MemberList.None)
+            CreateMap<SectionDTO, SectionEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<ActionItemDto, ActionItemEntity>(MemberList.None)
+            CreateMap<BreadcrumbDTO, BreadcrumbEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<ConditionDto, ConditionEntity>(MemberList.None)
+            CreateMap<ActionItemDTO, ActionItemEntity>(MemberList.None)
+                .ReverseMap();
+            CreateMap<ConditionDTO, ConditionEntity>(MemberList.None)
                 .ReverseMap();
             CreateMap<LaunchDataDTO, LaunchDataEntity>(MemberList.None)
                 .ReverseMap();

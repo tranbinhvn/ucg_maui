@@ -36,6 +36,9 @@
                                         Source="arrow_back.png" 
                                         VerticalOptions="CenterAndExpand" 
                                         WidthRequest="24">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{TemplateBinding GoBackCommand}" NumberOfTapsRequired="1"/>
+                                        </Image.GestureRecognizers>
                                     </Image>
                                 </StackLayout>
                                 <StackLayout 

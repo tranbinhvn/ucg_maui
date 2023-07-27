@@ -21,9 +21,7 @@ namespace UCG.siteTRAXLite.ViewModels
 {
     public class SorEformPageViewModel : ViewModelBase
     {
-        private readonly IOpenAppService _openAppService;
         private readonly ISorEformManager _sorEformManager;
-        private readonly IServiceEntityMapper _mapper;
 
         private bool IsFirstInitPage = true;
 
@@ -61,13 +59,13 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private async Task GetActionsByOutcomeName(string outcome)
         {
-            Actions.Clear();
-            var actions = await _sorEformManager.GetActionsByOutcome(outcome);
-            SetLevels(actions);
-            foreach (var item in actions)
-            {
-                Actions.Add(item);
-            }
+            //Actions.Clear();
+            //var actions = await _sorEformManager.GetActionsByOutcome(outcome);
+            //SetLevels(actions);
+            //foreach (var item in actions)
+            //{
+            //    Actions.Add(item);
+            //}
         }
 
         private ICommand goToLoginPageCommand;
@@ -127,11 +125,9 @@ namespace UCG.siteTRAXLite.ViewModels
             IAlertService alertService,
             IOpenAppService openAppService,
             ISorEformManager sorEformManager,
-            IServiceEntityMapper mapper) : base(navigationService, alertService)
+            IServiceEntityMapper mapper) :base(navigationService, alertService, openAppService, mapper)
         {
-            _openAppService = openAppService;
             _sorEformManager = sorEformManager;
-            _mapper = mapper;
             OutcomeOptions = new ConcurrentObservableCollection<string>();
             Actions = new ConcurrentObservableCollection<ActionItemEntity>();
             JobDetail = new JobDetailEntity();
@@ -139,29 +135,6 @@ namespace UCG.siteTRAXLite.ViewModels
             JobDetail.SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582";
             JobDetail.CRN = "221226808423";
             PageTitle = "Jobs";
-
-            WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
-            WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
-            {
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    if (!string.IsNullOrEmpty(data.Value))
-                    {
-                        ClearData();
-                        var launchDataDto = JsonConvert.DeserializeObject<LaunchDataDTO>(data.Value);
-                        var launchDataEntity = _mapper.Map<LaunchDataEntity>(launchDataDto);
-
-                        if (launchDataEntity != null)
-                        {
-                            JobDetail.CRN = launchDataEntity?.JobDetail?.CRN;
-                            JobDetail.SiteName = launchDataEntity?.JobDetail?.SiteName;
-                        }
-
-                        if (!IsFirstInitPage)
-                            await LoadData();
-                    }
-                });
-            });
         }
 
         public async override Task OnNavigatedTo()
@@ -173,11 +146,11 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private async Task LoadData()
         {
-            var options = await _sorEformManager.GetOutcomeNames(); ;
-            foreach (var option in options)
-            {
-                OutcomeOptions.Add(option);
-            }
+            //var options = await _sorEformManager.GetOutcomeNames(); ;
+            //foreach (var option in options)
+            //{
+            //    OutcomeOptions.Add(option);
+            //}
         }
 
         private void ClearData()
@@ -225,9 +198,9 @@ namespace UCG.siteTRAXLite.ViewModels
                 var text = "Data from SiteTRAX Lite";
 
 #if ANDROID
-                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name, text);
+                isSuccess = await FuncEx.ExcuteAsync(OpenAppService.LaunchApp, MessageStrings.SiteTraxAir_Package_Name, text);
 #elif IOS
-                isSuccess = await FuncEx.ExcuteAsync(_openAppService.LaunchApp, MessageStrings.SiteTraxAir_Uri , text);
+                isSuccess = await FuncEx.ExcuteAsync(OpenAppService.LaunchApp, MessageStrings.SiteTraxAir_Uri , text);
 #endif
 
                 if (!isSuccess)

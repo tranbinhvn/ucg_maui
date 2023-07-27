@@ -22,28 +22,40 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
             _fileService = fileService;
         }
 
-        private async Task<SorEformConfigDto> LoadSorEformConfig()
+        private async Task<SorEformConfigDTO> LoadSorEformConfig()
         {
-            var jsonContent = await _fileService.ReadFileFromRawsFolder(MessageStrings.ConfigFolderName, MessageStrings.ConfigFileName);
+            try
+            {
+                var jsonContent = await _fileService.ReadFileFromRawsFolder(MessageStrings.ConfigFolderName, MessageStrings.ConfigFileName);
 
-            return JsonConvert.DeserializeObject<SorEformConfigDto>(jsonContent);
+                var config = JsonConvert.DeserializeObject<SorEformConfigDTO>(jsonContent);
+
+                return config;
+
+            } 
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public async Task<ResponseResult<List<ActionItemDto>>> GetActionsByOutcome(string outcomeName)
+        public async Task<ResponseResult<List<SectionDTO>>> GetSections()
         {
             var config = await LoadSorEformConfig();
-            var outcome = config?.Settings?.OutcomeOptions?.FirstOrDefault(o => o.Name.Equals(outcomeName, StringComparison.OrdinalIgnoreCase));
-
-            return CreateResponseResult(outcome.ActionList);
+            
+            return CreateResponseResult(config.JobTab.Sections);
         }
 
-        public async Task<ResponseResult<List<string>>> GetOutcomeNames()
+        public async Task<ResponseResult<List<BreadcrumbDTO>>> GetGenericSectionBreadcrumbs()
         {
-            var jsonContent = await _fileService.ReadFileFromRawsFolder(MessageStrings.ConfigFolderName, MessageStrings.ConfigFileName);
-            var config = JsonConvert.DeserializeObject<SorEformConfigDto>(jsonContent);
-            var outcomes = config?.Settings?.OutcomeOptions?.Select(a => a.Name)?.ToList();
+            var config = await LoadSorEformConfig();
 
-            return CreateResponseResult(outcomes);
+            var sections = config?.JobTab?.Sections;
+
+            var genericSection = sections?
+                .Where(s => !string.IsNullOrEmpty(s.SectionType) && (s.SectionType).Equals("Generic", StringComparison.OrdinalIgnoreCase))?.FirstOrDefault();
+            
+            return CreateResponseResult(genericSection?.Breadcrumbs);
         }
 
         private ResponseResult<T> CreateResponseResult<T>(T result)
