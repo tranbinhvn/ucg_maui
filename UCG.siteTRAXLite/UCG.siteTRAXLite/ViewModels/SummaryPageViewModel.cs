@@ -63,6 +63,16 @@ namespace UCG.siteTRAXLite.ViewModels
             }
         }
 
+        private string priceCodeQTY;
+        public string PriceCodeQTY
+        {
+            get { return priceCodeQTY; }
+            set
+            {
+                SetProperty(ref priceCodeQTY, value);
+            }
+        }
+
         private ICommand cancelCommand;
 
         public ICommand CancelCommand
@@ -141,6 +151,8 @@ namespace UCG.siteTRAXLite.ViewModels
                 {
                     if (int.TryParse(numberOfMeterQuestions.Responses, out int response))
                     {
+                        IsShowPriceCodeQTY = true;
+
                         if (response < 5)
                         {
                             priceCode777.QTY = "1";
