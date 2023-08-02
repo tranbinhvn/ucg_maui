@@ -7,6 +7,13 @@ namespace UCG.siteTRAXLite.CustomSelectors
         public DataTemplate ResponseText { get; set; }
         public DataTemplate ResponseList { get; set; }
         public DataTemplate ResponseNumber { get; set; }
+        public DataTemplate ResponseRadioSingle { get; set; }
+        public DataTemplate ResponseTake5SWMsModal { get; set; }
+        public DataTemplate ResponseCheckboxSingle { get; set; }
+        public DataTemplate ResponseInputTextArea { get; set; }
+        public DataTemplate ResponseUploadMultiple { get; set; }
+        public DataTemplate ResponseTake5SWMSSummary { get; set; }
+        public DataTemplate ResponseTake5HazardsSummary { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -19,6 +26,20 @@ namespace UCG.siteTRAXLite.CustomSelectors
                     return ResponseList;
                 case SorEformsResponseType.Number:
                     return ResponseNumber;
+                case SorEformsResponseType.RadioSingle:
+                    return ResponseRadioSingle;
+                case SorEformsResponseType.CheckboxSingle:
+                    return ResponseCheckboxSingle;
+                case SorEformsResponseType.InputTextArea:
+                    return ResponseInputTextArea;
+                case SorEformsResponseType.UploadMultiple:
+                    return ResponseUploadMultiple;
+                case SorEformsResponseType.Take5SWMsModal: 
+                    return ResponseTake5SWMsModal;
+                case SorEformsResponseType.Take5SWMSSummary:
+                    return ResponseTake5SWMSSummary;
+                case SorEformsResponseType.Take5HazardsSummary:
+                    return ResponseTake5HazardsSummary;
                 default:
                     return ResponseText;
             }

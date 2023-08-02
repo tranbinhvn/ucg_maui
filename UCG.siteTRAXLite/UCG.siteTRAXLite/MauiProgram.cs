@@ -10,10 +10,16 @@ using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 using UCG.siteTRAXLite.ViewModels.Sections;
 using UCG.siteTRAXLite.Views;
+using UCG.siteTRAXLite.Views.Sections;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.CrewServices;
 using UCG.siteTRAXLite.WebServices.DependencyServices;
 using UCG.siteTRAXLite.WebServices.SorEformServices;
+
+#if ANDROID
+    using Microsoft.Maui.Controls.PlatformConfiguration;
+    using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+#endif
 
 namespace UCG.siteTRAXLite
 {
@@ -60,7 +66,12 @@ namespace UCG.siteTRAXLite
                     events.AddAndroid(android => android.OnApplicationCreate(app => UserDialogs.Init(app)));
 #endif
                 });
-
+#if ANDROID
+            Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("NoUnderline", (h, v) =>
+            {
+                h.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+            });
+#endif
             return builder.Build();
         }
 
@@ -95,10 +106,9 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<LoginPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SettingsPageViewModel>();
             mauiAppBuilder.Services.AddTransient<AppAccessPageViewModel>();
-            mauiAppBuilder.Services.AddTransient<SorEformPageViewModel>();
-            mauiAppBuilder.Services.AddTransient<SummaryPageViewModel>();
             mauiAppBuilder.Services.AddTransient<SectionPageViewModel>();
             mauiAppBuilder.Services.AddTransient<GenericSamplePageViewModel>();
+            mauiAppBuilder.Services.AddTransient<Take5PageViewModel>();
 
             return mauiAppBuilder;
         }
@@ -108,10 +118,9 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddTransient<LoginPage>();
             mauiAppBuilder.Services.AddTransient<SettingsPage>();
             mauiAppBuilder.Services.AddTransient<AppAccessPage>();
-            mauiAppBuilder.Services.AddTransient<SorEformPage>();
-            mauiAppBuilder.Services.AddTransient<SummaryPage>();
             mauiAppBuilder.Services.AddTransient<SectionPage>();
             mauiAppBuilder.Services.AddTransient<GenericSamplePage>();
+            mauiAppBuilder.Services.AddTransient<Take5Page>();
 
             return mauiAppBuilder;
         }

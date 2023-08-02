@@ -6,5 +6,6 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
     {
         Task<List<SectionEntity>> GetSections(bool isConnected = true);
         Task<List<BreadcrumbEntity>> GetGenericSectionBreadcrumbs(bool isConnected = true);
+        Task<Take5BreadcrumbEntity> GetTake5Breadcrumbs(bool isConnected = true);
     }
 }

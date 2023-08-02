@@ -85,7 +85,9 @@
 	  <None Remove="Resources\Images\expander_expand.svg" />
 	  <None Remove="Resources\Images\expander_expand_png.png" />
 	  <None Remove="Resources\Images\icons_hamburger_menu.png" />
+	  <None Remove="Resources\Images\icon_bin.png" />
 	  <None Remove="Resources\Images\icon_claims.png" />
+	  <None Remove="Resources\Images\icon_edit.png" />
 	  <None Remove="Resources\Images\icon_jobs.png" />
 	  <None Remove="Resources\Images\icon_STA.png" />
 	  <None Remove="Resources\Images\sitetraxair_logo_v2.png" />
@@ -102,6 +104,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="CustomControls\CustomSpinner.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CustomControls\SWMSModal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\NewUI.xaml">
@@ -122,13 +127,10 @@
 	  <MauiXaml Update="Views\Sections\SectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Sections\Take5Page.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\SettingsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\SorEformPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\SummaryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

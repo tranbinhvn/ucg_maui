@@ -27,7 +27,7 @@
                     </Label>
                     <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
                 </StackLayout>
-                <Entry Placeholder="Response" Text="{Binding Responses}" HorizontalOptions="FillAndExpand"/>
+                <Entry Placeholder="Response" Text="{Binding Response.Value}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
         </DataTemplate>
         <DataTemplate x:Key="responseList">
@@ -47,7 +47,8 @@
                         Title="Select an Option"
                         HorizontalOptions="FillAndExpand"
                         ItemsSource="{Binding ResponseData}"
-                        SelectedItem="{Binding Responses}"
+                        ItemDisplayBinding="{Binding Value}"
+                        SelectedItem="{Binding Response}"
                         SelectedIndexChanged="responsePicker_SelectedIndexChanged">
                     </Picker>
                 </StackLayout>
@@ -65,7 +66,7 @@
                     </Label>
                     <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
                 </StackLayout>
-                <Entry Keyboard="Numeric" Placeholder="Response" Text="{Binding Responses}" HorizontalOptions="FillAndExpand">
+                <Entry Keyboard="Numeric" Placeholder="Response" Text="{Binding Response.Value}" HorizontalOptions="FillAndExpand">
                     <Entry.Behaviors>
                         <behaviors:NonNegativeNumberBehavior/>
                     </Entry.Behaviors>
@@ -99,34 +100,34 @@
                                                 <VisualState x:Name="Checked">
                                                     <VisualState.Setters>
                                                         <Setter
-                                                                    TargetName="breadcrumbLayout"
-                                                                    Property="Path.Fill"
-                                                                    Value="{StaticResource MediumLightBlue}"/>
+                                                            TargetName="breadcrumbLayout"
+                                                            Property="Path.Fill"
+                                                            Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
-                                                                    TargetName="breadcrumbLayout"
-                                                                    Property="Path.Stroke"
-                                                                    Value="{StaticResource MediumLightBlue}"/>
+                                                            TargetName="breadcrumbLayout"
+                                                            Property="Path.Stroke"
+                                                            Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
-                                                                    TargetName="breadcrumbTitle"
-                                                                    Property="Label.TextColor"
-                                                                    Value="{StaticResource MediumDarkBlue}"/>
+                                                            TargetName="breadcrumbTitle"
+                                                            Property="Label.TextColor"
+                                                            Value="{StaticResource MediumDarkBlue}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
 
                                                 <VisualState x:Name="Unchecked">
                                                     <VisualState.Setters>
                                                         <Setter
-                                                                    TargetName="breadcrumbLayout"
-                                                                    Property="Path.Fill"
-                                                                    Value="{StaticResource MediumDarkBlue}"/>
+                                                                TargetName="breadcrumbLayout"
+                                                                Property="Path.Fill"
+                                                                Value="{StaticResource MediumDarkBlue}"/>
                                                         <Setter
-                                                                    TargetName="breadcrumbLayout"
-                                                                    Property="Path.Stroke"
-                                                                    Value="{StaticResource MediumDarkBlue}"/>
+                                                                TargetName="breadcrumbLayout"
+                                                                Property="Path.Stroke"
+                                                                Value="{StaticResource MediumDarkBlue}"/>
                                                         <Setter
-                                                                    TargetName="breadcrumbTitle"
-                                                                    Property="Label.TextColor"
-                                                                    Value="{StaticResource MediumLightBlue}"/>
+                                                                TargetName="breadcrumbTitle"
+                                                                Property="Label.TextColor"
+                                                                Value="{StaticResource MediumLightBlue}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
                                             </VisualStateGroup>
@@ -145,8 +146,8 @@
                                                     <PathGeometry.Figures>
                                                         <PathFigureCollection>
                                                             <PathFigure
-                                                                        IsClosed="False"
-                                                                        StartPoint="0,0">
+                                                                    IsClosed="False"
+                                                                    StartPoint="0,0">
                                                                 <PathFigure.Segments>
                                                                     <LineSegment Point="110,0"></LineSegment>
                                                                     <LineSegment Point="120,25"></LineSegment>
@@ -161,15 +162,15 @@
                                             </Path.Data>
                                         </Path>
                                         <Label
-                                                    x:Name="breadcrumbTitle"
-                                                    Text="{TemplateBinding Content.Title}"
-                                                    FontSize="14"
-                                                    TextColor="{StaticResource MediumLightBlue}"
-                                                    FontFamily="FS-SemiBold"
-                                                    TextTransform="Uppercase"
-                                                    HorizontalOptions="Center"
-                                                    VerticalOptions="Center"
-                                                    AbsoluteLayout.LayoutBounds="0,0,120,50" />
+                                            x:Name="breadcrumbTitle"
+                                            Text="{TemplateBinding Content.Title}"
+                                            FontSize="14"
+                                            TextColor="{StaticResource MediumLightBlue}"
+                                            FontFamily="FS-SemiBold"
+                                            TextTransform="Uppercase"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            AbsoluteLayout.LayoutBounds="0,0,120,50" />
                                     </AbsoluteLayout>
                                 </StackLayout>
                             </ControlTemplate>
@@ -212,7 +213,7 @@
                                                 </Label>
                                                 <Label Text="{Binding Title}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
                                             </StackLayout>
-                                            <Editor IsEnabled="False" Text="{Binding Responses}" HorizontalOptions="FillAndExpand"/>
+                                            <Editor IsEnabled="False" Text="{Binding Response.Value}" HorizontalOptions="FillAndExpand"/>
                                         </StackLayout>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
