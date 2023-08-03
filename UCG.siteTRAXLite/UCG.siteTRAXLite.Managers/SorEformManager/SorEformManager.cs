@@ -20,9 +20,9 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
         {
             try
             {
-                var section = await iSorEformService.GetGenericSectionBreadcrumbs();
+                var breadcrumbs = await iSorEformService.GetGenericSectionBreadcrumbs();
 
-                return Mapper.Map<List<BreadcrumbEntity>>(section.Result);
+                return Mapper.Map<List<BreadcrumbEntity>>(breadcrumbs.Result);
             }
             catch (Exception ex)
             {
@@ -43,6 +43,20 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
                 return null;
             }
 
+        }
+
+        public async Task<Take5BreadcrumbEntity> GetTake5Breadcrumbs(bool isConnected = true)
+        {
+            try
+            {
+                var take5Breadcrumb = await iSorEformService.GetTake5Breadcrumbs();
+
+                return Mapper.Map<Take5BreadcrumbEntity>(take5Breadcrumb.Result);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

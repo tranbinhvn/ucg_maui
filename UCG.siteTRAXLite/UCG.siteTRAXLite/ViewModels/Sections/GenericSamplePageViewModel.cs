@@ -147,7 +147,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 RemoveSubList(actionItemEntity);
 
                 var newQuestions = actionItemEntity.SubActionList
-                    .Where(a => a.Condition.ResponseData.Equals(actionItemEntity.Responses, StringComparison.OrdinalIgnoreCase))
+                    .Where(a => a.Condition.ResponseData.Equals(actionItemEntity?.Response?.Value, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 foreach (var action in newQuestions)
@@ -169,7 +169,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                     if (!Questions.Contains(action))
                         continue;
 
-                    action.Responses = null;
+                    action.Response.Value = null;
 
                     Questions.Remove(action);
                 }
@@ -235,7 +235,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 RemoveSubList(question);
 
                 var newQuestions = question.SubActionList
-                    .Where(a => a.Condition.ResponseData.Equals(question.Responses, StringComparison.OrdinalIgnoreCase))
+                    .Where(a => a.Condition.ResponseData.Equals(question?.Response?.Value, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 if (newQuestions != null)
@@ -250,7 +250,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             if (questions == null || !questions.Any())
                 return;
 
-            foreach (var question in questions.Where(q => !string.IsNullOrEmpty(q.Responses)))
+            foreach (var question in questions.Where(q => !string.IsNullOrEmpty(q?.Response?.Value)))
             {
                 SummaryQuestions.Add(question);
 
@@ -278,7 +278,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 var numberOfMeterQuestions = priceCodeQuestions.FirstOrDefault(a => a.Title.Equals(MessageStrings.Number_Of_Meters_Question, StringComparison.OrdinalIgnoreCase));
                 if (numberOfMeterQuestions != null && numberOfMeterQuestions.EResponseType == SorEformsResponseType.Number)
                 {
-                    if (int.TryParse(numberOfMeterQuestions.Responses, out int response))
+                    if (int.TryParse(numberOfMeterQuestions.Response.Value, out int response))
                     {
                         if (response < 5)
                         {

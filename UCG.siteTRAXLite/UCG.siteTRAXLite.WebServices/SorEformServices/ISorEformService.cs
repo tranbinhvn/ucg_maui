@@ -7,5 +7,6 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
     {
         Task<ResponseResult<List<SectionDTO>>> GetSections();
         Task<ResponseResult<List<BreadcrumbDTO>>> GetGenericSectionBreadcrumbs();
+        Task<ResponseResult<Take5BreadcrumbDTO>> GetTake5Breadcrumbs();
     }
 }

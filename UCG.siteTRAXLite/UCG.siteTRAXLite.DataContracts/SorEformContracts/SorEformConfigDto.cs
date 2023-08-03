@@ -30,6 +30,12 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         public string SectionType { get; set; }
         [JsonProperty("breadcrumbs")]
         public List<BreadcrumbDTO> Breadcrumbs { get; set; }
+        [JsonProperty("breadcrumbControl")]
+        public BreadcrumbDTO BreadcrumbControl { get; set; }
+        [JsonProperty("breadcrumbHazard")]
+        public BreadcrumbDTO BreadcrumbHazard { get; set; }
+        [JsonProperty("breadcrumbSubmit")]
+        public BreadcrumbDTO BreadcrumbSubmit { get; set; }
     }
 
     public class BreadcrumbDTO
@@ -38,6 +44,13 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         public string Title { get; set; }
         [JsonProperty("actionList")]
         public List<ActionItemDTO> ActionList { get; set; }
+    }
+
+    public class Take5BreadcrumbDTO
+    {
+        public BreadcrumbDTO BreadcrumbControl { get; set; }
+        public BreadcrumbDTO BreadcrumbHazard { get; set; }
+        public BreadcrumbDTO BreadcrumbSubmit { get; set; }
     }
 
     public class ActionItemDTO
@@ -53,9 +66,14 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         [JsonProperty("logic")]
         public string Logic { get; set; }
         [JsonProperty("responseData")]
-        public List<string> ResponseData { get; set; }
+        public List<ResponseDataItemDTO> ResponseData { get; set; }
         [JsonProperty("actionList")]
         public List<ActionItemDTO> SubActionList { get; set; }
+    }
+
+    public class ResponseDataItemDTO
+    {
+        public string Value { get; set; }
     }
 
     public class ConditionDTO

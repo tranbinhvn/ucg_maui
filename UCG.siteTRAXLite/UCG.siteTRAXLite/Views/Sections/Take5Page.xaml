@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:MasterContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UCG.siteTRAXLite.Views.Sections.Take5Page"
+             xmlns:views="clr-namespace:UCG.siteTRAXLite.Views"
+             xmlns:customselectors="clr-namespace:UCG.siteTRAXLite.CustomSelectors"
+             xmlns:converters="clr-namespace:UCG.siteTRAXLite.Converters"
+             xmlns:viewmodels="clr-namespace:UCG.siteTRAXLite.ViewModels.Sections"
+             JobDetail="{Binding JobDetail}"
+             PageTitle="{Binding PageTitle}"
+             GoBackCommand="{Binding GoBackCommand}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+    <views:MasterContentPage.Resources>
+        <converters:IndexToColorConverter x:Key="IndexToColorConverter"/>
+        <converters:ActionLevelsConverter x:Key="ActionLevelsConverter"/>
+        
+        <!--Control Tab-->
+        <DataTemplate x:Key="responseRadioSingle">
+            <StackLayout BackgroundColor="{Binding ., Converter={StaticResource IndexToColorConverter}}" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20">
+                <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                <FlexLayout 
+                        HorizontalOptions="StartAndExpand" 
+                        JustifyContent="SpaceAround"
+                        AlignItems="Stretch"
+                        Wrap="Wrap"
+                        RadioButtonGroup.GroupName="{Binding Index}"
+                        RadioButtonGroup.SelectedValue="{Binding Response}"
+                        BindableLayout.ItemsSource="{Binding ResponseData}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Content="{Binding Value}"
+                                Value="{Binding .}"
+                                BorderColor="{StaticResource VeryDarkBlue}"
+                                FlexLayout.AlignSelf="Start"
+                                FlexLayout.Grow="1"
+                                FontSize="20"
+                                FontFamily="FS-Medium"
+                                CheckedChanged="ResponseRadioSingle_CheckedChanged"
+                                TextColor="{StaticResource MediumDarkBlue}"/>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseTake5SWMsModal">
+            <StackLayout BackgroundColor="{Binding ., Converter={StaticResource IndexToColorConverter}}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Label  
+                Text="Selected SWMS" 
+                FontSize="16"
+                FontFamily="FS-Medium"
+                VerticalTextAlignment="Center"
+                Margin="10,0,0,0"
+                TextColor="{StaticResource VeryDarkBlue}"/>
+                <StackLayout
+                    BindableLayout.ItemsSource="{Binding Responses}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Margin="10,0,0,0">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text=" - " FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource VeryDarkBlue}"/>
+                                            <Span Text="{Binding Value}" FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource VeryDarkBlue}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+                <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <ImageButton 
+                    Source="icon_edit.png" 
+                    BackgroundColor="{StaticResource MediumLightBlue}"
+                    Clicked="EditSWMS_Clicked"
+                    HorizontalOptions="Start"
+                    Padding="5"
+                    CornerRadius="5"/>
+                    <Label  
+                    Text="Edit SWMS" 
+                    FontSize="18"
+                    FontFamily="FS-Medium"
+                    VerticalTextAlignment="Center"
+                    Margin="20,0,0,0"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                </StackLayout>
+            </StackLayout>
+        </DataTemplate>
+        
+        <!--Hazard Tab-->
+        <DataTemplate x:Key="responseCheckboxSingle">
+            <StackLayout HorizontalOptions="FillAndExpand" x:Name="checkboxSingleLayout">
+                <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                <FlexLayout 
+                        HorizontalOptions="StartAndExpand" 
+                        JustifyContent="SpaceAround"
+                        AlignItems="Stretch"
+                        Wrap="Wrap"
+                        BindableLayout.ItemsSource="{Binding ResponseData}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout HorizontalOptions="Start" FlexLayout.AlignSelf="Start" FlexLayout.Grow="1" Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsChecked}" CheckedChanged="CheckboxResponse_CheckedChanged"/>
+                                <Label FontSize="20" FontFamily="FS-Light" FontAttributes="Bold" Text="{Binding Value}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" TextColor="{StaticResource MediumDarkBlue}" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseUploadMultiple">
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0" Padding="20">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                    <Button 
+                    Style="{StaticResource NormalButton}"
+                    Clicked="BrowseFiles_Clicked"
+                    Text="UPLOAD PHOTOS"
+                    Margin="25,10,25,10"/>
+                </StackLayout>
+                <ListView 
+                    ItemsSource="{Binding FilesUpload}" 
+                    SelectionMode="None"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand"
+                    HeightRequest="150">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                        <StackLayout BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                Grid.Column="0"
+                                                HeightRequest="30"
+                                                HorizontalOptions="StartAndExpand"
+                                                Source="{Binding ImageSource}"
+                                                WidthRequest="30" />
+                                                <Label Grid.Column="1" FontFamily="FS-Medium" LineBreakMode="TailTruncation" Text="{Binding FileName}" VerticalOptions="CenterAndExpand" WidthRequest="50" />
+                                                <Label Grid.Column="2" FontFamily="FS-Medium" Text="{Binding FileSizeInKB}" VerticalOptions="CenterAndExpand" />
+                                                <StackLayout Grid.Column="3" VerticalOptions="CenterAndExpand">
+                                                    <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
+                                                    <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
+                                                </StackLayout>
+                                            </Grid>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseInputTextArea">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,10,20,0" Orientation="Horizontal">
+                <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <StackLayout HorizontalOptions="FillAndExpand">
+                    <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                    <Border 
+                        Stroke="{StaticResource VeryDarkBlue}"
+                        StrokeThickness="1"
+                        HeightRequest="60"
+                        StrokeShape="Rectangle"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand">
+                        <Editor 
+                            Placeholder="Response" 
+                            Text="{Binding Response.Value}" 
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                    </Border>
+                </StackLayout>
+            </StackLayout>
+        </DataTemplate>
+        
+        <!--Submit Tab-->
+        <DataTemplate x:Key="disableResponseRadioSingle">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20">
+                <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                <Label Text="{Binding Response.Value}"/>
+                <FlexLayout 
+                        HorizontalOptions="StartAndExpand" 
+                        JustifyContent="SpaceAround"
+                        AlignItems="Stretch"
+                        Wrap="Wrap"
+                        RadioButtonGroup.GroupName="{Binding Title}"
+                        RadioButtonGroup.SelectedValue="{Binding Response}"
+                        BindableLayout.ItemsSource="{Binding ResponseData}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton 
+                                Content="{Binding Value}"
+                                Value="{Binding .}"
+                                IsEnabled="False"
+                                BorderColor="{StaticResource VeryDarkBlue}"
+                                FlexLayout.AlignSelf="Start"
+                                FlexLayout.Grow="1"
+                                FontSize="20"
+                                FontFamily="FS-Medium"
+                                CheckedChanged="ResponseRadioSingle_CheckedChanged"
+                                TextColor="{StaticResource MediumDarkBlue}"/>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="disableResponseCheckboxSingle">
+            <StackLayout HorizontalOptions="FillAndExpand">
+                <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                <FlexLayout 
+                        HorizontalOptions="StartAndExpand" 
+                        JustifyContent="SpaceAround"
+                        AlignItems="Stretch"
+                        Wrap="Wrap"
+                        BindableLayout.ItemsSource="{Binding ResponseData}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout HorizontalOptions="Start" FlexLayout.AlignSelf="Start" FlexLayout.Grow="1" Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False" CheckedChanged="CheckboxResponse_CheckedChanged"/>
+                                <Label FontSize="20" FontFamily="FS-Light" FontAttributes="Bold" Text="{Binding Value}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" TextColor="{StaticResource MediumDarkBlue}" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="disableResponseUploadMultiple">
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0" Padding="20">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label  
+                        Text="{Binding Title}" 
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand"
+                        FontFamily="FS-Medium"
+                        TextColor="{StaticResource VeryDarkBlue}"/>
+                    <Button 
+                        Style="{StaticResource NormalButton}"
+                        IsEnabled="False"
+                        Clicked="BrowseFiles_Clicked"
+                        Text="UPLOAD PHOTOS"
+                        Margin="25,10,25,10">
+                    </Button>
+                </StackLayout>
+                <ListView 
+                    ItemsSource="{Binding FilesUpload}" 
+                    SelectionMode="None"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand"
+                    HeightRequest="150">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                        <StackLayout BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                Grid.Column="0"
+                                                HeightRequest="30"
+                                                HorizontalOptions="StartAndExpand"
+                                                Source="{Binding ImageSource}"
+                                                WidthRequest="30" />
+                                                <Label Grid.Column="1" FontFamily="FS-Medium" LineBreakMode="TailTruncation" Text="{Binding FileName}" VerticalOptions="CenterAndExpand" WidthRequest="50" />
+                                                <Label Grid.Column="2" FontFamily="FS-Medium" Text="{Binding FileSizeInKB}" VerticalOptions="CenterAndExpand" />
+                                                <StackLayout Grid.Column="3" VerticalOptions="CenterAndExpand">
+                                                    <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
+                                                    <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
+                                                </StackLayout>
+                                            </Grid>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="disableResponseInputTextArea">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,10,20,0" Orientation="Horizontal">
+                <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <StackLayout HorizontalOptions="FillAndExpand">
+                    <Label  
+                    Text="{Binding Title}" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                    <Border 
+                        Stroke="{StaticResource VeryDarkBlue}"
+                        StrokeThickness="1"
+                        HeightRequest="60"
+                        StrokeShape="Rectangle"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand">
+                        <Editor 
+                            Text="{Binding Response.Value}"
+                            IsEnabled="False"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                    </Border>
+                </StackLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="disableResponseTake5SWMsModal">
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Label  
+                    Text="Selected SWMS" 
+                    FontSize="16"
+                    FontFamily="FS-Medium"
+                    VerticalTextAlignment="Center"
+                    Margin="10,0,0,0"
+                    TextColor="{StaticResource VeryDarkBlue}"/>
+                <StackLayout
+                    BindableLayout.ItemsSource="{Binding Responses}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Margin="10,0,0,0">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text=" - " FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource VeryDarkBlue}"/>
+                                            <Span Text="{Binding Value}" FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource VeryDarkBlue}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+                <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <ImageButton 
+                        Source="icon_edit.png" 
+                        BackgroundColor="{StaticResource MediumLightBlue}"
+                        Clicked="EditSWMS_Clicked"
+                        HorizontalOptions="Start"
+                        Padding="5"
+                        IsEnabled="False"
+                        CornerRadius="5"/>
+                    <Label  
+                        Text="Edit SWMS" 
+                        FontSize="18"
+                        FontFamily="FS-Medium"
+                        VerticalTextAlignment="Center"
+                        Margin="20,0,0,0"
+                        TextColor="{StaticResource VeryDarkBlue}"/>
+                </StackLayout>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseTake5SWMSSummary">
+            <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                <OnPlatform x:TypeArguments="View">
+                    <On Platform="WinUI">
+                        <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                            <Label  
+                                Text="Control &amp; Monitor" 
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                FontFamily="FS-Medium"
+                                Margin="10,20,0,0"
+                                TextColor="{StaticResource VeryDarkBlue}"/>
+                            <StackLayout 
+                                HorizontalOptions="FillAndExpand" 
+                                VerticalOptions="FillAndExpand"
+                                Padding="0,10,0,10"
+                                BindableLayout.ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:Take5PageViewModel}}, Path=ControlTab.Questions}"
+                                BindableLayout.ItemTemplateSelector="{StaticResource submitTabSorResponseSelector}">
+                            </StackLayout>
+                        </StackLayout>
+                    </On>
+                    <On Platform="iOS, Android">
+                        <Frame HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" CornerRadius="0" Padding="0">
+                            <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                                <Label  
+                                    Text="Control &amp; Monitor" 
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    FontFamily="FS-Medium"
+                                    Margin="10,20,0,0"
+                                    TextColor="{StaticResource VeryDarkBlue}"/>
+                                <StackLayout 
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="0,10,0,10"
+                                    BindableLayout.ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:Take5PageViewModel}}, Path=ControlTab.Questions}"
+                                    BindableLayout.ItemTemplateSelector="{StaticResource submitTabSorResponseSelector}">
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </On>
+                </OnPlatform>
+            </StackLayout>
+        </DataTemplate>
+        <DataTemplate x:Key="responseTake5HazardsSummary">
+            <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                <OnPlatform x:TypeArguments="View">
+                    <On Platform="WinUI">
+                        <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                            <Label  
+                                    Text="Hazards" 
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    FontFamily="FS-Medium"
+                                    Margin="10,20,0,0"
+                                    TextColor="{StaticResource VeryDarkBlue}"/>
+                            <StackLayout 
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="0,10,0,10"
+                                    BindableLayout.ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:Take5PageViewModel}}, Path=HazardTab.Questions}"
+                                    BindableLayout.ItemTemplateSelector="{StaticResource submitTabSorResponseSelector}">
+                            </StackLayout>
+                        </StackLayout>
+                    </On>
+                    <On Platform="iOS, Android">
+                        <Frame HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" CornerRadius="0" Padding="0">
+                            <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                                <Label  
+                                    Text="Hazards" 
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    FontFamily="FS-Medium"
+                                    Margin="10,20,0,0"
+                                    TextColor="{StaticResource VeryDarkBlue}"/>
+                                <StackLayout 
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="0,10,0,10"
+                                    BindableLayout.ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:Take5PageViewModel}}, Path=HazardTab.Questions}"
+                                    BindableLayout.ItemTemplateSelector="{StaticResource submitTabSorResponseSelector}">
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </On>
+                </OnPlatform>
+            </StackLayout>
+        </DataTemplate>
+
+        <customselectors:SorResponseDataTemplateSelector x:Key="controlTabSorResponseSelector"
+                                                         ResponseRadioSingle="{StaticResource responseRadioSingle}"
+                                                         ResponseTake5SWMsModal="{StaticResource responseTake5SWMsModal}"/>
+        <customselectors:SorResponseDataTemplateSelector x:Key="hazardTabSorResponseSelector"
+                                                         ResponseCheckboxSingle="{StaticResource responseCheckboxSingle}"
+                                                         ResponseUploadMultiple="{StaticResource responseUploadMultiple}"
+                                                         ResponseInputTextArea="{StaticResource responseInputTextArea}" />
+        <customselectors:SorResponseDataTemplateSelector x:Key="submitTabSorResponseSelector"
+                                                         ResponseRadioSingle="{StaticResource disableResponseRadioSingle}"
+                                                         ResponseCheckboxSingle="{StaticResource disableResponseCheckboxSingle}"
+                                                         ResponseUploadMultiple="{StaticResource disableResponseUploadMultiple}"
+                                                         ResponseInputTextArea="{StaticResource disableResponseInputTextArea}"
+                                                         ResponseTake5SWMsModal="{StaticResource disableResponseTake5SWMsModal}"
+                                                         ResponseTake5SWMSSummary="{StaticResource responseTake5SWMSSummary}"
+                                                         ResponseTake5HazardsSummary="{StaticResource responseTake5HazardsSummary}"/>
+    </views:MasterContentPage.Resources>
+    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <FlexLayout  
+                Padding="0" 
+                Margin="5" 
+                JustifyContent="Center" 
+                Wrap="Wrap"
+                BindableLayout.ItemsSource="{Binding Breadcrumbs}"
+                RadioButtonGroup.GroupName="Breadcrumbs"
+                RadioButtonGroup.SelectedValue="{Binding SelectedBreadcrumb}"
+                HorizontalOptions="FillAndExpand" >
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton Content="{Binding .}" Value="{Binding .}" WidthRequest="{OnPlatform WinUI='150'}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <RadioButton.ControlTemplate>
+                            <ControlTemplate>
+                                <StackLayout Spacing="0" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroupList>
+                                            <VisualStateGroup x:Name="CheckedStates">
+                                                <VisualState x:Name="Checked">
+                                                    <VisualState.Setters>
+                                                        <Setter
+                                                            TargetName="breadcrumbLayout"
+                                                            Property="Path.Fill"
+                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                        <Setter
+                                                            TargetName="breadcrumbLayout"
+                                                            Property="Path.Stroke"
+                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                        <Setter
+                                                            TargetName="breadcrumbTitle"
+                                                            Property="Label.TextColor"
+                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Unchecked">
+                                                    <VisualState.Setters>
+                                                        <Setter
+                                                            TargetName="breadcrumbLayout"
+                                                            Property="Path.Fill"
+                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                        <Setter
+                                                            TargetName="breadcrumbLayout"
+                                                            Property="Path.Stroke"
+                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                        <Setter
+                                                            TargetName="breadcrumbTitle"
+                                                            Property="Label.TextColor"
+                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <AbsoluteLayout Padding="0" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                        <Path
+                                            x:Name="breadcrumbLayout"
+                                            AbsoluteLayout.LayoutBounds="0,0"
+                                            Stroke="{StaticResource VeryDarkBlue}"
+                                            Aspect="Uniform"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Fill="{StaticResource VeryDarkBlue}">
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathGeometry.Figures>
+                                                        <PathFigureCollection>
+                                                            <PathFigure
+                                                                        IsClosed="False"
+                                                                        StartPoint="0,0">
+                                                                <PathFigure.Segments>
+                                                                    <LineSegment Point="110,0"></LineSegment>
+                                                                    <LineSegment Point="120,25"></LineSegment>
+                                                                    <LineSegment Point="110,50"></LineSegment>
+                                                                    <LineSegment Point="0,50"></LineSegment>
+                                                                    <LineSegment Point="10,25"></LineSegment>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathFigureCollection>
+                                                    </PathGeometry.Figures>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+                                        <Label
+                                            x:Name="breadcrumbTitle"
+                                            Text="{TemplateBinding Content.Title}"
+                                            FontSize="14"
+                                            TextColor="{StaticResource MediumLightBlue}"
+                                            FontFamily="FS-SemiBold"
+                                            TextTransform="Uppercase"
+                                            HorizontalOptions="CenterAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            AbsoluteLayout.LayoutBounds="0,0,120,50" />
+                                    </AbsoluteLayout>
+                                </StackLayout>
+                            </ControlTemplate>
+                        </RadioButton.ControlTemplate>
+                    </RadioButton>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+        <ScrollView  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="0" HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                <!--Control Tab-->
+                <StackLayout x:Name="controlTab" IsVisible="{Binding ControlTab.IsVisible}"  HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                    <StackLayout 
+                        HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="FillAndExpand"
+                        BindableLayout.ItemsSource="{Binding ControlTab.Questions}"
+                        BindableLayout.ItemTemplateSelector="{StaticResource controlTabSorResponseSelector}">
+                    </StackLayout>
+                </StackLayout>
+                
+                <!--Hazard Tab-->
+                <StackLayout x:Name="hazardTab" IsVisible="{Binding HazardTab.IsVisible}" HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                    <Label  
+                        Text="Hazards" 
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        FontFamily="FS-Medium"
+                        Margin="10,20,0,0"
+                        TextColor="{StaticResource VeryDarkBlue}"/>
+                    <StackLayout 
+                        HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="FillAndExpand"
+                        BindableLayout.ItemsSource="{Binding HazardTab.Questions}"
+                        BindableLayout.ItemTemplateSelector="{StaticResource hazardTabSorResponseSelector}">
+                    </StackLayout>
+                </StackLayout>
+                
+                <!--Submit Tab-->
+                <StackLayout x:Name="submitTab" IsVisible="{Binding SubmitTab.IsVisible}" HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                    <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" VerticalOptions="FillAndExpand">
+                        <StackLayout
+                            HorizontalOptions="FillAndExpand" 
+                            VerticalOptions="FillAndExpand"
+                            BindableLayout.ItemsSource="{Binding SubmitTab.Questions}"
+                            BindableLayout.ItemTemplateSelector="{StaticResource submitTabSorResponseSelector}">
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout Margin="0,20,0,0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Button Margin="10" Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"/>
+                        <Button Margin="10" Text="Confirm" Command="{Binding ConfirmCommand}" HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</views:MasterContentPage>

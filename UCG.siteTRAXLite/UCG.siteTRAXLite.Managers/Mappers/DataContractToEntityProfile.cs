@@ -31,6 +31,10 @@ namespace UCG.siteTRAXLite.Managers.Mappers
                 .ReverseMap();
             CreateMap<JobDetailDTO, JobDetailEntity>(MemberList.None)
                 .ReverseMap();
+            CreateMap<Take5BreadcrumbDTO, Take5BreadcrumbEntity>(MemberList.None)
+                .ReverseMap();
+            CreateMap<ResponseDataItemDTO, ResponseDataItemEntity>(MemberList.None)
+                .ReverseMap();
         }
     }
 }

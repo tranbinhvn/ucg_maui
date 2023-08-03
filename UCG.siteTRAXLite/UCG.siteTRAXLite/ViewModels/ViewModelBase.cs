@@ -29,6 +29,13 @@ namespace UCG.siteTRAXLite.ViewModels
             set { SetProperty(ref _isNetworkConnected, value); OnPropertyChanged(nameof(NetworkDisconnected)); }
         }
 
+        private bool isCommandExecuting;
+        public bool IsCommandExecuting
+        {
+            get { return isCommandExecuting; }
+            set { SetProperty(ref isCommandExecuting, value); }
+        }
+
         public bool NetworkDisconnected
         {
             get { return !_isNetworkConnected; }
