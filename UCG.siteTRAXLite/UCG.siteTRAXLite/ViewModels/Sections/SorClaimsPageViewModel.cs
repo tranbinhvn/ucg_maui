@@ -5,39 +5,39 @@ using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Models;
-using UCG.siteTRAXLite.Models.Take5;
+using UCG.siteTRAXLite.Models.SorClaims;
 using UCG.siteTRAXLite.Services;
 
 namespace UCG.siteTRAXLite.ViewModels.Sections
 {
-    public class Take5PageViewModel : ViewModelBase
+    public class SorClaimsPageViewModel : ViewModelBase
     {
         private readonly ISorEformManager _sorEformManager;
 
         public ConcurrentObservableCollection<StepperEntity> Steppers { get; set; }
 
-        private Take5TabModel controlTab;
-        public Take5TabModel ControlTab
+        private ClaimSorsTab sorsTab;
+        public ClaimSorsTab SorsTab
         {
-            get { return controlTab; }
+            get { return sorsTab; }
             set
             {
-                SetProperty(ref controlTab, value);
+                SetProperty(ref sorsTab, value);
             }
         }
 
-        private Take5TabModel hazardTab;
-        public Take5TabModel HazardTab
+        private ClaimUploadFilesTab uploadFilesTab;
+        public ClaimUploadFilesTab UploadFilesTab
         {
-            get { return hazardTab; }
+            get { return uploadFilesTab; }
             set
             {
-                SetProperty(ref hazardTab, value);
+                SetProperty(ref uploadFilesTab, value);
             }
         }
 
-        private Take5TabModel submitTab;
-        public Take5TabModel SubmitTab
+        private ClaimSubmitTab submitTab;
+        public ClaimSubmitTab SubmitTab
         {
             get { return submitTab; }
             set
@@ -50,7 +50,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         public StepperEntity SelectedStepper
         {
             get { return selectedStepper; }
-            set 
+            set
             {
                 HandleSelectedStepper(value);
                 SetProperty(ref selectedStepper, value);
@@ -76,14 +76,14 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
-        public Take5PageViewModel(
+        public SorClaimsPageViewModel(
             INavigationService navigationService,
             IAlertService alertService,
             IOpenAppService openAppService,
             IServiceEntityMapper mapper,
             ISorEformManager sorEformManager) : base(navigationService, alertService, openAppService, mapper)
         {
-            PageTitle = "TAKE 5";
+            PageTitle = "CLAIMS";
 
             Steppers = new ConcurrentObservableCollection<StepperEntity>();
             _sorEformManager = sorEformManager;
@@ -99,31 +99,28 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         {
             if (section != null)
             {
-                var take5Steppers = await _sorEformManager.GetTake5Steppers();
-
-                if (take5Steppers != null)
+                var sorClaimsSteppers = await _sorEformManager.GetSorClaimsSteppers();
+                if (sorClaimsSteppers != null)
                 {
-                    if (take5Steppers.StepperControl != null)
+                    if (sorClaimsSteppers.StepperControl != null)
                     {
-                        take5Steppers.StepperControl.StepperType = StepperType.Control;
-                        ControlTab = new Take5TabModel(take5Steppers.StepperControl);
-                        Steppers.Add(take5Steppers.StepperControl);
+                        sorClaimsSteppers.StepperControl.StepperType = StepperType.Control;
+                        SorsTab = new ClaimSorsTab(sorClaimsSteppers.StepperControl);
+                        Steppers.Add(sorClaimsSteppers.StepperControl);
                     }
 
-                    if (take5Steppers.StepperHazard != null)
+                    if (sorClaimsSteppers.StepperUploadFiles != null)
                     {
-                        take5Steppers.StepperHazard.StepperType = StepperType.Hazard;
-                        HazardTab = new Take5TabModel(take5Steppers.StepperHazard);
-                        Steppers.Add(take5Steppers.StepperHazard);
+                        sorClaimsSteppers.StepperUploadFiles.StepperType = StepperType.UploadFiles;
+                        UploadFilesTab = new ClaimUploadFilesTab(sorClaimsSteppers.StepperControl);
+                        Steppers.Add(sorClaimsSteppers.StepperUploadFiles);
                     }
 
-                    if (take5Steppers.StepperSubmit != null)
+                    if (sorClaimsSteppers.StepperSubmit != null)
                     {
-                        take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
-
-                        SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit);
-
-                        Steppers.Add(take5Steppers.StepperSubmit);
+                        sorClaimsSteppers.StepperSubmit.StepperType = StepperType.Submit;
+                        SubmitTab = new ClaimSubmitTab(sorClaimsSteppers.StepperControl);
+                        Steppers.Add(sorClaimsSteppers.StepperSubmit);
                     }
                 }
 
@@ -141,21 +138,18 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         private void ChangeTab(StepperEntity stepper)
         {
-            ControlTab.IsVisible = stepper.StepperType == StepperType.Control;
-            HazardTab.IsVisible = stepper.StepperType == StepperType.Hazard;
+            SorsTab.IsVisible = stepper.StepperType == StepperType.Control;
+            UploadFilesTab.IsVisible = stepper.StepperType == StepperType.UploadFiles;
             SubmitTab.IsVisible = stepper.StepperType == StepperType.Submit;
-        }
 
-        public Take5TabModel GetCurrentTab()
-        {
-            if (SelectedStepper?.StepperType == StepperType.Control)
-                return ControlTab;
-            else if (SelectedStepper?.StepperType == StepperType.Hazard)
-                return HazardTab;
-            else if (SelectedStepper?.StepperType == StepperType.Submit)
-                return SubmitTab;
+            if (UploadFilesTab.IsVisible)
+            {
+                UploadFilesTab.LoadSors(SorsTab.SecondarySOR);
+            }
+            else if (SubmitTab.IsVisible)
+            {
 
-            return null;
+            }
         }
 
         private async Task Cancel()

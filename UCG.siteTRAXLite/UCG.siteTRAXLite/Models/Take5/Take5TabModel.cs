@@ -18,13 +18,13 @@ namespace UCG.siteTRAXLite.Models.Take5
             }
         }
 
-        private BreadcrumbEntity breadcrumb;
-        public BreadcrumbEntity Breadcrumb
+        private StepperEntity stepper;
+        public StepperEntity Stepper
         {
-            get { return breadcrumb; }
+            get { return stepper; }
             set
             {
-                SetProperty(ref breadcrumb, value);
+                SetProperty(ref stepper, value);
             }
         }
 
@@ -60,9 +60,9 @@ namespace UCG.siteTRAXLite.Models.Take5
 
         public ConcurrentObservableCollection<ActionItemEntity> Questions { get; set; }
 
-        public Take5TabModel(BreadcrumbEntity breadcrumb)
+        public Take5TabModel(StepperEntity stepper)
         {
-            Breadcrumb = breadcrumb;
+            Stepper = stepper;
             Questions = new ConcurrentObservableCollection<ActionItemEntity>();
 
             LoadQuestions();
@@ -82,13 +82,13 @@ namespace UCG.siteTRAXLite.Models.Take5
         private void LoadQuestions()
         {
             var i = 0;
-            foreach (var item in Breadcrumb.ActionList)
+            foreach (var item in Stepper.ActionList)
             {
                 item.Index = i++;
                 Questions.Add(item);
             }
 
-            SetLevels(Breadcrumb.ActionList);
+            SetLevels(Stepper.ActionList);
         }
 
         private void SetLevels(List<ActionItemEntity> actions, int level = 0)
@@ -143,7 +143,7 @@ namespace UCG.siteTRAXLite.Models.Take5
             {
                 foreach (var action in actionItemEntity.SubActionList)
                 {
-                    if (action.EResponseType == SorEformsResponseType.List)
+                    if (action.EResponseType == SorEformsResponseType.SelectSingle)
                         RemoveSubList(action);
 
                     if (!Questions.Contains(action))

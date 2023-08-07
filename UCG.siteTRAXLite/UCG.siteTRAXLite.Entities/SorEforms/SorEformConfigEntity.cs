@@ -34,7 +34,7 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             }
         }
 
-        public List<BreadcrumbEntity> Breadcrumbs { get; set; }
+        public List<StepperEntity> Steppers { get; set; }
 
         public JobSectionType ESectionType { get; set; }
 
@@ -48,7 +48,7 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             {
                 return JobSectionType.Take5;
             }
-            else if (type.ToLower().Equals("claims"))
+            else if (type.ToLower().Equals("sorclaims"))
             {
                 return JobSectionType.Claims;
             }
@@ -57,30 +57,7 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
         }
     }
 
-    public class Take5BreadcrumbEntity : EntityBase
-    {
-        private BreadcrumbEntity breadcrumbControl;
-        public BreadcrumbEntity BreadcrumbControl { 
-            get { return breadcrumbControl; } 
-            set { SetProperty(ref breadcrumbControl, value); } 
-        }
-
-        private BreadcrumbEntity breadcrumbHazard;
-        public BreadcrumbEntity BreadcrumbHazard {
-            get { return breadcrumbHazard; }
-            set { SetProperty(ref breadcrumbHazard, value); }
-        }
-
-        private BreadcrumbEntity breadcrumbSubmit;
-
-        public BreadcrumbEntity BreadcrumbSubmit
-        {
-            get { return breadcrumbSubmit; }
-            set { SetProperty(ref breadcrumbSubmit, value); }
-        }
-    }
-
-    public class BreadcrumbEntity : EntityBase
+    public class StepperEntity : EntityBase
     {
         public string Title { get; set; }
         public bool isChecked;
@@ -90,11 +67,11 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             set { SetProperty(ref isChecked, value); }
         }
 
-        private BreadcrumbType breadcrumbType;
-        public BreadcrumbType BreadcrumbType
+        private StepperType stepperType;
+        public StepperType StepperType
         {
-            get { return breadcrumbType; }
-            set { SetProperty(ref breadcrumbType, value); }
+            get { return stepperType; }
+            set { SetProperty(ref stepperType, value); }
         }
 
         public List<ActionItemEntity> ActionList { get; set; }
@@ -121,6 +98,16 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             { 
                 responseType = value; 
                 EResponseType = GetResponseType(value); 
+            }
+        }
+
+        private string responseName;
+        public string ResponseName
+        {
+            get { return responseName; }
+            set
+            {
+                SetProperty(ref responseName, value);
             }
         }
 
@@ -183,6 +170,46 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             }
         }
 
+        private bool isEditing;
+        public bool IsEditing
+        {
+            get { return isEditing; }
+            set
+            {
+                SetProperty(ref isEditing, value);
+            }
+        }
+
+        private bool isShowActionButton = true;
+        public bool IsShowActionButton
+        {
+            get { return isShowActionButton; }
+            set
+            {
+                SetProperty(ref isShowActionButton, value);
+            }
+        }
+
+        private bool isDisabled;
+        public bool IsDisabled
+        {
+            get { return isDisabled; }
+            set
+            {
+                SetProperty(ref isDisabled, value);
+            }
+        }
+
+        private bool isSaved;
+        public bool IsSaved
+        {
+            get { return isSaved; }
+            set
+            {
+                SetProperty(ref isSaved, value);
+            }
+        }
+
         public List<ResponseDataItemEntity> ResponseData { get; set; }
 
         public List<ActionItemEntity> SubActionList { get; set; }
@@ -193,9 +220,9 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             {
                 return SorEformsResponseType.Text;
             }
-            else if (type.ToLower().Equals("list"))
+            else if (type.ToLower().Equals("select-single"))
             {
-                return SorEformsResponseType.List;
+                return SorEformsResponseType.SelectSingle;
             }
             else if (type.ToLower().Equals("number"))
             {
@@ -248,6 +275,20 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
         {
             get { return isChecked; }
             set { SetProperty(ref isChecked, value); }
+        }
+
+        private bool hasValidation;
+        public bool HasValidation
+        {
+            get { return hasValidation; }
+            set { SetProperty(ref hasValidation, value); }
+        }
+
+        private string validation;
+        public string Validation
+        {
+            get { return validation; }
+            set { SetProperty(ref this.validation, value); }
         }
     }
 

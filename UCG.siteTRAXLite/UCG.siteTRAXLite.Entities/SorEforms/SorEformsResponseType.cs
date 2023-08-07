@@ -3,7 +3,7 @@
     public enum SorEformsResponseType : byte
     {
         Text = 0,
-        List = 1,
+        SelectSingle = 1,
         Number = 2,
         RadioSingle = 3,
         Take5SWMsModal = 4,

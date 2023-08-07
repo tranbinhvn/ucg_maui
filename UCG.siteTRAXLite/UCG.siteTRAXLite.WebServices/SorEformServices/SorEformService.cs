@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.DataContracts.SorEformContracts;
+using UCG.siteTRAXLite.DataContracts.SorEformContracts.Sections;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Entities.SorEforms.Sections;
 using UCG.siteTRAXLite.WebServices.DependencyServices;
 
 namespace UCG.siteTRAXLite.WebServices.SorEformServices
@@ -47,7 +49,7 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
             return CreateResponseResult(config.JobTab.Sections);
         }
 
-        public async Task<ResponseResult<List<BreadcrumbDTO>>> GetGenericSectionBreadcrumbs()
+        public async Task<ResponseResult<List<StepperDTO>>> GetGenericSectionSteppers()
         {
             var config = await LoadSorEformConfig();
 
@@ -56,10 +58,10 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
             var genericSection = sections?
                 .Where(s => !string.IsNullOrEmpty(s.SectionType) && (s.SectionType).Equals("Generic", StringComparison.OrdinalIgnoreCase))?.FirstOrDefault();
             
-            return CreateResponseResult(genericSection?.Breadcrumbs);
+            return CreateResponseResult(genericSection?.Steppers);
         }
 
-        public async Task<ResponseResult<Take5BreadcrumbDTO>> GetTake5Breadcrumbs()
+        public async Task<ResponseResult<Take5StepperDTO>> GetTake5Steppers()
         {
             try
             {
@@ -67,11 +69,33 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
 
                 var take5Section = config?.JobTab?.Sections?.Where(s => !string.IsNullOrEmpty(s.SectionType) && (s.SectionType).Equals("take5", StringComparison.OrdinalIgnoreCase))?.FirstOrDefault();
 
-                return CreateResponseResult(new Take5BreadcrumbDTO
+                return CreateResponseResult(new Take5StepperDTO
                 {
-                    BreadcrumbControl = take5Section?.BreadcrumbControl,
-                    BreadcrumbHazard = take5Section?.BreadcrumbHazard,
-                    BreadcrumbSubmit = take5Section?.BreadcrumbSubmit,
+                    StepperControl = take5Section?.StepperControl,
+                    StepperHazard = take5Section?.StepperHazard,
+                    StepperSubmit = take5Section?.StepperSubmit,
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<ResponseResult<SorClaimsStepperDTO>> GetSorClaimsSectionSteppers()
+        {
+            try
+            {
+                var config = await LoadSorEformConfig();
+
+                var sorClaimsSection = config?.JobTab?.Sections?.Where(s => !string.IsNullOrEmpty(s.SectionType) && (s.SectionType).Equals("sorclaims", StringComparison.OrdinalIgnoreCase))?.FirstOrDefault();
+
+                return CreateResponseResult(new SorClaimsStepperDTO
+                {
+                    StepperControl = sorClaimsSection?.StepperControl,
+                    StepperUploadFiles = sorClaimsSection?.StepperUploadFiles,
+                    StepperSubmit = sorClaimsSection?.StepperSubmit,
                 });
 
             }

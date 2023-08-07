@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.DataContracts.SorEformContracts;
+using UCG.siteTRAXLite.DataContracts.SorEformContracts.Sections;
 using UCG.siteTRAXLite.DataContracts.UserInfoContracts;
 using UCG.siteTRAXLite.Entities;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Entities.SorEforms.Sections;
 
 namespace UCG.siteTRAXLite.Managers.Mappers
 {
@@ -21,7 +23,7 @@ namespace UCG.siteTRAXLite.Managers.Mappers
                 .ReverseMap();
             CreateMap<SectionDTO, SectionEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<BreadcrumbDTO, BreadcrumbEntity>(MemberList.None)
+            CreateMap<StepperDTO, StepperEntity>(MemberList.None)
                 .ReverseMap();
             CreateMap<ActionItemDTO, ActionItemEntity>(MemberList.None)
                 .ReverseMap();
@@ -31,9 +33,11 @@ namespace UCG.siteTRAXLite.Managers.Mappers
                 .ReverseMap();
             CreateMap<JobDetailDTO, JobDetailEntity>(MemberList.None)
                 .ReverseMap();
-            CreateMap<Take5BreadcrumbDTO, Take5BreadcrumbEntity>(MemberList.None)
+            CreateMap<Take5StepperDTO, Take5StepperEntity>(MemberList.None)
                 .ReverseMap();
             CreateMap<ResponseDataItemDTO, ResponseDataItemEntity>(MemberList.None)
+                .ReverseMap();
+            CreateMap<SorClaimsStepperDTO, SorClaimsStepperEntity>(MemberList.None)
                 .ReverseMap();
         }
     }

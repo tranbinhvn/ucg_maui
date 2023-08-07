@@ -5,7 +5,7 @@ namespace UCG.siteTRAXLite.CustomSelectors
     public class SorResponseDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate ResponseText { get; set; }
-        public DataTemplate ResponseList { get; set; }
+        public DataTemplate ResponseSelectSingle { get; set; }
         public DataTemplate ResponseNumber { get; set; }
         public DataTemplate ResponseRadioSingle { get; set; }
         public DataTemplate ResponseTake5SWMsModal { get; set; }
@@ -22,8 +22,8 @@ namespace UCG.siteTRAXLite.CustomSelectors
             {
                 case SorEformsResponseType.Text:
                     return ResponseText;
-                case SorEformsResponseType.List:
-                    return ResponseList;
+                case SorEformsResponseType.SelectSingle:
+                    return ResponseSelectSingle;
                 case SorEformsResponseType.Number:
                     return ResponseNumber;
                 case SorEformsResponseType.RadioSingle:

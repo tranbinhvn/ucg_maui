@@ -513,9 +513,9 @@
                 Margin="5" 
                 JustifyContent="Center" 
                 Wrap="Wrap"
-                BindableLayout.ItemsSource="{Binding Breadcrumbs}"
-                RadioButtonGroup.GroupName="Breadcrumbs"
-                RadioButtonGroup.SelectedValue="{Binding SelectedBreadcrumb}"
+                BindableLayout.ItemsSource="{Binding Steppers}"
+                RadioButtonGroup.GroupName="Steppers"
+                RadioButtonGroup.SelectedValue="{Binding SelectedStepper}"
                 HorizontalOptions="FillAndExpand" >
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
@@ -529,15 +529,15 @@
                                                 <VisualState x:Name="Checked">
                                                     <VisualState.Setters>
                                                         <Setter
-                                                            TargetName="breadcrumbLayout"
+                                                            TargetName="stepperLayout"
                                                             Property="Path.Fill"
                                                             Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
-                                                            TargetName="breadcrumbLayout"
+                                                            TargetName="stepperLayout"
                                                             Property="Path.Stroke"
                                                             Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
-                                                            TargetName="breadcrumbTitle"
+                                                            TargetName="stepperTitle"
                                                             Property="Label.TextColor"
                                                             Value="{StaticResource MediumDarkBlue}"/>
                                                     </VisualState.Setters>
@@ -546,15 +546,15 @@
                                                 <VisualState x:Name="Unchecked">
                                                     <VisualState.Setters>
                                                         <Setter
-                                                            TargetName="breadcrumbLayout"
+                                                            TargetName="stepperLayout"
                                                             Property="Path.Fill"
                                                             Value="{StaticResource MediumDarkBlue}"/>
                                                         <Setter
-                                                            TargetName="breadcrumbLayout"
+                                                            TargetName="stepperLayout"
                                                             Property="Path.Stroke"
                                                             Value="{StaticResource MediumDarkBlue}"/>
                                                         <Setter
-                                                            TargetName="breadcrumbTitle"
+                                                            TargetName="stepperTitle"
                                                             Property="Label.TextColor"
                                                             Value="{StaticResource MediumLightBlue}"/>
                                                     </VisualState.Setters>
@@ -564,7 +564,7 @@
                                     </VisualStateManager.VisualStateGroups>
                                     <AbsoluteLayout Padding="0" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
                                         <Path
-                                            x:Name="breadcrumbLayout"
+                                            x:Name="stepperLayout"
                                             AbsoluteLayout.LayoutBounds="0,0"
                                             Stroke="{StaticResource VeryDarkBlue}"
                                             Aspect="Uniform"
@@ -591,7 +591,7 @@
                                             </Path.Data>
                                         </Path>
                                         <Label
-                                            x:Name="breadcrumbTitle"
+                                            x:Name="stepperTitle"
                                             Text="{TemplateBinding Content.Title}"
                                             FontSize="14"
                                             TextColor="{StaticResource MediumLightBlue}"

@@ -81,7 +81,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
             else if (section.ESectionType == JobSectionType.Claims)
             {
-                //Access claims section
+                await NavigationService.NavigateToPageAsync<SorClaimsPage>(section);
             }
 
             IsCommandExecuting = false;
