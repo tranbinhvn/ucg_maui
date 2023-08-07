@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.ViewModels;
 
@@ -30,7 +31,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
-        public ConcurrentObservableCollection<ActionItemEntity> SecondarySORs { get; set; }
+        public ConcurrentObservableCollection<ActionItemEntity> SubActions { get; set; }
 
         private ActionItemEntity secondarySOR;
         public ActionItemEntity SecondarySOR
@@ -43,7 +44,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             StepperEntity = entity;
 
-            SecondarySORs = new ConcurrentObservableCollection<ActionItemEntity>();
+            SubActions = new ConcurrentObservableCollection<ActionItemEntity>();
         }
 
         public void LoadSors(ActionItemEntity secondarySor)
@@ -51,12 +52,12 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             SecondarySOR = secondarySor;
             if (SecondarySOR != null)
             {
-                SecondarySORs.Clear();
+                SubActions.Clear();
                 foreach (var item in SecondarySOR.SubActionList)
                 {
                     if (IsTravelLogicPriceCode551(item))
                     {
-                        SecondarySORs.Add(item);
+                        SubActions.Add(item);
                     }
 
                 }
@@ -66,8 +67,8 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         private bool IsTravelLogicPriceCode551(ActionItemEntity item)
         {
             return !string.IsNullOrEmpty(SecondarySOR.Logic)
-                        && SecondarySOR.Logic.Equals("LogicPriceCode551")
-                        && item.Title.Equals("Travel")
+                        && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_551)
+                        && item.Title.Equals(LogicConstant.LPC551_Travel_Title)
                         && item.Response != null
                         && !string.IsNullOrEmpty(item.Response.Value)
                         && !string.IsNullOrEmpty(item.ResponseName);

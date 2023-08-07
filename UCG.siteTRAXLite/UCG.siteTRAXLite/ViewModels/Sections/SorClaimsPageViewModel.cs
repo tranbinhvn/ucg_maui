@@ -83,7 +83,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IServiceEntityMapper mapper,
             ISorEformManager sorEformManager) : base(navigationService, alertService, openAppService, mapper)
         {
-            PageTitle = "CLAIMS";
+            PageTitle = PageTitles.ClaimsPage;
 
             Steppers = new ConcurrentObservableCollection<StepperEntity>();
             _sorEformManager = sorEformManager;
@@ -97,35 +97,35 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         public async Task LoadSteppers(SectionEntity section)
         {
-            if (section != null)
+            if (section == null)
+                return;
+
+            var sorClaimsSteppers = await _sorEformManager.GetSorClaimsSteppers();
+            if (sorClaimsSteppers != null)
             {
-                var sorClaimsSteppers = await _sorEformManager.GetSorClaimsSteppers();
-                if (sorClaimsSteppers != null)
+                if (sorClaimsSteppers.StepperControl != null)
                 {
-                    if (sorClaimsSteppers.StepperControl != null)
-                    {
-                        sorClaimsSteppers.StepperControl.StepperType = StepperType.Control;
-                        SorsTab = new ClaimSorsTab(sorClaimsSteppers.StepperControl);
-                        Steppers.Add(sorClaimsSteppers.StepperControl);
-                    }
-
-                    if (sorClaimsSteppers.StepperUploadFiles != null)
-                    {
-                        sorClaimsSteppers.StepperUploadFiles.StepperType = StepperType.UploadFiles;
-                        UploadFilesTab = new ClaimUploadFilesTab(sorClaimsSteppers.StepperControl);
-                        Steppers.Add(sorClaimsSteppers.StepperUploadFiles);
-                    }
-
-                    if (sorClaimsSteppers.StepperSubmit != null)
-                    {
-                        sorClaimsSteppers.StepperSubmit.StepperType = StepperType.Submit;
-                        SubmitTab = new ClaimSubmitTab(sorClaimsSteppers.StepperControl);
-                        Steppers.Add(sorClaimsSteppers.StepperSubmit);
-                    }
+                    sorClaimsSteppers.StepperControl.StepperType = StepperType.Control;
+                    SorsTab = new ClaimSorsTab(sorClaimsSteppers.StepperControl);
+                    Steppers.Add(sorClaimsSteppers.StepperControl);
                 }
 
-                SelectedStepper = Steppers.FirstOrDefault();
+                if (sorClaimsSteppers.StepperUploadFiles != null)
+                {
+                    sorClaimsSteppers.StepperUploadFiles.StepperType = StepperType.UploadFiles;
+                    UploadFilesTab = new ClaimUploadFilesTab(sorClaimsSteppers.StepperControl);
+                    Steppers.Add(sorClaimsSteppers.StepperUploadFiles);
+                }
+
+                if (sorClaimsSteppers.StepperSubmit != null)
+                {
+                    sorClaimsSteppers.StepperSubmit.StepperType = StepperType.Submit;
+                    SubmitTab = new ClaimSubmitTab(sorClaimsSteppers.StepperControl);
+                    Steppers.Add(sorClaimsSteppers.StepperSubmit);
+                }
             }
+
+            SelectedStepper = Steppers.FirstOrDefault();
         }
 
         private void HandleSelectedStepper(StepperEntity stepper)

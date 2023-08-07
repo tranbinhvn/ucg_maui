@@ -71,17 +71,17 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
             IsCommandExecuting = true;
 
-            if (section.ESectionType == JobSectionType.Generic)
+            switch (section.ESectionType)
             {
-                await NavigationService.NavigateToPageAsync<GenericSamplePage>(section);
-            }
-            else if (section.ESectionType == JobSectionType.Take5)
-            {
-                await NavigationService.NavigateToPageAsync<Take5Page>(section);
-            }
-            else if (section.ESectionType == JobSectionType.Claims)
-            {
-                await NavigationService.NavigateToPageAsync<SorClaimsPage>(section);
+                case JobSectionType.Generic:
+                    await NavigationService.NavigateToPageAsync<GenericSamplePage>(section);
+                    break;
+                case JobSectionType.Take5:
+                    await NavigationService.NavigateToPageAsync<Take5Page>(section);
+                    break;
+                case JobSectionType.Claims:
+                    await NavigationService.NavigateToPageAsync<SorClaimsPage>(section);
+                    break;
             }
 
             IsCommandExecuting = false;

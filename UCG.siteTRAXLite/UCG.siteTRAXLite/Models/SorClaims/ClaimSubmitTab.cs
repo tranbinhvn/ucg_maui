@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using UCG.siteTRAXLite.Entities.SorEforms;
+﻿using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Models.SorClaims

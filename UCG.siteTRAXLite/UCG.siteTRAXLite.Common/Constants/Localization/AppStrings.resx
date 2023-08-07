@@ -156,11 +156,29 @@
   <data name="Fill_The_Form" xml:space="preserve">
     <value>Please fill out the form</value>
   </data>
+  <data name="Logic_Price_Code_551" xml:space="preserve">
+    <value>LogicPriceCode551</value>
+  </data>
   <data name="Logic_Price_Code_777" xml:space="preserve">
     <value>LogicPriceCode777</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Logging in</value>
+  </data>
+  <data name="LPC551_FM_Authorisation_Message" xml:space="preserve">
+    <value>*requires FM authorisation</value>
+  </data>
+  <data name="LPC551_FM_Authorisation_Option" xml:space="preserve">
+    <value>100km to 150km</value>
+  </data>
+  <data name="LPC551_RM_Authorisation_Message" xml:space="preserve">
+    <value>*requires RM authorisation</value>
+  </data>
+  <data name="LPC551_RM_Authorisation_Option" xml:space="preserve">
+    <value>More than 150km</value>
+  </data>
+  <data name="LPC551_Travel_Title" xml:space="preserve">
+    <value>Travel</value>
   </data>
   <data name="NoEndpointSelected" xml:space="preserve">
     <value>Please go to Setting page to correct endpoint.</value>
@@ -173,6 +191,12 @@
   </data>
   <data name="Number_Of_Meters_Question" xml:space="preserve">
     <value>number of meters of xxxxx?</value>
+  </data>
+  <data name="Primary_SOR" xml:space="preserve">
+    <value>Primary SOR</value>
+  </data>
+  <data name="Secondary_SORs" xml:space="preserve">
+    <value>Secondary SORs</value>
   </data>
   <data name="SiteTraxAir_Package_Name" xml:space="preserve">
     <value>com.ucg.sitetraxair</value>

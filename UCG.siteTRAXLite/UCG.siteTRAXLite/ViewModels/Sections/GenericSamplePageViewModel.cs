@@ -108,28 +108,28 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         public async Task LoadSteppers(SectionEntity section)
         {
-            if (section != null)
+            if (section == null)
+                return;
+
+            var steppers = new List<StepperEntity>();
+
+            if (section.ESectionType == JobSectionType.Generic)
             {
-                var steppers = new List<StepperEntity>();
+                steppers = await _sorEformManager.GetGenericSectionSteppers();
 
-                if (section.ESectionType == JobSectionType.Generic)
+                steppers.Add(new StepperEntity
                 {
-                    steppers = await _sorEformManager.GetGenericSectionSteppers();
-
-                    steppers.Add(new StepperEntity
-                    {
-                        Title = "Submit"
-                    });
-                }
-
-                foreach (var stepper in steppers)
-                {
-                    Steppers.Add(stepper);
-                }
-
-                SelectedStepper = Steppers.FirstOrDefault();
-                SelectedStepper.IsChecked = true;
+                    Title = "Submit"
+                });
             }
+
+            foreach (var stepper in steppers)
+            {
+                Steppers.Add(stepper);
+            }
+
+            SelectedStepper = Steppers.FirstOrDefault();
+            SelectedStepper.IsChecked = true;
         }
 
         private void ClearData()

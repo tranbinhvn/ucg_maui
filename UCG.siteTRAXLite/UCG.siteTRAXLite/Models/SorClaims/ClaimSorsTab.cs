@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.ViewModels;
 
@@ -96,14 +97,14 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         }
 
         public ConcurrentObservableCollection<ResponseDataItemEntity> PrimarySORSData { get; set; }
-        public ConcurrentObservableCollection<ActionItemEntity> SecondarySORs { get; set; }
+        public ConcurrentObservableCollection<ActionItemEntity> SubActions { get; set; }
 
         public ClaimSorsTab(StepperEntity entity)
         {
             StepperEntity = entity;
 
             PrimarySORSData = new ConcurrentObservableCollection<ResponseDataItemEntity>();
-            SecondarySORs = new ConcurrentObservableCollection<ActionItemEntity>();
+            SubActions = new ConcurrentObservableCollection<ActionItemEntity>();
 
             LoadData();
         }
@@ -112,7 +113,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             if (StepperEntity != null)
             {
-                PrimarySOR = StepperEntity.ActionList.FirstOrDefault(a => a.Title.Equals("Primary SOR", StringComparison.OrdinalIgnoreCase) && a.EResponseType == SorEformsResponseType.SelectSingle);
+                PrimarySOR = StepperEntity.ActionList.FirstOrDefault(a => a.Title.Equals(LogicConstant.PrimarySOR, StringComparison.OrdinalIgnoreCase) && a.EResponseType == SorEformsResponseType.SelectSingle);
 
                 if (PrimarySOR != null)
                 {
@@ -128,89 +129,80 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         private void LoadSecondarySors(ResponseDataItemEntity entity)
         {
             SecondarySOR = PrimarySOR.SubActionList.FirstOrDefault(a => 
-                a.Title.Equals("Secondary SORs", StringComparison.OrdinalIgnoreCase) &&
+                a.Title.Equals(LogicConstant.Secondary_SORs, StringComparison.OrdinalIgnoreCase) &&
                 entity.Value.Equals(a.Condition.ResponseData, StringComparison.OrdinalIgnoreCase)
                 );
 
             if (SecondarySOR != null)
             {
                 IsShowSecondarySORs = true;
+                SubActions.Clear();
 
-                ClearData();
                 foreach (var item in SecondarySOR.SubActionList)
                 {
+                    RemoveResponse(item);
+
                     if (!string.IsNullOrEmpty(SecondarySOR.Logic)
-                        && SecondarySOR.Logic.Equals("LogicPriceCode551")
-                        && item.Title.Equals("Travel"))
+                        && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_551)
+                        && item.Title.Equals(LogicConstant.LPC551_Travel_Title))
                     {
                         foreach (var data in item.ResponseData)
                         {
-                            if (data.Value.Equals("100km to 150km"))
+                            if (data.Value.Equals(LogicConstant.LPC551_FM_Authorisation_Option))
                             {
-                                data.Validation = "*requires FM authorisation";
+                                data.Validation = LogicConstant.LPC551_FM_Authorisation_Message;
                             }
-                            if (data.Value.Equals("More than 150km"))
+                            if (data.Value.Equals(LogicConstant.LPC551_RM_Authorisation_Option))
                             {
-                                data.Validation = "*requires RM authorisation";
+                                data.Validation = LogicConstant.LPC551_RM_Authorisation_Message;
                             }
 
                             data.HasValidation = !string.IsNullOrEmpty(data.Validation);
                         }
                     }
 
-                    SecondarySORs.Add(item);
+                    SubActions.Add(item);
                 }
             }
         }
 
-        private void ClearData()
-        {
-            foreach (var item in SecondarySORs)
-            {
-                item.Response = new ResponseDataItemEntity();
-                item.Responses?.Clear();
-                item.FilesUpload?.Clear();
-                item.IsSaved = false;
-                item.ResponseName = string.Empty;
-                item.IsShowActionButton = true;
-            }
-
-            SecondarySORs.Clear();
-        }
-
         private void EditSor(ActionItemEntity action)
         {
-            foreach (var sor in SecondarySORs)
+            foreach (var act in SubActions)
             {
-                sor.IsEditing = sor == action;
-                sor.IsShowActionButton = !sor.IsEditing;
-                sor.IsDisabled = !sor.IsEditing;
+                act.IsEditing = act == action;
+                act.IsShowActionButton = !act.IsEditing;
+                act.IsDisabled = !act.IsEditing;
             }
         }
 
         private void RemoveSor(ActionItemEntity action)
         {
-            action.IsSaved = false;
-            action.Response = new ResponseDataItemEntity();
-            action.ResponseName = string.Empty;
-            action.IsShowActionButton = true;
-            SecondarySORs[SecondarySORs.IndexOf(action)] = action;
-            foreach (var sor in SecondarySORs)
+            RemoveResponse(action);
+            SubActions[SubActions.IndexOf(action)] = action;
+            foreach (var act in SubActions)
             {
-                sor.IsDisabled = false;
+                act.IsDisabled = false;
             }
         }
 
         public void Confirm(ActionItemEntity action)
         {
+            if (action.Response == null || string.IsNullOrEmpty(action.Response.Value))
+            {
+                Cancel(action);
+                return;
+            }
+
             action.IsSaved = true;
             action.IsEditing = !action.IsEditing;
             action.ResponseName = action.Response.Value;
             action.IsShowActionButton = true;
-            SecondarySORs[SecondarySORs.IndexOf(action)] = action;
-            foreach (var sor in SecondarySORs)
+            action.FilesUpload?.Clear();
+            SubActions[SubActions.IndexOf(action)] = action;
+            foreach (var act in SubActions)
             {
-                sor.IsDisabled = false;
+                act.IsDisabled = false;
             }
         }
 
@@ -218,10 +210,23 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             action.IsEditing = !action.IsEditing;
             action.IsShowActionButton = true;
-            foreach (var sor in SecondarySORs)
+            action.Response = action.ResponseData.FirstOrDefault(d => d.Value.Equals(action.ResponseName)) ?? new ResponseDataItemEntity();
+            foreach (var act in SubActions)
             {
-                sor.IsDisabled = false;
+                act.IsDisabled = false;
             }
+        }
+
+        private void RemoveResponse(ActionItemEntity action)
+        {
+            action.Response = new ResponseDataItemEntity();
+            action.ResponseName = string.Empty;
+            action.FilesUpload?.Clear();
+            action.Responses?.Clear();
+            action.IsEditing = false;
+            action.IsDisabled = false;
+            action.IsSaved = false;
+            action.IsShowActionButton = true;
         }
     }
 }

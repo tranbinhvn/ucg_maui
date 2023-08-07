@@ -112,7 +112,7 @@
 	  <MauiXaml Update="CustomControls\SWMSModal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\NewUI.xaml">
+	  <MauiXaml Update="Resources\Styles\CommonUI.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\AppAccessPage.xaml">

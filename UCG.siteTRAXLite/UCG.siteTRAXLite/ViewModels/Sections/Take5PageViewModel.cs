@@ -83,7 +83,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IServiceEntityMapper mapper,
             ISorEformManager sorEformManager) : base(navigationService, alertService, openAppService, mapper)
         {
-            PageTitle = "TAKE 5";
+            PageTitle = PageTitles.Take5;
 
             Steppers = new ConcurrentObservableCollection<StepperEntity>();
             _sorEformManager = sorEformManager;
@@ -97,38 +97,38 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         public async Task LoadSteppers(SectionEntity section)
         {
-            if (section != null)
+            if (section == null)
+                return;
+
+            var take5Steppers = await _sorEformManager.GetTake5Steppers();
+
+            if (take5Steppers != null)
             {
-                var take5Steppers = await _sorEformManager.GetTake5Steppers();
-
-                if (take5Steppers != null)
+                if (take5Steppers.StepperControl != null)
                 {
-                    if (take5Steppers.StepperControl != null)
-                    {
-                        take5Steppers.StepperControl.StepperType = StepperType.Control;
-                        ControlTab = new Take5TabModel(take5Steppers.StepperControl);
-                        Steppers.Add(take5Steppers.StepperControl);
-                    }
-
-                    if (take5Steppers.StepperHazard != null)
-                    {
-                        take5Steppers.StepperHazard.StepperType = StepperType.Hazard;
-                        HazardTab = new Take5TabModel(take5Steppers.StepperHazard);
-                        Steppers.Add(take5Steppers.StepperHazard);
-                    }
-
-                    if (take5Steppers.StepperSubmit != null)
-                    {
-                        take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
-
-                        SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit);
-
-                        Steppers.Add(take5Steppers.StepperSubmit);
-                    }
+                    take5Steppers.StepperControl.StepperType = StepperType.Control;
+                    ControlTab = new Take5TabModel(take5Steppers.StepperControl);
+                    Steppers.Add(take5Steppers.StepperControl);
                 }
 
-                SelectedStepper = Steppers.FirstOrDefault();
+                if (take5Steppers.StepperHazard != null)
+                {
+                    take5Steppers.StepperHazard.StepperType = StepperType.Hazard;
+                    HazardTab = new Take5TabModel(take5Steppers.StepperHazard);
+                    Steppers.Add(take5Steppers.StepperHazard);
+                }
+
+                if (take5Steppers.StepperSubmit != null)
+                {
+                    take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
+
+                    SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit);
+
+                    Steppers.Add(take5Steppers.StepperSubmit);
+                }
             }
+
+            SelectedStepper = Steppers.FirstOrDefault();
         }
 
         private void HandleSelectedStepper(StepperEntity stepper)
@@ -148,12 +148,18 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         public Take5TabModel GetCurrentTab()
         {
-            if (SelectedStepper?.StepperType == StepperType.Control)
-                return ControlTab;
-            else if (SelectedStepper?.StepperType == StepperType.Hazard)
-                return HazardTab;
-            else if (SelectedStepper?.StepperType == StepperType.Submit)
-                return SubmitTab;
+            if (SelectedStepper == null) 
+                return null;
+
+            switch (SelectedStepper.StepperType)
+            {
+                case StepperType.Control:
+                    return ControlTab;
+                case StepperType.Hazard:
+                    return HazardTab;
+                case StepperType.Submit:
+                    return SubmitTab;
+            }
 
             return null;
         }
