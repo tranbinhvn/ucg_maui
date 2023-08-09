@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
+using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
+using UCG.siteTRAXLite.CustomControls;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.SorEformManager;
@@ -76,6 +78,16 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
+        private ICommand showSWMSModalCommand;
+
+        public ICommand ShowSWMSModalCommand
+        {
+            get
+            {
+                return this.showSWMSModalCommand ?? (this.showSWMSModalCommand = new Command<ActionItemEntity>(async (q) => await ShowSWMSModal(q)));
+            }
+        }
+
         public Take5PageViewModel(
             INavigationService navigationService,
             IAlertService alertService,
@@ -146,6 +158,11 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             SubmitTab.IsVisible = stepper.StepperType == StepperType.Submit;
         }
 
+        private void ChangeTab(StepperType type)
+        {
+            SelectedStepper = Steppers.FirstOrDefault(s => s.StepperType == type);
+        }
+
         public Take5TabModel GetCurrentTab()
         {
             if (SelectedStepper == null) 
@@ -162,6 +179,13 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
 
             return null;
+        }
+
+        private async Task ShowSWMSModal(ActionItemEntity question)
+        {
+            ChangeTab(StepperType.Control);
+            var modal = new SWMSModal(question);
+            await Application.Current.MainPage.ShowPopupAsync(modal);
         }
 
         private async Task Cancel()

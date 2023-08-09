@@ -87,11 +87,13 @@
 	  <None Remove="Resources\Images\icons_hamburger_menu.png" />
 	  <None Remove="Resources\Images\icon_bin.png" />
 	  <None Remove="Resources\Images\icon_claims.png" />
+	  <None Remove="Resources\Images\icon_complete.png" />
 	  <None Remove="Resources\Images\icon_edit.png" />
 	  <None Remove="Resources\Images\icon_jobs.png" />
 	  <None Remove="Resources\Images\icon_plus.png" />
 	  <None Remove="Resources\Images\icon_STA.png" />
 	  <None Remove="Resources\Images\icon_tick.png" />
+	  <None Remove="Resources\Images\large_icon_complete.png" />
 	  <None Remove="Resources\Images\sitetraxair_logo_v2.png" />
 	  <None Remove="Resources\Images\ucglogo.png" />
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v3.json" />

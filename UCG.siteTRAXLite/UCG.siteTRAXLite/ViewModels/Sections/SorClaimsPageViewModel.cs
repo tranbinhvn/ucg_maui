@@ -76,6 +76,26 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
+        private ICommand editPrimaryCommand;
+
+        public ICommand EditPrimaryCommand
+        {
+            get
+            {
+                return this.editPrimaryCommand ?? (this.editPrimaryCommand = new Command(() => EditPrimary()));
+            }
+        }
+
+        private ICommand editSubActionCommand;
+
+        public ICommand EditSubActionCommand
+        {
+            get
+            {
+                return this.editSubActionCommand ?? (this.editSubActionCommand = new Command<ActionItemEntity>((q) => EditSubAction(q)));
+            }
+        }
+
         public SorClaimsPageViewModel(
             INavigationService navigationService,
             IAlertService alertService,
@@ -148,8 +168,13 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
             else if (SubmitTab.IsVisible)
             {
-
+                SubmitTab.LoadSummaryData(SorsTab.SelectedPrimarySors, SorsTab.SubActions.Where(a => HasValue(a)));
             }
+        }
+
+        private void ChangeTab(StepperType type)
+        {
+            SelectedStepper = Steppers.FirstOrDefault(s => s.StepperType == type);
         }
 
         private async Task Cancel()
@@ -164,6 +189,27 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 #else
             await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
 #endif
+        }
+
+        private void EditPrimary()
+        {
+            ChangeTab(StepperType.Control);
+        }
+
+        private void EditSubAction(ActionItemEntity item)
+        {
+            if (item == null) 
+                return;
+
+            ChangeTab(StepperType.Control);
+            SorsTab.EditSorCommand.Execute(item);
+        }
+
+        public bool HasValue(ActionItemEntity item)
+        {
+            return item.Response != null
+                    && !string.IsNullOrEmpty(item.Response.Value)
+                    && !string.IsNullOrEmpty(item.ResponseName);
         }
     }
 }

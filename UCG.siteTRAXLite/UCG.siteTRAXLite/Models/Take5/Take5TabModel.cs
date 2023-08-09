@@ -28,16 +28,6 @@ namespace UCG.siteTRAXLite.Models.Take5
             }
         }
 
-        private ICommand showSWMSModalCommand;
-
-        public ICommand ShowSWMSModalCommand
-        {
-            get
-            {
-                return this.showSWMSModalCommand ?? (this.showSWMSModalCommand = new Command<ActionItemEntity>(async (q) => await ShowSWMSModal(q)));
-            }
-        }
-
         private ICommand browseCommand;
 
         public ICommand BrowseCommand
@@ -102,12 +92,6 @@ namespace UCG.siteTRAXLite.Models.Take5
                     SetLevels(action.SubActionList, level + 1);
                 }
             }
-        }
-
-        private async Task ShowSWMSModal(ActionItemEntity question)
-        {
-            var modal = new SWMSModal(question);
-            await Application.Current.MainPage.ShowPopupAsync(modal);
         }
 
         private async Task UpdateActionList(ActionItemEntity actionItemEntity)
