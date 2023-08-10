@@ -98,6 +98,7 @@
 	  <None Remove="Resources\Images\ucglogo.png" />
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v3.json" />
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v4.json" />
+	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v5.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -150,6 +151,12 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\UCG.siteTRAXLite.Common\UCG.siteTRAXLite.Common.csproj" />
 	  <ProjectReference Include="..\UCG.siteTRAXLite.Managers\UCG.siteTRAXLite.Managers.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\Configs\st-lite-poc-config-v5.json">
+	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+	  </MauiAsset>
 	</ItemGroup>
 
 	<!-- Build Properties must be defined within these property groups to ensure successful publishing
