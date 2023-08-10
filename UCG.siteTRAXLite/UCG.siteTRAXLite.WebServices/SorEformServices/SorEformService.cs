@@ -135,19 +135,30 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
             {
                 foreach (var item in token)
                 {
+                    var response = new ResponseDataItemDTO();
+
                     if (item.Type == JTokenType.String)
                     {
-                        responses.Add(new ResponseDataItemDTO
-                        {
-                            Value = (string) item
-                        }) ;
+                        response.Value = (string)item;
+                        responses.Add(response);
                     }
                     else if (item.Type == JTokenType.Object)
                     {
-                        responses.Add(new ResponseDataItemDTO
+                        if (item["name"] != null)
                         {
-                            Value = (string)item["name"]
-                        });
+                            response.Value = item.Value<string>("name");
+                        }
+                        else if(item["title"] != null)
+                        {
+                            response.Value = item.Value<string>("title");
+                        }
+                        
+                        if (item["responseData"] != null)
+                        {
+                            response.ResponseData = item["responseData"].ToObject<List<ResponseDataItemDTO>>(serializer);
+                        }
+
+                        responses.Add(response);
                     }
 
                 }

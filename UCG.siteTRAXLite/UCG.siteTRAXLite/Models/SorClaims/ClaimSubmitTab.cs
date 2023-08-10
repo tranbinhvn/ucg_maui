@@ -94,7 +94,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             HasPrimarySor = selectedPrimarySor != null;
             HasSecondarySors = subActions != null && subActions.Any();
-            HasData = HasPrimarySor && HasSecondarySors;
+            HasData = HasPrimarySor || HasSecondarySors;
 
             SelectedPrimarySors = selectedPrimarySor;
 

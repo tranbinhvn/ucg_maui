@@ -21,6 +21,13 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             set { SetProperty(ref isShowSecondarySORs, value); }
         }
 
+        private bool isShowSelectUnit;
+        public bool IsShowSelectUnit
+        {
+            get { return isShowSelectUnit; }
+            set { SetProperty(ref isShowSelectUnit, value); }
+        }
+
         private StepperEntity stepperEntity;
         public StepperEntity StepperEntity
         {
@@ -50,6 +57,10 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             {
                 if (value != null)
                 {
+                    IsShowSelectUnit = value.ResponseData != null && value.ResponseData.Any();
+                    value.SelectedUnit = null;
+                    IsShowSecondarySORs = false;
+                    SubActions.Clear();
                     LoadSecondarySors(value);
                 }
 
@@ -227,6 +238,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             action.IsDisabled = false;
             action.IsSaved = false;
             action.IsShowActionButton = true;
+            action.Response.SelectedUnit = null;
         }
     }
 }

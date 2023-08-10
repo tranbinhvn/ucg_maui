@@ -290,6 +290,31 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             get { return validation; }
             set { SetProperty(ref this.validation, value); }
         }
+
+        private bool hasData;
+        public bool HasData
+        {
+            get { return hasData; }
+            set { SetProperty(ref hasData, value); }
+        }
+
+        private ResponseDataItemEntity selectedUnit;
+        public ResponseDataItemEntity SelectedUnit
+        {
+            get { return selectedUnit; }
+            set
+            {
+                HasData = value != null;
+                SetProperty(ref selectedUnit, value);
+            }
+        }
+
+        private List<ResponseDataItemEntity> responseData;
+        public List<ResponseDataItemEntity> ResponseData
+        {
+            get { return responseData; }
+            set { SetProperty(ref responseData, value); }
+        }
     }
 
     public class ConditionEntity : EntityBase

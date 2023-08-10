@@ -321,8 +321,8 @@
                             <Label  Text="Primary SOR" FontFamily="FS-Regular" FontSize="22" TextColor="{StaticResource MediumDarkBlue}" HorizontalTextAlignment="Center" Margin="10,0,10,0"/>
                             <BoxView HeightRequest="1" Color="{StaticResource MediumDarkBlue}" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                         </StackLayout>
-                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Vertical">
-                            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal"  Padding="10,0,10,0">
+                        <StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal"  Padding="10,0,10,0">
                                 <Border HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                                     <Picker FontSize="18"
                                         FontFamily="FS-Medium"
@@ -334,6 +334,37 @@
                                         HorizontalOptions="FillAndExpand">
                                     </Picker>
                                 </Border>
+                            </StackLayout>
+                            <StackLayout IsVisible="{Binding SorsTab.IsShowSelectUnit}" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+                                <Label  Text="Select Unit" FontFamily="FS-Medium" FontSize="18" TextColor="{StaticResource MediumDarkBlue}"  Margin="10,0,10,0"/>
+                                <StackLayout 
+                                    HorizontalOptions="FillAndExpand"  
+                                    VerticalOptions="Start" 
+                                    Padding="30,0,30,0"
+                                    BindableLayout.ItemsSource="{Binding SorsTab.SelectedPrimarySors.ResponseData}"
+                                    RadioButtonGroup.GroupName="{Binding SorsTab.SelectedPrimarySors.Value}"
+                                    RadioButtonGroup.SelectedValue="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SorsTab.SelectedPrimarySors.SelectedUnit}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                                <RadioButton 
+                                                Value="{Binding .}"
+                                                BorderColor="{StaticResource VeryDarkBlue}">
+                                                </RadioButton>
+                                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                                                    <Label 
+                                                        FontSize="16"
+                                                        FontFamily="FS-Medium"
+                                                        VerticalOptions="FillAndExpand"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        TextColor="{StaticResource MediumDarkBlue}"
+                                                        Text="{Binding Value}">
+                                                    </Label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
                             </StackLayout>
                         </StackLayout>
                     </StackLayout>
@@ -436,8 +467,19 @@
                         </StackLayout>
                         <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Vertical">
                             <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal"  Padding="10,0,10,0">
-                                <Label  Text="{Binding SubmitTab.SelectedPrimarySors.Value}" FontFamily="FS-Regular" FontSize="25" TextColor="{StaticResource MediumDarkBlue}" Margin="10,0,10,0"/>
-                                <ImageButton
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                                    <Label  Text="{Binding SubmitTab.SelectedPrimarySors.Value}" FontFamily="FS-Regular" FontSize="25" TextColor="{StaticResource MediumDarkBlue}" HorizontalOptions="FillAndExpand" Margin="10,0,10,0"/>
+                                    <Label IsVisible="{Binding SubmitTab.SelectedPrimarySors.HasData}" Margin="10,0,10,0" LineBreakMode="WordWrap" VerticalTextAlignment="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Selected Unit: " FontFamily="FS-Medium" FontSize="18" TextColor="{StaticResource MediumDarkBlue}" />
+                                                <Span Text="{Binding SubmitTab.SelectedPrimarySors.SelectedUnit.Value}" FontSize="18"  FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                                    <ImageButton
                                     Source="icon_edit.png"
                                     HeightRequest="45"
                                     WidthRequest="45"
@@ -448,18 +490,19 @@
                                     BackgroundColor="{StaticResource MediumLightBlue}"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=EditPrimaryCommand}"
                                     CornerRadius="5">
-                                    <ImageButton.Triggers>
-                                        <DataTrigger Binding="{Binding IsDisabled}" TargetType="ImageButton" Value="True">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SubmitTab.IsSubmitting}" TargetType="ImageButton" Value="True">
-                                            <Setter Property="IsVisible" Value="False" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SubmitTab.IsSubmitted}" TargetType="ImageButton" Value="True">
-                                            <Setter Property="IsVisible" Value="False" />
-                                        </DataTrigger>
-                                    </ImageButton.Triggers>
-                                </ImageButton>
+                                        <ImageButton.Triggers>
+                                            <DataTrigger Binding="{Binding IsDisabled}" TargetType="ImageButton" Value="True">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SubmitTab.IsSubmitting}" TargetType="ImageButton" Value="True">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SubmitTab.IsSubmitted}" TargetType="ImageButton" Value="True">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </ImageButton.Triggers>
+                                    </ImageButton>
+                                </StackLayout>
                             </StackLayout>
                         </StackLayout>
                     </StackLayout>

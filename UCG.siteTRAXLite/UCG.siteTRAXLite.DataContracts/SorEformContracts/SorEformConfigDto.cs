@@ -69,6 +69,7 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
     public class ResponseDataItemDTO
     {
         public string Value { get; set; }
+        public List<ResponseDataItemDTO> ResponseData { get; set; }
     }
 
     public class ConditionDTO
