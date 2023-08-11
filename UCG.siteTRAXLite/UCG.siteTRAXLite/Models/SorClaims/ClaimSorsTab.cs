@@ -28,6 +28,19 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             set { SetProperty(ref isShowSelectUnit, value); }
         }
 
+        private bool isEditUnit;
+        public bool IsEditUnit
+        {
+            get { return isEditUnit; }
+            set 
+            { 
+                if (IsShowSelectUnit)
+                {
+                    SetProperty(ref isEditUnit, value);
+                }
+            }
+        }
+
         private StepperEntity stepperEntity;
         public StepperEntity StepperEntity
         {
@@ -58,6 +71,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 if (value != null)
                 {
                     IsShowSelectUnit = value.ResponseData != null && value.ResponseData.Any();
+                    IsEditUnit = true;
                     value.SelectedUnit = null;
                     IsShowSecondarySORs = false;
                     SubActions.Clear();
@@ -68,6 +82,24 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
+        private ResponseDataItemEntity selectedUnit;
+        public ResponseDataItemEntity SelectedUnit
+        {
+            get { return selectedUnit; }
+            set
+            {
+                if (value != null)
+                {
+                    IsEditUnit = false;
+                    IsShowSecondarySORs = false;
+                    SubActions.Clear();
+                    HandeSelectedUnit(value);
+                }
+
+                SetProperty(ref selectedUnit, value);
+            }
+        }
+
         private ICommand editSorCommand;
 
         public ICommand EditSorCommand
@@ -75,6 +107,16 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             get
             {
                 return this.editSorCommand ?? (this.editSorCommand = new Command<ActionItemEntity>((action) => EditSor(action)));
+            }
+        }
+
+        private ICommand editUnitCommand;
+
+        public ICommand EditUnitCommand
+        {
+            get
+            {
+                return this.editUnitCommand ?? (this.editUnitCommand = new Command(() => EditUnit()));
             }
         }
 
@@ -144,6 +186,22 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 entity.Value.Equals(a.Condition.ResponseData, StringComparison.OrdinalIgnoreCase)
                 );
 
+            UpdateSubActions();
+        }
+
+        private void HandeSelectedUnit(ResponseDataItemEntity entity)
+        {
+            SelectedPrimarySors.SelectedUnit = entity;
+            SecondarySOR = SelectedPrimarySors.ActionList.FirstOrDefault(a =>
+                a.Title.Equals(LogicConstant.Secondary_SORs, StringComparison.OrdinalIgnoreCase) &&
+                entity.Value.Equals(a.Condition.ResponseData, StringComparison.OrdinalIgnoreCase)
+                );
+
+            UpdateSubActions();
+        }
+
+        private void UpdateSubActions()
+        {
             if (SecondarySOR != null)
             {
                 IsShowSecondarySORs = true;
@@ -171,7 +229,6 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                             data.HasValidation = !string.IsNullOrEmpty(data.Validation);
                         }
                     }
-
                     SubActions.Add(item);
                 }
             }
@@ -226,6 +283,11 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             {
                 act.IsDisabled = false;
             }
+        }
+
+        private void EditUnit()
+        {
+            IsEditUnit = !IsEditUnit;
         }
 
         private void RemoveResponse(ActionItemEntity action)

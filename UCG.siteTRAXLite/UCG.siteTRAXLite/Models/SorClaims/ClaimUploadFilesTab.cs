@@ -55,7 +55,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 SubActions.Clear();
                 foreach (var item in SecondarySOR.SubActionList)
                 {
-                    if (IsTravelLogicPriceCode551(item))
+                    if (IsTravelLogicPriceCode551(item) || IsLogic563B(item))
                     {
                         SubActions.Add(item);
                     }
@@ -69,6 +69,16 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             return !string.IsNullOrEmpty(SecondarySOR.Logic)
                         && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_551)
                         && item.Title.Equals(LogicConstant.LPC551_Travel_Title)
+                        && item.Response != null
+                        && !string.IsNullOrEmpty(item.Response.Value)
+                        && !string.IsNullOrEmpty(item.ResponseName);
+        }
+
+        private bool IsLogic563B(ActionItemEntity item)
+        {
+            return !string.IsNullOrEmpty(SecondarySOR.Logic)
+                        && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_563B)
+                        && item.Title.Equals(LogicConstant.L563B_Travel_Title)
                         && item.Response != null
                         && !string.IsNullOrEmpty(item.Response.Value)
                         && !string.IsNullOrEmpty(item.ResponseName);

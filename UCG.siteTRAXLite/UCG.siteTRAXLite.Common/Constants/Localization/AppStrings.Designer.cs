@@ -178,11 +178,29 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Travel.
+        /// </summary>
+        internal static string L563B_Travel_Title {
+            get {
+                return ResourceManager.GetString("L563B_Travel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogicPriceCode551.
         /// </summary>
         internal static string Logic_Price_Code_551 {
             get {
                 return ResourceManager.GetString("Logic_Price_Code_551", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logic563B.
+        /// </summary>
+        internal static string Logic_Price_Code_563B {
+            get {
+                return ResourceManager.GetString("Logic_Price_Code_563B", resourceCulture);
             }
         }
         

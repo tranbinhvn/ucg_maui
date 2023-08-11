@@ -194,6 +194,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         private void EditPrimary()
         {
             ChangeTab(StepperType.Control);
+            SorsTab.IsEditUnit = true;
         }
 
         private void EditSubAction(ActionItemEntity item)

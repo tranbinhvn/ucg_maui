@@ -14,5 +14,9 @@ namespace UCG.siteTRAXLite.Common.Constants
         public static string LPC551_RM_Authorisation_Option = AppStrings.LPC551_RM_Authorisation_Option;
         public static string LPC551_FM_Authorisation_Message = AppStrings.LPC551_FM_Authorisation_Message;
         public static string LPC551_RM_Authorisation_Message = AppStrings.LPC551_RM_Authorisation_Message;
+
+        //LogicPriceCode563B
+        public static string Logic_Price_Code_563B = AppStrings.Logic_Price_Code_563B;
+        public static string L563B_Travel_Title = AppStrings.L563B_Travel_Title;
     }
 }

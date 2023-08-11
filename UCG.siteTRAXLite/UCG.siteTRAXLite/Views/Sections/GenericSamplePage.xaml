@@ -179,7 +179,7 @@
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </FlexLayout>
-        <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <customcontrols:CustomScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="5">
                 <StackLayout IsVisible="{Binding ShowQuestions}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <StackLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -304,6 +304,6 @@
                     </StackLayout>
                 </StackLayout>
             </StackLayout>
-        </ScrollView>
+        </customcontrols:CustomScrollView>
     </StackLayout>
 </views:MasterContentPage>

@@ -158,6 +158,11 @@ namespace UCG.siteTRAXLite.WebServices.SorEformServices
                             response.ResponseData = item["responseData"].ToObject<List<ResponseDataItemDTO>>(serializer);
                         }
 
+                        if (item["actionList"] != null)
+                        {
+                            response.ActionList = item["actionList"].ToObject<List<ActionItemDTO>>(serializer);
+                        }
+
                         responses.Add(response);
                     }
 

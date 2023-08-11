@@ -156,8 +156,14 @@
   <data name="Fill_The_Form" xml:space="preserve">
     <value>Please fill out the form</value>
   </data>
+  <data name="L563B_Travel_Title" xml:space="preserve">
+    <value>Travel</value>
+  </data>
   <data name="Logic_Price_Code_551" xml:space="preserve">
     <value>LogicPriceCode551</value>
+  </data>
+  <data name="Logic_Price_Code_563B" xml:space="preserve">
+    <value>Logic563B</value>
   </data>
   <data name="Logic_Price_Code_777" xml:space="preserve">
     <value>LogicPriceCode777</value>

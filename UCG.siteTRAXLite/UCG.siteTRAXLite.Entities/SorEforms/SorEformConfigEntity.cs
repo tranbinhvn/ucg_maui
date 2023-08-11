@@ -315,6 +315,8 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             get { return responseData; }
             set { SetProperty(ref responseData, value); }
         }
+
+        public List<ActionItemEntity> ActionList { get; set; }
     }
 
     public class ConditionEntity : EntityBase

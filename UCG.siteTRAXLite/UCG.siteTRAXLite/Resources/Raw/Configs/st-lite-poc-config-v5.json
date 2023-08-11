@@ -286,6 +286,51 @@
                     "563B - External works only",
                     "563C - Internal works only",
                     "563BC - Internal and External Incentive"
+                  ],
+                  "actionList": [
+                    {
+                      "condition": {
+                        "responseData": "563B - External works only"
+                      },
+                      "logic": "Logic563B",
+                      "title": "Secondary SORs",
+                      "responseType": "display-text",
+                      "actionList": [
+                        {
+                          "title": "Travel",
+                          "description": "Select distance travelled",
+                          "responseType": "select-single",
+                          "responseData": [
+                            "Less than 50km",
+                            "50km to 100km",
+                            "100km to 150km",
+                            "More than 150km"
+                          ]
+                        },
+                        {
+                          "title": "EWP",
+                          "description": "Elevated Work Platform",
+                          "responseType": "select-single",
+                          "responseData": [
+                            "EWP option 1",
+                            "EWP option 2",
+                            "EWP option 3",
+                            "EWP option 4"
+                          ]
+                        },
+                        {
+                          "title": "TMP",
+                          "description": "Traffic Management Platform",
+                          "responseType": "select-single",
+                          "responseData": [
+                            "TMP option 1",
+                            "TMP option 2",
+                            "TMP option 3",
+                            "TMP option 4"
+                          ]
+                        }
+                      ]
+                    }
                   ]
                 },
                 {
