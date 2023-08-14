@@ -190,22 +190,6 @@
               "title": "",
               "responseType": "checkbox-single",
               "responseData": [
-                "Chemical"
-              ],
-              "actionList": [
-                {
-                  "condition": {
-                    "responseData": "Chemical"
-                  },
-                  "title": "Control of Hazard?",
-                  "responseType": "input-textarea"
-                }
-              ]
-            },
-            {
-              "title": "",
-              "responseType": "checkbox-single",
-              "responseData": [
                 "Electrical"
               ],
               "actionList": [

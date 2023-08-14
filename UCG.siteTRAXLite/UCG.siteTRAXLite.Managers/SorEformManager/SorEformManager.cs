@@ -1,18 +1,21 @@
 ﻿using Microsoft.Maui.Networking;
+using UCG.siteTRAXLite.DataObjects;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Entities.SorEforms.Sections;
 using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Repositories.Hazard;
 using UCG.siteTRAXLite.WebServices.SorEformServices;
 
 namespace UCG.siteTRAXLite.Managers.SorEformManager
 {
-    public class SorEformManager : ManagerBase, ISorEformManager
+    public class SorEformManager : LocalManagerBase<HazardEntity, HazardDataObject, IHazardRepository>, ISorEformManager
     {
         private readonly ISorEformService iSorEformService;
         public SorEformManager(
              IConnectivity connectivity,
              IServiceEntityMapper mapper,
-             ISorEformService _iSorEformService) : base(connectivity, mapper)
+             ISorEformService _iSorEformService,
+             IHazardRepository repo) : base(connectivity, mapper, repo)
         {
             iSorEformService = _iSorEformService;
         }
@@ -72,6 +75,18 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
             {
                 return null;
             }
+        }
+
+        public async Task<int> SaveHazard(HazardEntity hazardEntity, bool isConnected = true)
+        {
+            var dataObject = Mapper.Map<HazardDataObject>(hazardEntity);
+            return repository.Save(dataObject);
+        }
+
+        public async Task<bool> SaveListHazard(List<HazardEntity> hazardEntities, bool isConnected = true)
+        {
+            var listDataObjects = Mapper.Map<List<HazardDataObject>>(hazardEntities);
+            return repository.SaveList(listDataObjects);
         }
     }
 }

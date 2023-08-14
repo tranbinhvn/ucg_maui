@@ -15,10 +15,18 @@ using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.CrewServices;
 using UCG.siteTRAXLite.WebServices.DependencyServices;
 using UCG.siteTRAXLite.WebServices.SorEformServices;
+using UCG.siteTRAXLite.Repositories.Database;
+using UCG.siteTRAXLite.Repositories;
+using UCG.siteTRAXLite.Repositories.Hazard;
 
 #if ANDROID
     using Microsoft.Maui.Controls.PlatformConfiguration;
     using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+    using UCG.siteTRAXLite.Platforms.Android.Database;
+#elif IOS
+    using UCG.siteTRAXLite.Platforms.iOS.Database;
+#elif WINDOWS
+    using UCG.siteTRAXLite.Platforms.Windows.Database;
 #endif
 
 namespace UCG.siteTRAXLite
@@ -60,6 +68,8 @@ namespace UCG.siteTRAXLite
                 .RegisterServices()
                 .RegisterManagers()
                 .RegisterModels()
+                .RegisterRepositories()
+                .RegisterConnectionSQLs()
                 .ConfigureLifecycleEvents(events =>
                 {
 #if ANDROID
@@ -129,6 +139,25 @@ namespace UCG.siteTRAXLite
 
         private static MauiAppBuilder RegisterModels(this MauiAppBuilder mauiAppBuilder)
         {
+            return mauiAppBuilder;
+        }
+
+        private static MauiAppBuilder RegisterConnectionSQLs(this MauiAppBuilder mauiAppBuilder)
+        {
+            #if ANDROID
+                mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteAndroid>();
+            #elif IOS
+                mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteIOS>();
+            #elif WINDOWS
+                mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteWindows>();
+            #endif
+            return mauiAppBuilder;
+        }
+
+        private static MauiAppBuilder RegisterRepositories(this MauiAppBuilder mauiAppBuilder)
+        {
+            mauiAppBuilder.Services.AddSingleton<IMobileDatabase, MobileDatabase>();
+            mauiAppBuilder.Services.AddSingleton<IHazardRepository, HazardRepository>();
             return mauiAppBuilder;
         }
     }

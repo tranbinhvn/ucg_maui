@@ -195,11 +195,33 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         private async Task Confirm()
         {
-#if WINDOWS
-            await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
-#else
-            await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
-#endif
+            await SaveHazard();
+            #if WINDOWS
+                        await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
+            #else
+                        await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
+            #endif
         }
+
+        private async Task<bool> SaveHazard()
+        {
+            var checkedAnswers = HazardTab.Questions.Where(x => x.Response.IsChecked).ToList();
+            var hazardEntities = new List<HazardEntity>();
+
+            foreach (var answer in checkedAnswers)
+            {
+                var description = answer.SubActionList.FirstOrDefault(x => x.Condition.ResponseData.Equals(answer.Response.Value, StringComparison.OrdinalIgnoreCase) && x.EResponseType == SorEformsResponseType.InputTextArea);
+                var hazard = new HazardEntity()
+                {
+                    Name = answer.Response.Value,
+                    Description = description.Response.Value,
+                    SiteAddress = JobDetail.SiteName
+                };
+                hazardEntities.Add(hazard);
+            }
+
+            return await _sorEformManager.SaveListHazard(hazardEntities);
+        }
+
     }
 }

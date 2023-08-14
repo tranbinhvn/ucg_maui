@@ -13,7 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UCG.siteTRAXLite.DataContracts\UCG.siteTRAXLite.DataContracts.csproj" />
+    <ProjectReference Include="..\UCG.siteTRAXLite.DataObjects\UCG.siteTRAXLite.DataObjects.csproj" />
     <ProjectReference Include="..\UCG.siteTRAXLite.Entities\UCG.siteTRAXLite.Entities.csproj" />
+    <ProjectReference Include="..\UCG.siteTRAXLite.Repositories\UCG.siteTRAXLite.Repositories.csproj" />
     <ProjectReference Include="..\UCG.siteTRAXLite.WebServices\UCG.siteTRAXLite.WebServices.csproj" />
   </ItemGroup>
 
