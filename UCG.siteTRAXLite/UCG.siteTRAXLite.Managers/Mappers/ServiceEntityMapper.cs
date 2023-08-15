@@ -11,6 +11,8 @@ namespace UCG.siteTRAXLite.Managers.Mappers
             config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<DataContractToEntityProfile>();
+                cfg.AddProfile<DataObjectToEntityProfile>();
+                cfg.AddProfile<EntityToDataObjectProfile>();
             });
 
             config.AssertConfigurationIsValid();

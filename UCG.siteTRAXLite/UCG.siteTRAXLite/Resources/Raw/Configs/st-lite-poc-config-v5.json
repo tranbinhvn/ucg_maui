@@ -1,0 +1,427 @@
+{
+  "configInfo": {
+    "configVersion": 1
+  },
+  "jobTab": {
+    "sections": [
+      {
+        "title": "Generic Section",
+        "sectionType": "Generic",
+        "steppers": [
+          {
+            "title": "Title 1",
+            "actionList": [
+              {
+                "title": "Are you carrying out work outside customer's boundary?",
+                "description": "pls enter...",
+                "responseType": "select-single",
+                "responseData": [
+                  "Yes",
+                  "No"
+                ],
+                "actionList": [
+                  {
+                    "condition": {
+                      "responseData": "Yes"
+                    },
+                    "title": "gravida pellentesque tortor?",
+                    "description": "desc...",
+                    "responseType": "select-single",
+                    "responseData": [
+                      "Yes",
+                      "No"
+                    ],
+                    "actionList": [
+                      {
+                        "condition": {
+                          "responseData": "Yes"
+                        },
+                        "title": "gravida pellentesque tortor?",
+                        "description": "desc...",
+                        "responseType": "Text"
+                      },
+                      {
+                        "condition": {
+                          "responseData": "No"
+                        },
+                        "title": "Suspendisse sit amet sem et odio tincidunt sodales vel non quam?",
+                        "description": "desc...",
+                        "responseType": "Text"
+                      }
+                    ]
+                  },
+                  {
+                    "condition": {
+                      "responseData": "No"
+                    },
+                    "title": "number of meters of xxxxx?",
+                    "logic": "LogicPriceCode777",
+                    "description": "desc...",
+                    "responseType": "Number"
+                  },
+                  {
+                    "condition": {
+                      "responseData": "No"
+                    },
+                    "title": "Suspendisse sit amet sem et odio tincidunt sodales vel non quam?",
+                    "description": "desc...",
+                    "responseType": "Text"
+                  }
+                ]
+              },
+              {
+                "title": "Pellentesque dictum interdum diam, nec cursus nunc varius?",
+                "description": "desc...",
+                "responseType": "Text"
+              }
+            ]
+          },
+          {
+            "title": "Title 2",
+            "actionList": [
+              {
+                "title": "Pellentesque dictum interdum diam, nec cursus nunc varius?",
+                "description": "desc...",
+                "responseType": "Text"
+              },
+              {
+                "title": "Curabitur auctor sapien egestas mauris pretium?",
+                "description": "desc...",
+                "responseType": "Text"
+              },
+              {
+                "title": "Pellentesque dictum interdum diam, nec cursus nunc varius?",
+                "description": "desc...",
+                "responseType": "Text"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Take 5",
+        "sectionType": "take5",
+        "stepperControl": {
+          "title": "CONTROL & MONITOR",
+          "actionList": [
+            {
+              "title": "Are all identified hazards controlled or removed?",
+              "responseType": "radio-single",
+              "responseData": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "title": "Have all potential problems been discussed and understood by all?",
+              "responseType": "radio-single",
+              "responseData": [
+                "Yes",
+                "No",
+                "N/A"
+              ]
+            },
+            {
+              "title": "Is a SWMS required for this task?",
+              "responseType": "radio-single",
+              "responseData": [
+                "Yes",
+                "No",
+                "N/A"
+              ],
+              "actionList": [
+                {
+                  "condition": {
+                    "responseData": "Yes"
+                  },
+                  "title": "Select SWMS",
+                  "responseType": "take5-swms-modal",
+                  "responseData": [
+                    {
+                      "name": "Blowing Fibre whilst Operating a Compressor"
+                    },
+                    {
+                      "name": "Bore Water Delivery & Distribution"
+                    },
+                    {
+                      "name": "Cable Hauling"
+                    },
+                    {
+                      "name": "Concrete Cutting (Quick Cut Saw)"
+                    },
+                    {
+                      "name": "Conduit Installation in the Ground"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Have I informed others who may be affected by my work?",
+              "responseType": "radio-single",
+              "responseData": [
+                "Yes",
+                "No",
+                "N/A"
+              ]
+            }
+          ]
+        },
+        "stepperHazard": {
+          "title": "HAZARDS",
+          "actionList": [
+            {
+              "title": "",
+              "responseType": "checkbox-single",
+              "responseData": [
+                "Chemical"
+              ],
+              "actionList": [
+                {
+                  "condition": {
+                    "responseData": "Chemical"
+                  },
+                  "title": "Control of Hazard?",
+                  "responseType": "input-textarea"
+                }
+              ]
+            },
+            {
+              "title": "",
+              "responseType": "checkbox-single",
+              "responseData": [
+                "Electrical"
+              ],
+              "actionList": [
+                {
+                  "condition": {
+                    "responseData": "Electrical"
+                  },
+                  "title": "Control of Hazard?",
+                  "responseType": "input-textarea"
+                }
+              ]
+            },
+            {
+              "title": "",
+              "responseType": "checkbox-single",
+              "responseData": [
+                "Environmental"
+              ],
+              "actionList": [
+                {
+                  "condition": {
+                    "responseData": "Environmental"
+                  },
+                  "title": "Control of Hazard?",
+                  "responseType": "input-textarea"
+                }
+              ]
+            },
+            {
+              "title": "",
+              "responseType": "checkbox-single",
+              "responseData": [
+                "Exposure to Building / Concrete Dust"
+              ],
+              "actionList": [
+                {
+                  "condition": {
+                    "responseData": "Exposure to Building / Concrete Dust"
+                  },
+                  "title": "Control of Hazard?",
+                  "responseType": "input-textarea"
+                }
+              ]
+            },
+            {
+              "title": "Attach photo(s) as evidence of the identified hazard(s)",
+              "responseType": "upload-multiple"
+            }
+          ]
+        },
+        "stepperSubmit": {
+          "title": "SUBMIT",
+          "actionList": [
+            {
+              "title": "SWMS",
+              "responseType": "take5-swms-summary"
+            },
+            {
+              "title": "Hazards",
+              "responseType": "take5-hazards-summary"
+            }
+          ]
+        }
+      },
+      {
+        "title": "Claims",
+        "sectionType": "sorclaims",
+        "stepperControl": {
+          "title": "SELECT SORS",
+          "actionList": [
+            {
+              "title": "Primary SOR",
+              "responseType": "select-single",
+              "responseData": [
+                {
+                  "title": "563 - Trenching",
+                  "responseData": [
+                    "563B - External works only",
+                    "563C - Internal works only",
+                    "563BC - Internal and External Incentive"
+                  ],
+                  "actionList": [
+                    {
+                      "condition": {
+                        "responseData": "563B - External works only"
+                      },
+                      "logic": "Logic563B",
+                      "title": "Secondary SORs",
+                      "responseType": "display-text",
+                      "actionList": [
+                        {
+                          "title": "Travel",
+                          "description": "Select distance travelled",
+                          "responseType": "select-single",
+                          "responseData": [
+                            "Less than 50km",
+                            "50km to 100km",
+                            "100km to 150km",
+                            "More than 150km"
+                          ]
+                        },
+                        {
+                          "title": "EWP",
+                          "description": "Elevated Work Platform",
+                          "responseType": "select-single",
+                          "responseData": [
+                            "EWP option 1",
+                            "EWP option 2",
+                            "EWP option 3",
+                            "EWP option 4"
+                          ]
+                        },
+                        {
+                          "title": "TMP",
+                          "description": "Traffic Management Platform",
+                          "responseType": "select-single",
+                          "responseData": [
+                            "TMP option 1",
+                            "TMP option 2",
+                            "TMP option 3",
+                            "TMP option 4"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "title": "777 - Sor Desc",
+                  "responseData": [
+                    "777-1 - Sor Desc",
+                    "777-2 - Sor Desc"
+                  ]
+                }
+              ],
+              "actionList": [
+                {
+                  "condition": {
+                    "responseData": "551 - SOR Desc..."
+                  },
+                  "logic": "LogicPriceCode551",
+                  "title": "Secondary SORs",
+                  "responseType": "display-text",
+                  "actionList": [
+                    {
+                      "title": "Travel",
+                      "description": "Select distance travelled",
+                      "responseType": "select-single",
+                      "responseData": [
+                        "Less than 50km",
+                        "50km to 100km",
+                        "100km to 150km",
+                        "More than 150km"
+                      ]
+                    },
+                    {
+                      "title": "EWP",
+                      "description": "Elevated Work Platform",
+                      "responseType": "select-single",
+                      "responseData": [
+                        "EWP option 1",
+                        "EWP option 2",
+                        "EWP option 3",
+                        "EWP option 4"
+                      ]
+                    },
+                    {
+                      "title": "TMP",
+                      "description": "Traffic Management Platform",
+                      "responseType": "select-single",
+                      "responseData": [
+                        "TMP option 1",
+                        "TMP option 2",
+                        "TMP option 3",
+                        "TMP option 4"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "condition": {
+                    "responseData": "543 - SOR Desc..."
+                  },
+                  "logic": "LogicPriceCode543",
+                  "title": "Secondary SORs",
+                  "responseType": "display-text",
+                  "actionList": [
+                    {
+                      "title": "Travel",
+                      "description": "Select distance travelled",
+                      "responseType": "select-single",
+                      "responseData": [
+                        "Less than 50km",
+                        "50km to 100km",
+                        "100km to 150km",
+                        "More than 150km"
+                      ]
+                    },
+                    {
+                      "title": "ROW",
+                      "description": "Right of Way",
+                      "responseType": "select-single",
+                      "responseData": [
+                        "ROW option 1",
+                        "ROW option 2",
+                        "ROW option 3",
+                        "ROW option 4"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stepperUploadFiles": {
+          "title": "UPLOAD FILES"
+        },
+        "stepperSubmit": {
+          "title": "SUBMIT",
+          "actionList": [
+            {
+              "title": "Primary",
+              "responseType": "sorclaims-primary-summary"
+            },
+            {
+              "title": "Secondary",
+              "responseType": "sorclaims-secondary-summary"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

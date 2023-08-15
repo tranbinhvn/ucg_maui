@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
+using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
+using UCG.siteTRAXLite.CustomControls;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.SorEformManager;
@@ -14,7 +16,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
     {
         private readonly ISorEformManager _sorEformManager;
 
-        public ConcurrentObservableCollection<BreadcrumbEntity> Breadcrumbs { get; set; }
+        public ConcurrentObservableCollection<StepperEntity> Steppers { get; set; }
 
         private Take5TabModel controlTab;
         public Take5TabModel ControlTab
@@ -46,14 +48,14 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
-        private BreadcrumbEntity selectedBreadcrumb;
-        public BreadcrumbEntity SelectedBreadcrumb
+        private StepperEntity selectedStepper;
+        public StepperEntity SelectedStepper
         {
-            get { return selectedBreadcrumb; }
+            get { return selectedStepper; }
             set 
             {
-                HandleSelectedBreadcrumb(value);
-                SetProperty(ref selectedBreadcrumb, value);
+                HandleSelectedStepper(value);
+                SetProperty(ref selectedStepper, value);
             }
         }
 
@@ -76,6 +78,16 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
+        private ICommand showSWMSModalCommand;
+
+        public ICommand ShowSWMSModalCommand
+        {
+            get
+            {
+                return this.showSWMSModalCommand ?? (this.showSWMSModalCommand = new Command<ActionItemEntity>(async (q) => await ShowSWMSModal(q)));
+            }
+        }
+
         public Take5PageViewModel(
             INavigationService navigationService,
             IAlertService alertService,
@@ -83,79 +95,97 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IServiceEntityMapper mapper,
             ISorEformManager sorEformManager) : base(navigationService, alertService, openAppService, mapper)
         {
-            PageTitle = "TAKE 5";
+            PageTitle = PageTitles.Take5;
 
-            Breadcrumbs = new ConcurrentObservableCollection<BreadcrumbEntity>();
+            Steppers = new ConcurrentObservableCollection<StepperEntity>();
             _sorEformManager = sorEformManager;
         }
 
         public async override Task OnNavigatingTo(object parameter)
         {
-            Breadcrumbs.Clear();
-            await LoadBreadcrumbs(parameter as SectionEntity);
+            Steppers.Clear();
+            await LoadSteppers(parameter as SectionEntity);
         }
 
-        public async Task LoadBreadcrumbs(SectionEntity section)
+        public async Task LoadSteppers(SectionEntity section)
         {
-            if (section != null)
-            {
-                var take5Breadcrumbs = await _sorEformManager.GetTake5Breadcrumbs();
-
-                if (take5Breadcrumbs != null)
-                {
-                    if (take5Breadcrumbs.BreadcrumbControl != null)
-                    {
-                        take5Breadcrumbs.BreadcrumbControl.BreadcrumbType = BreadcrumbType.Take5Control;
-                        ControlTab = new Take5TabModel(take5Breadcrumbs.BreadcrumbControl);
-                        Breadcrumbs.Add(take5Breadcrumbs.BreadcrumbControl);
-                    }
-
-                    if (take5Breadcrumbs.BreadcrumbHazard != null)
-                    {
-                        take5Breadcrumbs.BreadcrumbHazard.BreadcrumbType = BreadcrumbType.Take5Hazard;
-                        HazardTab = new Take5TabModel(take5Breadcrumbs.BreadcrumbHazard);
-                        Breadcrumbs.Add(take5Breadcrumbs.BreadcrumbHazard);
-                    }
-
-                    if (take5Breadcrumbs.BreadcrumbSubmit != null)
-                    {
-                        take5Breadcrumbs.BreadcrumbSubmit.BreadcrumbType = BreadcrumbType.Take5Submit;
-
-                        SubmitTab = new Take5TabModel(take5Breadcrumbs.BreadcrumbSubmit);
-
-                        Breadcrumbs.Add(take5Breadcrumbs.BreadcrumbSubmit);
-                    }
-                }
-
-                SelectedBreadcrumb = Breadcrumbs.FirstOrDefault();
-            }
-        }
-
-        private void HandleSelectedBreadcrumb(BreadcrumbEntity breadcrumb)
-        {
-            if (breadcrumb == null)
+            if (section == null)
                 return;
 
-            ChangeTab(breadcrumb);
+            var take5Steppers = await _sorEformManager.GetTake5Steppers();
+
+            if (take5Steppers != null)
+            {
+                if (take5Steppers.StepperControl != null)
+                {
+                    take5Steppers.StepperControl.StepperType = StepperType.Control;
+                    ControlTab = new Take5TabModel(take5Steppers.StepperControl);
+                    Steppers.Add(take5Steppers.StepperControl);
+                }
+
+                if (take5Steppers.StepperHazard != null)
+                {
+                    take5Steppers.StepperHazard.StepperType = StepperType.Hazard;
+                    HazardTab = new Take5TabModel(take5Steppers.StepperHazard);
+                    Steppers.Add(take5Steppers.StepperHazard);
+                }
+
+                if (take5Steppers.StepperSubmit != null)
+                {
+                    take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
+
+                    SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit);
+
+                    Steppers.Add(take5Steppers.StepperSubmit);
+                }
+            }
+
+            SelectedStepper = Steppers.FirstOrDefault();
         }
 
-        private void ChangeTab(BreadcrumbEntity breadcrumb)
+        private void HandleSelectedStepper(StepperEntity stepper)
         {
-            ControlTab.IsVisible = breadcrumb.BreadcrumbType == BreadcrumbType.Take5Control;
-            HazardTab.IsVisible = breadcrumb.BreadcrumbType == BreadcrumbType.Take5Hazard;
-            SubmitTab.IsVisible = breadcrumb.BreadcrumbType == BreadcrumbType.Take5Submit;
+            if (stepper == null)
+                return;
+
+            ChangeTab(stepper);
+        }
+
+        private void ChangeTab(StepperEntity stepper)
+        {
+            ControlTab.IsVisible = stepper.StepperType == StepperType.Control;
+            HazardTab.IsVisible = stepper.StepperType == StepperType.Hazard;
+            SubmitTab.IsVisible = stepper.StepperType == StepperType.Submit;
+        }
+
+        private void ChangeTab(StepperType type)
+        {
+            SelectedStepper = Steppers.FirstOrDefault(s => s.StepperType == type);
         }
 
         public Take5TabModel GetCurrentTab()
         {
-            if (SelectedBreadcrumb?.BreadcrumbType == BreadcrumbType.Take5Control)
-                return ControlTab;
-            else if (SelectedBreadcrumb?.BreadcrumbType == BreadcrumbType.Take5Hazard)
-                return HazardTab;
-            else if (SelectedBreadcrumb?.BreadcrumbType == BreadcrumbType.Take5Submit)
-                return SubmitTab;
+            if (SelectedStepper == null) 
+                return null;
+
+            switch (SelectedStepper.StepperType)
+            {
+                case StepperType.Control:
+                    return ControlTab;
+                case StepperType.Hazard:
+                    return HazardTab;
+                case StepperType.Submit:
+                    return SubmitTab;
+            }
 
             return null;
+        }
+
+        private async Task ShowSWMSModal(ActionItemEntity question)
+        {
+            ChangeTab(StepperType.Control);
+            var modal = new SWMSModal(question);
+            await Application.Current.MainPage.ShowPopupAsync(modal);
         }
 
         private async Task Cancel()
@@ -165,11 +195,33 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         private async Task Confirm()
         {
-#if WINDOWS
-            await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
-#else
-            await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
-#endif
+            await SaveHazard();
+            #if WINDOWS
+                        await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
+            #else
+                        await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
+            #endif
         }
+
+        private async Task<bool> SaveHazard()
+        {
+            var checkedAnswers = HazardTab.Questions.Where(x => x.Response.IsChecked).ToList();
+            var hazardEntities = new List<HazardEntity>();
+
+            foreach (var answer in checkedAnswers)
+            {
+                var description = answer.SubActionList.FirstOrDefault(x => x.Condition.ResponseData.Equals(answer.Response.Value, StringComparison.OrdinalIgnoreCase) && x.EResponseType == SorEformsResponseType.InputTextArea);
+                var hazard = new HazardEntity()
+                {
+                    Name = answer.Response.Value,
+                    Description = description.Response.Value,
+                    SiteAddress = JobDetail.SiteName
+                };
+                hazardEntities.Add(hazard);
+            }
+
+            return await _sorEformManager.SaveListHazard(hazardEntities);
+        }
+
     }
 }

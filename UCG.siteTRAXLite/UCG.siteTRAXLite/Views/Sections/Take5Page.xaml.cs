@@ -23,15 +23,6 @@ public partial class Take5Page : MasterContentPage
         }
 	}
 
-    private void EditSWMS_Clicked(object sender, EventArgs e)
-    {
-		var btn = (ImageButton) sender;
-		var action = (ActionItemEntity)btn.BindingContext;
-        var currentTab = (BindingContext as Take5PageViewModel).GetCurrentTab();
-        if (currentTab != null)
-            currentTab.ShowSWMSModalCommand.Execute(action);
-    }
-
     private void BrowseFiles_Clicked(object sender, EventArgs e)
     {
         var btn = (Button)sender;

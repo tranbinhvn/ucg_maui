@@ -28,29 +28,24 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         public string Title { get; set; }
         [JsonProperty("sectionType")]
         public string SectionType { get; set; }
-        [JsonProperty("breadcrumbs")]
-        public List<BreadcrumbDTO> Breadcrumbs { get; set; }
-        [JsonProperty("breadcrumbControl")]
-        public BreadcrumbDTO BreadcrumbControl { get; set; }
-        [JsonProperty("breadcrumbHazard")]
-        public BreadcrumbDTO BreadcrumbHazard { get; set; }
-        [JsonProperty("breadcrumbSubmit")]
-        public BreadcrumbDTO BreadcrumbSubmit { get; set; }
+        [JsonProperty("steppers")]
+        public List<StepperDTO> Steppers { get; set; }
+        [JsonProperty("stepperControl")]
+        public StepperDTO StepperControl { get; set; }
+        [JsonProperty("stepperHazard")]
+        public StepperDTO StepperHazard { get; set; }
+        [JsonProperty("stepperSubmit")]
+        public StepperDTO StepperSubmit { get; set; }
+        [JsonProperty("stepperUploadFiles")]
+        public StepperDTO StepperUploadFiles { get; set; }
     }
 
-    public class BreadcrumbDTO
+    public class StepperDTO
     {
         [JsonProperty("title")]
         public string Title { get; set; }
         [JsonProperty("actionList")]
         public List<ActionItemDTO> ActionList { get; set; }
-    }
-
-    public class Take5BreadcrumbDTO
-    {
-        public BreadcrumbDTO BreadcrumbControl { get; set; }
-        public BreadcrumbDTO BreadcrumbHazard { get; set; }
-        public BreadcrumbDTO BreadcrumbSubmit { get; set; }
     }
 
     public class ActionItemDTO
@@ -74,6 +69,8 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
     public class ResponseDataItemDTO
     {
         public string Value { get; set; }
+        public List<ResponseDataItemDTO> ResponseData { get; set; }
+        public List<ActionItemDTO> ActionList { get; set; }
     }
 
     public class ConditionDTO

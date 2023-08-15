@@ -79,7 +79,7 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to st-lite-poc-config-v3.json.
+        ///   Looks up a localized string similar to st-lite-poc-config-v5.json.
         /// </summary>
         internal static string ConfigFileName {
             get {
@@ -178,6 +178,33 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Travel.
+        /// </summary>
+        internal static string L563B_Travel_Title {
+            get {
+                return ResourceManager.GetString("L563B_Travel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogicPriceCode551.
+        /// </summary>
+        internal static string Logic_Price_Code_551 {
+            get {
+                return ResourceManager.GetString("Logic_Price_Code_551", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logic563B.
+        /// </summary>
+        internal static string Logic_Price_Code_563B {
+            get {
+                return ResourceManager.GetString("Logic_Price_Code_563B", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogicPriceCode777.
         /// </summary>
         internal static string Logic_Price_Code_777 {
@@ -192,6 +219,51 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *requires FM authorisation.
+        /// </summary>
+        internal static string LPC551_FM_Authorisation_Message {
+            get {
+                return ResourceManager.GetString("LPC551_FM_Authorisation_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 100km to 150km.
+        /// </summary>
+        internal static string LPC551_FM_Authorisation_Option {
+            get {
+                return ResourceManager.GetString("LPC551_FM_Authorisation_Option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *requires RM authorisation.
+        /// </summary>
+        internal static string LPC551_RM_Authorisation_Message {
+            get {
+                return ResourceManager.GetString("LPC551_RM_Authorisation_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More than 150km.
+        /// </summary>
+        internal static string LPC551_RM_Authorisation_Option {
+            get {
+                return ResourceManager.GetString("LPC551_RM_Authorisation_Option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Travel.
+        /// </summary>
+        internal static string LPC551_Travel_Title {
+            get {
+                return ResourceManager.GetString("LPC551_Travel_Title", resourceCulture);
             }
         }
         
@@ -228,6 +300,24 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         internal static string Number_Of_Meters_Question {
             get {
                 return ResourceManager.GetString("Number_Of_Meters_Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Primary SOR.
+        /// </summary>
+        internal static string Primary_SOR {
+            get {
+                return ResourceManager.GetString("Primary_SOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secondary SORs.
+        /// </summary>
+        internal static string Secondary_SORs {
+            get {
+                return ResourceManager.GetString("Secondary_SORs", resourceCulture);
             }
         }
         

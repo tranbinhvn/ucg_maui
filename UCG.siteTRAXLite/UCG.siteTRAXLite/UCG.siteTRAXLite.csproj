@@ -87,19 +87,27 @@
 	  <None Remove="Resources\Images\icons_hamburger_menu.png" />
 	  <None Remove="Resources\Images\icon_bin.png" />
 	  <None Remove="Resources\Images\icon_claims.png" />
+	  <None Remove="Resources\Images\icon_complete.png" />
 	  <None Remove="Resources\Images\icon_edit.png" />
 	  <None Remove="Resources\Images\icon_jobs.png" />
+	  <None Remove="Resources\Images\icon_plus.png" />
 	  <None Remove="Resources\Images\icon_STA.png" />
+	  <None Remove="Resources\Images\icon_tick.png" />
+	  <None Remove="Resources\Images\large_icon_complete.png" />
 	  <None Remove="Resources\Images\sitetraxair_logo_v2.png" />
 	  <None Remove="Resources\Images\ucglogo.png" />
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v3.json" />
+	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v4.json" />
+	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v5.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Acr.UserDialogs" Version="8.0.1" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="FFImageLoadingCompat.Svg.Maui" Version="0.1.1" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -109,7 +117,7 @@
 	  <MauiXaml Update="CustomControls\SWMSModal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\NewUI.xaml">
+	  <MauiXaml Update="Resources\Styles\CommonUI.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\AppAccessPage.xaml">
@@ -127,6 +135,9 @@
 	  <MauiXaml Update="Views\Sections\SectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Sections\SorClaimsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Sections\Take5Page.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -141,7 +152,15 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\UCG.siteTRAXLite.Common\UCG.siteTRAXLite.Common.csproj" />
+	  <ProjectReference Include="..\UCG.siteTRAXLite.DataObjects\UCG.siteTRAXLite.DataObjects.csproj" />
 	  <ProjectReference Include="..\UCG.siteTRAXLite.Managers\UCG.siteTRAXLite.Managers.csproj" />
+	  <ProjectReference Include="..\UCG.siteTRAXLite.Repositories\UCG.siteTRAXLite.Repositories.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\Configs\st-lite-poc-config-v5.json">
+	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+	  </MauiAsset>
 	</ItemGroup>
 
 	<!-- Build Properties must be defined within these property groups to ensure successful publishing

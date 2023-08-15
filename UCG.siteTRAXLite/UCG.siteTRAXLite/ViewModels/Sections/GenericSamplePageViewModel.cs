@@ -17,7 +17,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         public ConcurrentObservableCollection<ActionItemEntity> Questions { get; set; }
         public ConcurrentObservableCollection<ActionItemEntity> SummaryQuestions { get; set; }
-        public ConcurrentObservableCollection<BreadcrumbEntity> Breadcrumbs { get; set; }
+        public ConcurrentObservableCollection<StepperEntity> Steppers { get; set; }
         public ConcurrentObservableCollection<PriceCodeEntity> PriceCodes { get; set; }
 
         private bool showQuestions;
@@ -34,17 +34,17 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             set { SetProperty(ref showSummary, value); }
         }
 
-        private BreadcrumbEntity selectedBreadcrumb;
-        public BreadcrumbEntity SelectedBreadcrumb
+        private StepperEntity selectedStepper;
+        public StepperEntity SelectedStepper
         {
-            get { return selectedBreadcrumb; }
+            get { return selectedStepper; }
             set
             {
                 if (value != null)
                 {
                     ShowQuestions = true;
-                    HandleSelectedBreadcrumb(value);
-                    SetProperty(ref selectedBreadcrumb, value);
+                    HandleSelectedStepper(value);
+                    SetProperty(ref selectedStepper, value);
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             _sorEformManager = sorEformManager;
             Questions = new ConcurrentObservableCollection<ActionItemEntity>();
             SummaryQuestions = new ConcurrentObservableCollection<ActionItemEntity>();
-            Breadcrumbs = new ConcurrentObservableCollection<BreadcrumbEntity>();
+            Steppers = new ConcurrentObservableCollection<StepperEntity>();
             PriceCodes = new ConcurrentObservableCollection<PriceCodeEntity>();
 
             PageTitle = "Jobs";
@@ -103,39 +103,39 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         public async override Task OnNavigatingTo(object parameter)
         {
             ClearData();
-            await LoadBreadcrumbs(parameter as SectionEntity);
+            await LoadSteppers(parameter as SectionEntity);
         }
 
-        public async Task LoadBreadcrumbs(SectionEntity section)
+        public async Task LoadSteppers(SectionEntity section)
         {
-            if (section != null)
+            if (section == null)
+                return;
+
+            var steppers = new List<StepperEntity>();
+
+            if (section.ESectionType == JobSectionType.Generic)
             {
-                var breadcrumbs = new List<BreadcrumbEntity>();
+                steppers = await _sorEformManager.GetGenericSectionSteppers();
 
-                if (section.ESectionType == JobSectionType.Generic)
+                steppers.Add(new StepperEntity
                 {
-                    breadcrumbs = await _sorEformManager.GetGenericSectionBreadcrumbs();
-
-                    breadcrumbs.Add(new BreadcrumbEntity
-                    {
-                        Title = "Submit"
-                    });
-                }
-
-                foreach (var breadcrumb in breadcrumbs)
-                {
-                    Breadcrumbs.Add(breadcrumb);
-                }
-
-                SelectedBreadcrumb = Breadcrumbs.FirstOrDefault();
-                SelectedBreadcrumb.IsChecked = true;
+                    Title = "Submit"
+                });
             }
+
+            foreach (var stepper in steppers)
+            {
+                Steppers.Add(stepper);
+            }
+
+            SelectedStepper = Steppers.FirstOrDefault();
+            SelectedStepper.IsChecked = true;
         }
 
         private void ClearData()
         {
             Questions.Clear();
-            Breadcrumbs.Clear();
+            Steppers.Clear();
         }
 
         private async Task UpdateActionList(ActionItemEntity actionItemEntity)
@@ -163,7 +163,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             {
                 foreach (var action in actionItemEntity.SubActionList)
                 {
-                    if (action.EResponseType == SorEformsResponseType.List)
+                    if (action.EResponseType == SorEformsResponseType.SelectSingle)
                         RemoveSubList(action);
 
                     if (!Questions.Contains(action))
@@ -189,18 +189,18 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
-        private void HandleSelectedBreadcrumb(BreadcrumbEntity breadcrumb)
+        private void HandleSelectedStepper(StepperEntity stepper)
         {
-            if (breadcrumb.Title.Equals("Submit", StringComparison.OrdinalIgnoreCase))
+            if (stepper.Title.Equals("Submit", StringComparison.OrdinalIgnoreCase))
             {
                 SummaryQuestions.Clear();
                 ShowQuestions = false;
                 ShowSummary = true;
 
-                var breadcrumbs = Breadcrumbs.ToList();
-                breadcrumbs = breadcrumbs.Where(bc => !bc.Title.Equals("Submit", StringComparison.OrdinalIgnoreCase)).ToList();
+                var steppers = Steppers.ToList();
+                steppers = steppers.Where(bc => !bc.Title.Equals("Submit", StringComparison.OrdinalIgnoreCase)).ToList();
 
-                foreach (var bc in breadcrumbs)
+                foreach (var bc in steppers)
                 {
                     AddQuestionsToSummaryTab(bc.ActionList);
                 }
@@ -214,8 +214,8 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 IsLoadingQuestion = true;
 
                 Questions.Clear();
-                var actionList = breadcrumb.ActionList.ToList();
-                SetLevels(breadcrumb.ActionList);
+                var actionList = stepper.ActionList.ToList();
+                SetLevels(stepper.ActionList);
                 AddQuestions(actionList);
 
                 IsLoadingQuestion = false;

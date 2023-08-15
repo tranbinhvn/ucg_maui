@@ -72,6 +72,51 @@
         </RadioButton>
     </DataTemplate>
 
+    <ControlTemplate x:Key="RadioTemplate">
+        <StackLayout VerticalOptions="Start" HorizontalOptions="Start" Orientation="Horizontal">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter TargetName="Check" Property="Opacity" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter TargetName="Check" Property="Opacity" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+            <Grid
+                HeightRequest="30"
+                WidthRequest="30"
+                VerticalOptions="CenterAndExpand">
+                <Ellipse
+                    Fill="White"
+                    HeightRequest="30"
+                    HorizontalOptions="Center"
+                    Stroke="{StaticResource MediumDarkBlue}"
+                    StrokeThickness="3"
+                    VerticalOptions="Center"
+                    WidthRequest="30" />
+                <Ellipse
+                    x:Name="Check"
+                    BackgroundColor="Transparent"
+                    Fill="{StaticResource MediumDarkBlue}"
+                    HeightRequest="25"
+                    HorizontalOptions="Center"
+                    Stroke="{StaticResource MediumDarkBlue}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="25" />
+            </Grid>
+            <ContentPresenter HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="10,0,0,0"/>
+        </StackLayout>
+    </ControlTemplate>
+
     <Style x:Key="ActiveButton" TargetType="Button">
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontFamily" Value="FS-Medium" />
@@ -92,7 +137,7 @@
     <Style x:Key="NormalButton" TargetType="Button">
         <Setter Property="TextColor" Value="{StaticResource MediumDarkBlue}" />
         <Setter Property="FontFamily" Value="FS-Medium" />
-        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontSize" Value="30" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Background">
             <Setter.Value>
@@ -104,6 +149,7 @@
         </Setter>
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="Padding" Value="0" />
+        <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -127,7 +173,7 @@
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="Padding" Value="0" />
+        <Setter Property="TextTransform" Value="Uppercase"/>
     </Style>
-
 
 </ResourceDictionary>
