@@ -288,7 +288,11 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
         public string Validation
         {
             get { return validation; }
-            set { SetProperty(ref this.validation, value); }
+            set 
+            {
+                HasValidation = !string.IsNullOrEmpty(value);
+                SetProperty(ref this.validation, value); 
+            }
         }
 
         private bool hasData;

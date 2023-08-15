@@ -85,7 +85,6 @@
                                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                         <RadioButton 
                                                 Value="{Binding .}"
-                                                BorderColor="{StaticResource VeryDarkBlue}"
                                                 FlexLayout.AlignSelf="Start"
                                                 FlexLayout.Grow="1">
                                         </RadioButton>
@@ -163,7 +162,6 @@
                                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                         <RadioButton 
                                                 Value="{Binding .}"
-                                                BorderColor="{StaticResource VeryDarkBlue}"
                                                 FlexLayout.AlignSelf="Start"
                                                 FlexLayout.Grow="1">
                                         </RadioButton>
@@ -358,8 +356,7 @@
                                             <DataTemplate>
                                                 <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                                     <RadioButton 
-                                                        Value="{Binding .}"
-                                                        BorderColor="{StaticResource VeryDarkBlue}">
+                                                        Value="{Binding .}">
                                                     </RadioButton>
                                                     <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
                                                         <Label 

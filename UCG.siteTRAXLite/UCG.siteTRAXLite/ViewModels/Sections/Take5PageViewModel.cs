@@ -52,10 +52,10 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         public StepperEntity SelectedStepper
         {
             get { return selectedStepper; }
-            set 
+            set
             {
-                HandleSelectedStepper(value);
                 SetProperty(ref selectedStepper, value);
+                HandleSelectedStepper(value);
             }
         }
 
@@ -133,9 +133,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 if (take5Steppers.StepperSubmit != null)
                 {
                     take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
-
                     SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit);
-
                     Steppers.Add(take5Steppers.StepperSubmit);
                 }
             }
@@ -151,11 +149,34 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             ChangeTab(stepper);
         }
 
-        private void ChangeTab(StepperEntity stepper)
+        private async void ChangeTab(StepperEntity stepper)
         {
             ControlTab.IsVisible = stepper.StepperType == StepperType.Control;
             HazardTab.IsVisible = stepper.StepperType == StepperType.Hazard;
             SubmitTab.IsVisible = stepper.StepperType == StepperType.Submit;
+
+            if (HazardTab.IsVisible)
+                await LoadHazardData(stepper);
+        }
+
+        private async Task LoadHazardData(StepperEntity stepper)
+        {
+            var hazardsDB = await GetHazards();
+            foreach (var item in stepper.ActionList)
+            {
+                var matchedSubAction = item.SubActionList.FirstOrDefault(x =>
+                    hazardsDB.Any(h => x.Condition.ResponseData.Equals(h.Name, StringComparison.OrdinalIgnoreCase) && x.EResponseType == SorEformsResponseType.InputTextArea));
+                if (matchedSubAction == null)
+                    continue;
+
+                var hazard = hazardsDB.FirstOrDefault(h => matchedSubAction.Condition.ResponseData.Equals(h.Name, StringComparison.OrdinalIgnoreCase));
+
+                var selectedData = item.ResponseData
+                    .FirstOrDefault(d => matchedSubAction.Condition.ResponseData.Equals(d.Value, StringComparison.OrdinalIgnoreCase));
+
+                selectedData.IsChecked = true;
+                matchedSubAction.Response.Value = hazard.Description;
+            }
         }
 
         private void ChangeTab(StepperType type)
@@ -165,7 +186,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         public Take5TabModel GetCurrentTab()
         {
-            if (SelectedStepper == null) 
+            if (SelectedStepper == null)
                 return null;
 
             switch (SelectedStepper.StepperType)
@@ -196,17 +217,20 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         private async Task Confirm()
         {
             await SaveHazard();
-            #if WINDOWS
+#if WINDOWS
                         await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
-            #else
-                        await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
-            #endif
+#else
+            await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
+#endif
         }
 
         private async Task<bool> SaveHazard()
         {
+            await ClearAllHazards();
+
+            var hazards = await GetHazards();
+
             var checkedAnswers = HazardTab.Questions.Where(x => x.Response.IsChecked).ToList();
-            var hazardEntities = new List<HazardEntity>();
 
             foreach (var answer in checkedAnswers)
             {
@@ -217,10 +241,21 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                     Description = description.Response.Value,
                     SiteAddress = JobDetail.SiteName
                 };
-                hazardEntities.Add(hazard);
+                hazards.Add(hazard);
             }
 
-            return await _sorEformManager.SaveListHazard(hazardEntities);
+            return await _sorEformManager.SaveListHazard(hazards);
+        }
+
+        private async Task<List<HazardEntity>> GetHazards()
+        {
+            var result = await _sorEformManager.GetHazardsFromLocal();
+            return result;
+        }
+
+        private async Task<bool> ClearAllHazards()
+        {
+            return await _sorEformManager.DeleteAllHazards(); ;
         }
 
     }

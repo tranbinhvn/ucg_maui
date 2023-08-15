@@ -77,6 +77,12 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
             }
         }
 
+        public async Task<List<HazardEntity>> GetHazardsFromLocal(bool isConnected = true)
+        {
+            var response = repository.All();
+            return Mapper.Map<List<HazardEntity>>(response);
+        }
+
         public async Task<int> SaveHazard(HazardEntity hazardEntity, bool isConnected = true)
         {
             var dataObject = Mapper.Map<HazardDataObject>(hazardEntity);
@@ -87,6 +93,19 @@ namespace UCG.siteTRAXLite.Managers.SorEformManager
         {
             var listDataObjects = Mapper.Map<List<HazardDataObject>>(hazardEntities);
             return repository.SaveList(listDataObjects);
+        }
+
+        public async Task<bool> DeleteAllHazards(bool isConnected = true)
+        {
+            try
+            {
+                repository.DeleteAll();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

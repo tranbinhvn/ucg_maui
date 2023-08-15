@@ -36,7 +36,6 @@
                         <DataTemplate>
                             <RadioButton Content="{Binding Value}"
                                 Value="{Binding .}"
-                                BorderColor="{StaticResource VeryDarkBlue}"
                                 FlexLayout.AlignSelf="Start"
                                 FlexLayout.Grow="1"
                                 FontSize="20"
@@ -231,7 +230,6 @@
                                 Content="{Binding Value}"
                                 Value="{Binding .}"
                                 IsEnabled="False"
-                                BorderColor="{StaticResource VeryDarkBlue}"
                                 FlexLayout.AlignSelf="Start"
                                 FlexLayout.Grow="1"
                                 FontSize="20"
