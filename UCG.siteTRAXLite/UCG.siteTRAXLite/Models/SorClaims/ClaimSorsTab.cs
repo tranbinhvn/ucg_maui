@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Logics;
 using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Models.SorClaims
@@ -211,22 +212,11 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 {
                     RemoveResponse(item);
 
-                    if (!string.IsNullOrEmpty(SecondarySOR.Logic)
-                        && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_551)
-                        && item.Title.Equals(LogicConstant.LPC551_Travel_Title))
+                    if (LogicPriceCode551.CheckLogic(SecondarySOR.Logic, item))
                     {
                         foreach (var data in item.ResponseData)
                         {
-                            if (data.Value.Equals(LogicConstant.LPC551_FM_Authorisation_Option))
-                            {
-                                data.Validation = LogicConstant.LPC551_FM_Authorisation_Message;
-                            }
-                            if (data.Value.Equals(LogicConstant.LPC551_RM_Authorisation_Option))
-                            {
-                                data.Validation = LogicConstant.LPC551_RM_Authorisation_Message;
-                            }
-
-                            data.HasValidation = !string.IsNullOrEmpty(data.Validation);
+                            data.Validation = LogicPriceCode551.GetValidation(data);
                         }
                     }
                     SubActions.Add(item);

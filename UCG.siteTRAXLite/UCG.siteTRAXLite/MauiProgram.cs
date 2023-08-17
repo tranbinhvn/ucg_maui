@@ -18,6 +18,7 @@ using UCG.siteTRAXLite.WebServices.SorEformServices;
 using UCG.siteTRAXLite.Repositories.Database;
 using UCG.siteTRAXLite.Repositories;
 using UCG.siteTRAXLite.Repositories.Hazard;
+using UraniumUI;
 
 #if ANDROID
     using Microsoft.Maui.Controls.PlatformConfiguration;
@@ -75,7 +76,9 @@ namespace UCG.siteTRAXLite
 #if ANDROID
                     events.AddAndroid(android => android.OnApplicationCreate(app => UserDialogs.Init(app)));
 #endif
-                });
+                })
+                .UseUraniumUI()
+                .UseUraniumUIMaterial();
 #if ANDROID
             Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("NoUnderline", (h, v) =>
             {

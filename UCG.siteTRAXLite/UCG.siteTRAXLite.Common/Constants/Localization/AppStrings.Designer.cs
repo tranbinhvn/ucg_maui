@@ -178,7 +178,7 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Travel.
+        ///   Looks up a localized string similar to TRA.
         /// </summary>
         internal static string L563B_Travel_Title {
             get {
@@ -259,7 +259,7 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Travel.
+        ///   Looks up a localized string similar to TRA.
         /// </summary>
         internal static string LPC551_Travel_Title {
             get {

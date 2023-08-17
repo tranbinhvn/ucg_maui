@@ -102,6 +102,23 @@
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Fill"
+                                                            Value="{StaticResource SecondaryBlue}"/>
+                                                        <Setter
+                                                            TargetName="stepperLayout"
+                                                            Property="Path.Stroke"
+                                                            Value="{StaticResource SecondaryBlue}"/>
+                                                        <Setter
+                                                            TargetName="stepperTitle"
+                                                            Property="Label.TextColor"
+                                                            Value="{StaticResource LightGrey}"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Unchecked">
+                                                    <VisualState.Setters>
+                                                        <Setter
+                                                            TargetName="stepperLayout"
+                                                            Property="Path.Fill"
                                                             Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
                                                             TargetName="stepperLayout"
@@ -111,23 +128,6 @@
                                                             TargetName="stepperTitle"
                                                             Property="Label.TextColor"
                                                             Value="{StaticResource MediumDarkBlue}"/>
-                                                    </VisualState.Setters>
-                                                </VisualState>
-
-                                                <VisualState x:Name="Unchecked">
-                                                    <VisualState.Setters>
-                                                        <Setter
-                                                                TargetName="stepperLayout"
-                                                                Property="Path.Fill"
-                                                                Value="{StaticResource MediumDarkBlue}"/>
-                                                        <Setter
-                                                                TargetName="stepperLayout"
-                                                                Property="Path.Stroke"
-                                                                Value="{StaticResource MediumDarkBlue}"/>
-                                                        <Setter
-                                                                TargetName="stepperTitle"
-                                                                Property="Label.TextColor"
-                                                                Value="{StaticResource MediumLightBlue}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
                                             </VisualStateGroup>

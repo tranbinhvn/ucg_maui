@@ -1,5 +1,6 @@
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.ViewModels.Sections;
+using UraniumControls = UraniumUI.Material.Controls;
 
 namespace UCG.siteTRAXLite.Views.Sections;
 
@@ -11,17 +12,15 @@ public partial class Take5Page : MasterContentPage
 		BindingContext = viewModel;
     }
 
-    private void ResponseRadioSingle_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void RadioButtonGroupView_SelectedItemChanged(object sender, EventArgs e)
     {
-		var radioButton = (RadioButton) sender;
-        if (radioButton.IsChecked)
-        {
-            var selectedGroupName = radioButton.GroupName;
-            var currentTab = (BindingContext as Take5PageViewModel).GetCurrentTab();
-            if (currentTab != null)
-                currentTab.SetResponseRadioSingle(selectedGroupName, (ResponseDataItemEntity)radioButton.BindingContext);
-        }
-	}
+        var radioButton = (UraniumControls.RadioButtonGroupView)sender;
+        var action = radioButton.BindingContext as ActionItemEntity;
+        var selectedItem = radioButton.SelectedItem as ResponseDataItemEntity;
+        var currentTab = (BindingContext as Take5PageViewModel).GetCurrentTab();
+        if (currentTab != null)
+            currentTab.SetResponseRadioSingle(action, selectedItem);
+    }
 
     private void BrowseFiles_Clicked(object sender, EventArgs e)
     {
@@ -32,18 +31,31 @@ public partial class Take5Page : MasterContentPage
             currentTab.BrowseCommand.Execute(action);
     }
 
-    private void CheckboxResponse_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void CheckboxResponse_CheckedChanged(object sender, EventArgs e)
     {
-        var checkbox = (CheckBox) sender;
+        var checkbox = (UraniumControls.CheckBox)sender;
         var item = checkbox.BindingContext as ResponseDataItemEntity;
         var currentTab = (BindingContext as Take5PageViewModel).GetCurrentTab();
+        if (currentTab == null)
+            return;
+
         var action = currentTab.Questions.FirstOrDefault(q => q.ResponseData.Contains(item));
         if(action != null)
         {
             action.Response.Value = item.Value;
-            action.Response.IsChecked = e.Value;
-            if (currentTab != null)
-                currentTab.UpdateActionListCommand.Execute(action);
+            action.Response.IsChecked = checkbox.IsChecked;
+            currentTab.UpdateActionListCommand.Execute(action);
         }
+    }
+
+    private void RemoveFile_Clicked(object sender, EventArgs e)
+    {
+        var imgButton = (ImageButton)sender;
+        var item = imgButton.BindingContext as QuestionImageEntity;
+        var currentTab = (BindingContext as Take5PageViewModel).GetCurrentTab();
+        if (currentTab == null)
+            return;
+
+        currentTab.RemoveImageCommand.Execute(item);
     }
 }

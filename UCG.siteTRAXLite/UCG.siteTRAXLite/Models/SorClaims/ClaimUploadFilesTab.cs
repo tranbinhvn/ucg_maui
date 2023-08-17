@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Logics;
 using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Models.SorClaims
@@ -31,6 +32,15 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
+        private ICommand removeImageCommand;
+        public ICommand RemoveImageCommand
+        {
+            get
+            {
+                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionImageEntity>((image) => RemoveImage(image)));
+            }
+        }
+
         public ConcurrentObservableCollection<ActionItemEntity> SubActions { get; set; }
 
         private ActionItemEntity secondarySOR;
@@ -50,38 +60,33 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         public void LoadSors(ActionItemEntity secondarySor)
         {
             SecondarySOR = secondarySor;
+            SubActions.Clear();
             if (SecondarySOR != null)
             {
-                SubActions.Clear();
                 foreach (var item in SecondarySOR.SubActionList)
                 {
-                    if (IsTravelLogicPriceCode551(item) || IsLogic563B(item))
+                    if ( (LogicPriceCode551.CheckLogic(SecondarySOR.Logic, item) && LogicPriceCode551.CheckResponse(item)) 
+                        || (LogicPriceCode563B.CheckLogic(SecondarySOR.Logic, item))  && LogicPriceCode563B.CheckResponse(item))
                     {
                         SubActions.Add(item);
                     }
-
                 }
             }
         }
 
-        private bool IsTravelLogicPriceCode551(ActionItemEntity item)
+        private void RemoveImage(QuestionImageEntity image)
         {
-            return !string.IsNullOrEmpty(SecondarySOR.Logic)
-                        && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_551)
-                        && item.Title.Equals(LogicConstant.LPC551_Travel_Title)
-                        && item.Response != null
-                        && !string.IsNullOrEmpty(item.Response.Value)
-                        && !string.IsNullOrEmpty(item.ResponseName);
-        }
+            if (image == null)
+                return;
 
-        private bool IsLogic563B(ActionItemEntity item)
-        {
-            return !string.IsNullOrEmpty(SecondarySOR.Logic)
-                        && SecondarySOR.Logic.Equals(LogicConstant.Logic_Price_Code_563B)
-                        && item.Title.Equals(LogicConstant.L563B_Travel_Title)
-                        && item.Response != null
-                        && !string.IsNullOrEmpty(item.Response.Value)
-                        && !string.IsNullOrEmpty(item.ResponseName);
+            foreach (var action in SubActions)
+            {
+                if (!action.FilesUpload.Contains(image))
+                    continue;
+
+                action.FilesUpload = action.FilesUpload.Where(i => i != image).ToList();
+                break;
+            }
         }
 
         private async Task BrowseFile(ActionItemEntity question)

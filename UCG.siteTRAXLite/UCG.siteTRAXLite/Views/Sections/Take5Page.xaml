@@ -7,6 +7,7 @@
              xmlns:converters="clr-namespace:UCG.siteTRAXLite.Converters"
              xmlns:customcontrols="clr-namespace:UCG.siteTRAXLite.CustomControls"
              xmlns:viewmodels="clr-namespace:UCG.siteTRAXLite.ViewModels.Sections"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              JobDetail="{Binding JobDetail}"
              PageTitle="{Binding PageTitle}"
              GoBackCommand="{Binding GoBackCommand}"
@@ -24,32 +25,30 @@
                     FontSize="16"
                     FontFamily="FS-Medium"
                     TextColor="{StaticResource VeryDarkBlue}"/>
-                <FlexLayout 
-                        HorizontalOptions="StartAndExpand" 
-                        JustifyContent="SpaceAround"
-                        AlignItems="Stretch"
-                        Wrap="Wrap"
+                <material:RadioButtonGroupView 
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        Orientation="Horizontal"
                         RadioButtonGroup.GroupName="{Binding Index}"
-                        RadioButtonGroup.SelectedValue="{Binding Response}"
-                        BindableLayout.ItemsSource="{Binding ResponseData}">
+                        SelectedItem="{Binding Response}"
+                        BindableLayout.ItemsSource="{Binding ResponseData}"
+                        SelectedItemChanged="RadioButtonGroupView_SelectedItemChanged">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <RadioButton Content="{Binding Value}"
+                            <material:RadioButton 
                                 Value="{Binding .}"
-                                BorderColor="{StaticResource VeryDarkBlue}"
-                                FlexLayout.AlignSelf="Start"
-                                FlexLayout.Grow="1"
-                                FontSize="20"
-                                FontFamily="FS-Medium"
-                                CheckedChanged="ResponseRadioSingle_CheckedChanged"
-                                TextColor="{StaticResource MediumDarkBlue}"/>
+                                CircleColor="{StaticResource MediumDarkBlue}"
+                                Color="{StaticResource MediumDarkBlue}"
+                                Margin="0,0,20,0">
+                                <Label Text="{Binding Value}" TextColor="{StaticResource MediumDarkBlue}" FontFamily="FS-Medium" FontSize="20"></Label>
+                            </material:RadioButton>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
-                </FlexLayout>
+                </material:RadioButtonGroupView>
             </StackLayout>
         </DataTemplate>
         <DataTemplate x:Key="responseTake5SWMsModal">
-            <StackLayout BackgroundColor="{Binding ., Converter={StaticResource IndexToColorConverter}}"  HorizontalOptions="FillAndExpand">
+            <StackLayout BackgroundColor="{Binding ., Converter={StaticResource IndexToColorConverter}}"  HorizontalOptions="FillAndExpand" Padding="20,0,0,0">
                 <Label  
                 Text="Selected SWMS" 
                 FontSize="16"
@@ -97,12 +96,7 @@
         
         <!--Hazard Tab-->
         <DataTemplate x:Key="responseCheckboxSingle">
-            <StackLayout HorizontalOptions="FillAndExpand" x:Name="checkboxSingleLayout">
-                <Label  
-                    Text="{Binding Title}" 
-                    FontSize="16"
-                    FontFamily="FS-Medium"
-                    TextColor="{StaticResource VeryDarkBlue}"/>
+            <StackLayout HorizontalOptions="FillAndExpand" x:Name="checkboxSingleLayout" Padding="10,0,0,10">
                 <FlexLayout 
                         HorizontalOptions="StartAndExpand" 
                         JustifyContent="SpaceAround"
@@ -112,7 +106,7 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <StackLayout HorizontalOptions="Start" FlexLayout.AlignSelf="Start" FlexLayout.Grow="1" Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding IsChecked}" CheckedChanged="CheckboxResponse_CheckedChanged"/>
+                                <material:CheckBox Type="Material" CornerRadius="0" IsChecked="{Binding IsChecked}" Color="{StaticResource MediumDarkBlue}" CheckChanged="CheckboxResponse_CheckedChanged"/>
                                 <Label FontSize="20" FontFamily="FS-Light" FontAttributes="Bold" Text="{Binding Value}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" TextColor="{StaticResource MediumDarkBlue}" />
                             </StackLayout>
                         </DataTemplate>
@@ -139,8 +133,7 @@
                     ItemsSource="{Binding FilesUpload}" 
                     SelectionMode="None"
                     HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="FillAndExpand"
-                    HeightRequest="150">
+                    VerticalOptions="FillAndExpand">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -151,7 +144,8 @@
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="2*" />
-                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Image
@@ -166,6 +160,21 @@
                                                     <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
                                                     <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
                                                 </StackLayout>
+                                                <StackLayout Grid.Column="4" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                                    <ImageButton
+                                                        Grid.Column="2"
+                                                        Source="icon_bin.png"
+                                                        HeightRequest="45"
+                                                        WidthRequest="45"
+                                                        Padding="5"
+                                                        Margin="0,0,5,0"
+                                                        VerticalOptions="CenterAndExpand"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Clicked="RemoveFile_Clicked"
+                                                        BackgroundColor="{StaticResource MediumLightBlue}"
+                                                        CornerRadius="5">
+                                                    </ImageButton>
+                                                </StackLayout>
                                             </Grid>
                                         </StackLayout>
                                     </StackLayout>
@@ -177,7 +186,7 @@
             </StackLayout>
         </DataTemplate>
         <DataTemplate x:Key="responseInputTextArea">
-            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,10,20,0" Orientation="Horizontal">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,20" Orientation="Horizontal">
                 <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
                     <Label.Triggers>
                         <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
@@ -217,39 +226,31 @@
                     FontFamily="FS-Medium"
                     TextColor="{StaticResource VeryDarkBlue}"/>
                 <Label Text="{Binding Response.Value}"/>
-                <FlexLayout 
-                        HorizontalOptions="StartAndExpand" 
-                        JustifyContent="SpaceAround"
-                        AlignItems="Stretch"
-                        Wrap="Wrap"
-                        RadioButtonGroup.GroupName="{Binding Title}"
-                        RadioButtonGroup.SelectedValue="{Binding Response}"
-                        BindableLayout.ItemsSource="{Binding ResponseData}">
+                <material:RadioButtonGroupView 
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        Orientation="Horizontal"
+                        RadioButtonGroup.GroupName="{Binding Index}"
+                        SelectedItem="{Binding Response}"
+                        BindableLayout.ItemsSource="{Binding ResponseData}"
+                        SelectedItemChanged="RadioButtonGroupView_SelectedItemChanged">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <RadioButton 
-                                Content="{Binding Value}"
+                            <material:RadioButton 
                                 Value="{Binding .}"
-                                IsEnabled="False"
-                                BorderColor="{StaticResource VeryDarkBlue}"
-                                FlexLayout.AlignSelf="Start"
-                                FlexLayout.Grow="1"
-                                FontSize="20"
-                                FontFamily="FS-Medium"
-                                CheckedChanged="ResponseRadioSingle_CheckedChanged"
-                                TextColor="{StaticResource MediumDarkBlue}"/>
+                                CircleColor="{StaticResource MediumDarkBlue}"
+                                Color="{StaticResource MediumDarkBlue}"
+                                IsDisabled="True"
+                                Margin="0,0,20,0">
+                                <Label Text="{Binding Value}" TextColor="{StaticResource MediumDarkBlue}" FontFamily="FS-Medium" FontSize="20"></Label>
+                            </material:RadioButton>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
-                </FlexLayout>
+                </material:RadioButtonGroupView>
             </StackLayout>
         </DataTemplate>
         <DataTemplate x:Key="disableResponseCheckboxSingle">
             <StackLayout HorizontalOptions="FillAndExpand">
-                <Label  
-                    Text="{Binding Title}" 
-                    FontSize="16"
-                    FontFamily="FS-Medium"
-                    TextColor="{StaticResource VeryDarkBlue}"/>
                 <FlexLayout 
                         HorizontalOptions="StartAndExpand" 
                         JustifyContent="SpaceAround"
@@ -258,8 +259,8 @@
                         BindableLayout.ItemsSource="{Binding ResponseData}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout HorizontalOptions="Start" FlexLayout.AlignSelf="Start" FlexLayout.Grow="1" Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False" CheckedChanged="CheckboxResponse_CheckedChanged"/>
+                            <StackLayout Padding="10" HorizontalOptions="Start" FlexLayout.AlignSelf="Start" FlexLayout.Grow="1" Orientation="Horizontal">
+                                <material:CheckBox Type="Material" IsDisabled="True" CornerRadius="0" IsChecked="{Binding IsChecked}" Color="{StaticResource MediumDarkBlue}" CheckChanged="CheckboxResponse_CheckedChanged"/>
                                 <Label FontSize="20" FontFamily="FS-Light" FontAttributes="Bold" Text="{Binding Value}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="WordWrap" TextColor="{StaticResource MediumDarkBlue}" />
                             </StackLayout>
                         </DataTemplate>
@@ -326,7 +327,7 @@
             </StackLayout>
         </DataTemplate>
         <DataTemplate x:Key="disableResponseInputTextArea">
-            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,10,20,0" Orientation="Horizontal">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,20" Orientation="Horizontal">
                 <Label Text="{Binding Level, Converter={StaticResource ActionLevelsConverter}}" Margin="0,0,10,0" VerticalOptions="FillAndExpand" FontSize="50" VerticalTextAlignment="Center" LineBreakMode="WordWrap">
                     <Label.Triggers>
                         <DataTrigger Binding="{Binding Level}" TargetType="Label" Value="0">
@@ -357,7 +358,7 @@
             </StackLayout>
         </DataTemplate>
         <DataTemplate x:Key="disableResponseTake5SWMsModal">
-            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Padding="20,0,0,0">
                 <Label  
                     Text="Selected SWMS" 
                     FontSize="16"
@@ -532,15 +533,15 @@
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Fill"
-                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                            Value="{StaticResource SecondaryBlue}"/>
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Stroke"
-                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                            Value="{StaticResource SecondaryBlue}"/>
                                                         <Setter
                                                             TargetName="stepperTitle"
                                                             Property="Label.TextColor"
-                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                            Value="{StaticResource LightGrey}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
 
@@ -549,15 +550,15 @@
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Fill"
-                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                            Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Stroke"
-                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                            Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
                                                             TargetName="stepperTitle"
                                                             Property="Label.TextColor"
-                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                            Value="{StaticResource MediumDarkBlue}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
                                             </VisualStateGroup>
@@ -652,8 +653,7 @@
                     </StackLayout>
 
                     <StackLayout Margin="0,20,0,0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <Button Margin="10" Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"/>
-                        <Button Margin="10" Text="Confirm" Command="{Binding ConfirmCommand}" HorizontalOptions="FillAndExpand"/>
+                        <Button Style="{StaticResource ActiveButton}" Margin="10" Text="Submit" Command="{Binding SubmitCommand}" HorizontalOptions="FillAndExpand"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

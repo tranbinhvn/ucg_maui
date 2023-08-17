@@ -88,6 +88,7 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
 
         public ConditionEntity Condition { get; set; }
         public string Title { get; set; }
+        public string SubTitle { get; set; }
         public string Description { get; set; }
         public SorEformsResponseType EResponseType { get; set; }
         private string responseType;
@@ -288,7 +289,11 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
         public string Validation
         {
             get { return validation; }
-            set { SetProperty(ref this.validation, value); }
+            set 
+            {
+                HasValidation = !string.IsNullOrEmpty(value);
+                SetProperty(ref this.validation, value); 
+            }
         }
 
         private bool hasData;

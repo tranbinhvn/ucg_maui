@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Logics;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Models;
@@ -265,36 +266,10 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         {
             PriceCodes.Clear();
             var actionList = SummaryQuestions.ToList();
-            var priceCodeQuestions = actionList.Where(a => !string.IsNullOrEmpty(a.Logic) && a.Logic.Equals(MessageStrings.Logic_Price_Code_777, StringComparison.OrdinalIgnoreCase));
-
-            if (priceCodeQuestions != null && priceCodeQuestions.Any())
+            var priceCode777 = LogicPriceCode777.GetPriceCode(actionList);
+            if (priceCode777 != null)
             {
                 IsShowPriceCodeQTY = true;
-                var priceCode777 = new PriceCodeEntity
-                {
-                    PriceCode = "777"
-                };
-
-                var numberOfMeterQuestions = priceCodeQuestions.FirstOrDefault(a => a.Title.Equals(MessageStrings.Number_Of_Meters_Question, StringComparison.OrdinalIgnoreCase));
-                if (numberOfMeterQuestions != null && numberOfMeterQuestions.EResponseType == SorEformsResponseType.Number)
-                {
-                    if (int.TryParse(numberOfMeterQuestions.Response.Value, out int response))
-                    {
-                        if (response < 5)
-                        {
-                            priceCode777.QTY = "1";
-                        }
-                        else if (response >= 5 && response <= 10)
-                        {
-                            priceCode777.QTY = "3";
-                        }
-                        else
-                        {
-                            priceCode777.QTY = "submit for review";
-                        }
-                    }
-                }
-
                 PriceCodes.Add(priceCode777);
             }
         }

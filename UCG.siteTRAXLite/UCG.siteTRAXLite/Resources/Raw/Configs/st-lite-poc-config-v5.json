@@ -281,7 +281,8 @@
                       "responseType": "display-text",
                       "actionList": [
                         {
-                          "title": "Travel",
+                          "title": "TRA",
+                          "subTitle": "Travel",
                           "description": "Select distance travelled",
                           "responseType": "select-single",
                           "responseData": [
@@ -335,7 +336,8 @@
                   "responseType": "display-text",
                   "actionList": [
                     {
-                      "title": "Travel",
+                      "title": "TRA",
+                      "subTitle": "Travel",
                       "description": "Select distance travelled",
                       "responseType": "select-single",
                       "responseData": [
@@ -378,7 +380,8 @@
                   "responseType": "display-text",
                   "actionList": [
                     {
-                      "title": "Travel",
+                      "title": "TRA",
+                      "subTitle": "Travel",
                       "description": "Select distance travelled",
                       "responseType": "select-single",
                       "responseData": [

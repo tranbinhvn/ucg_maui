@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Views;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UraniumControls = UraniumUI.Material.Controls;
 
 namespace UCG.siteTRAXLite.CustomControls;
 
@@ -42,10 +43,10 @@ public partial class SWMSModal : Popup
 
     private void OnCancelButtonClicked(object? sender, EventArgs e) => Close(null);
 
-    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void CheckBox_CheckedChanged(object sender, EventArgs e)
     {
-        var checkbox = sender as CheckBox;
+        var checkbox = sender as UraniumControls.CheckBox;
         var item = checkbox.BindingContext as ResponseDataItemEntity;
-        item.IsChecked = e.Value;
+        item.IsChecked = checkbox.IsChecked;
     }
 }
