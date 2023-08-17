@@ -54,6 +54,8 @@ namespace UCG.siteTRAXLite.DataContracts.SorEformContracts
         public ConditionDTO Condition { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
+        [JsonProperty("subTitle")]
+        public string SubTitle { get; set; }
         [JsonProperty("description")]
         public string Description { get; set; }
         [JsonProperty("responseType")]

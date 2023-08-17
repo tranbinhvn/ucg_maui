@@ -32,6 +32,15 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
+        private ICommand removeImageCommand;
+        public ICommand RemoveImageCommand
+        {
+            get
+            {
+                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionImageEntity>((image) => RemoveImage(image)));
+            }
+        }
+
         public ConcurrentObservableCollection<ActionItemEntity> SubActions { get; set; }
 
         private ActionItemEntity secondarySOR;
@@ -62,6 +71,21 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                         SubActions.Add(item);
                     }
                 }
+            }
+        }
+
+        private void RemoveImage(QuestionImageEntity image)
+        {
+            if (image == null)
+                return;
+
+            foreach (var action in SubActions)
+            {
+                if (!action.FilesUpload.Contains(image))
+                    continue;
+
+                action.FilesUpload = action.FilesUpload.Where(i => i != image).ToList();
+                break;
             }
         }
 

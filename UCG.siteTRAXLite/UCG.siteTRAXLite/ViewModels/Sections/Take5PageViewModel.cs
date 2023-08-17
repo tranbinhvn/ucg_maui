@@ -78,6 +78,16 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
+        private ICommand submitCommand;
+
+        public ICommand SubmitCommand
+        {
+            get
+            {
+                return this.submitCommand ?? (this.submitCommand = new Command(async () => await Submit()));
+            }
+        }
+
         private ICommand showSWMSModalCommand;
 
         public ICommand ShowSWMSModalCommand
@@ -215,6 +225,15 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         }
 
         private async Task Confirm()
+        {
+#if WINDOWS
+            await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
+#else
+            await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
+#endif
+        }
+
+        private async Task Submit()
         {
             await SaveHazard();
 #if WINDOWS

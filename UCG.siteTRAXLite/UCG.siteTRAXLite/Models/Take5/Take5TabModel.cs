@@ -48,6 +48,15 @@ namespace UCG.siteTRAXLite.Models.Take5
             }
         }
 
+        private ICommand removeImageCommand;
+        public ICommand RemoveImageCommand
+        {
+            get
+            {
+                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionImageEntity>((image) => RemoveImage(image)));
+            }
+        }
+
         public ConcurrentObservableCollection<ActionItemEntity> Questions { get; set; }
 
         public Take5TabModel(StepperEntity stepper)
@@ -58,15 +67,11 @@ namespace UCG.siteTRAXLite.Models.Take5
             LoadQuestions();
         }
 
-        public void SetResponseRadioSingle(string questionIndex, ResponseDataItemEntity value)
+        public void SetResponseRadioSingle(ActionItemEntity action, ResponseDataItemEntity value)
         {
-            if (int.TryParse(questionIndex, out int result))
-            {
-                var question = Questions.FirstOrDefault(q => q.Index == result);
-                question.Response = value;
-                if (question != null)
-                    UpdateActionList(question);
-            }
+            action.Response = value;
+            if (action != null)
+                UpdateActionList(action);
         }
 
         private void LoadQuestions()
@@ -140,6 +145,22 @@ namespace UCG.siteTRAXLite.Models.Take5
 
                     Questions.Remove(action);
                 }
+            }
+        }
+
+        private void RemoveImage(QuestionImageEntity image)
+        {
+            if (image == null)
+                return;
+
+            var uploadQuesitons = Questions.Where(q => q.EResponseType == SorEformsResponseType.UploadMultiple);
+            foreach (var action in uploadQuesitons)
+            {
+                if (!action.FilesUpload.Contains(image))
+                    continue;
+
+                action.FilesUpload = action.FilesUpload.Where(i => i != image).ToList();
+                break;
             }
         }
 

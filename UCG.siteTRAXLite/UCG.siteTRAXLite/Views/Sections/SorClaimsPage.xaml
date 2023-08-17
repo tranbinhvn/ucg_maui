@@ -8,6 +8,7 @@
              xmlns:converters="clr-namespace:UCG.siteTRAXLite.Converters"
              xmlns:customcontrols="clr-namespace:UCG.siteTRAXLite.CustomControls"
              xmlns:vm="clr-namespace:UCG.siteTRAXLite.ViewModels.Sections"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              JobDetail="{Binding JobDetail}"
              PageTitle="{Binding PageTitle}"
              GoBackCommand="{Binding GoBackCommand}"
@@ -16,6 +17,7 @@
     <views:MasterContentPage.Resources>
         <converters:IndexToColorConverter x:Key="IndexToColorConverter"/>
         <converters:ActionLevelsConverter x:Key="ActionLevelsConverter"/>
+        <converters:StringNullOrEmptyConverter x:Key="StringNullOrEmptyConverter"/>
 
         <DataTemplate x:Key="sorSavedTemplate">
             <StackLayout HorizontalOptions="FillAndExpand">
@@ -73,21 +75,21 @@
                 <StackLayout IsVisible="{Binding IsEditing}" HorizontalOptions="FillAndExpand">
                     <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="Start" Padding="10">
                         <Label Text="{Binding Description}" Padding="30,0,30,0" FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}"/>
-                        <StackLayout 
-                                HorizontalOptions="FillAndExpand"  
-                                VerticalOptions="Start" 
-                                Padding="30,0,30,0"
-                                BindableLayout.ItemsSource="{Binding ResponseData}"
-                                RadioButtonGroup.GroupName="{Binding Title}"
-                                RadioButtonGroup.SelectedValue="{Binding Response}">
+                        <material:RadioButtonGroupView 
+                            HorizontalOptions="StartAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            Orientation="Vertical"
+                            Padding="30,0,30,0"
+                            BindableLayout.ItemsSource="{Binding ResponseData}"
+                            SelectedItemChanged="Sor_SelectedItemChanged"
+                            SelectedItem="{Binding Response}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-                                        <RadioButton 
-                                                Value="{Binding .}"
-                                                FlexLayout.AlignSelf="Start"
-                                                FlexLayout.Grow="1">
-                                        </RadioButton>
+                                    <material:RadioButton 
+                                        Value="{Binding .}"
+                                        CircleColor="{StaticResource MediumDarkBlue}"
+                                        Color="{StaticResource MediumDarkBlue}"
+                                        Margin="0,0,20,0">
                                         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
                                             <Label 
                                                 FontSize="16"
@@ -103,10 +105,10 @@
                                                 Text="{Binding Validation}">
                                             </Label>
                                         </StackLayout>
-                                    </StackLayout>
+                                    </material:RadioButton>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
-                        </StackLayout>
+                        </material:RadioButtonGroupView>
                         <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                             <Button Style="{StaticResource ActiveCancelButton}" Margin="10" Text="Cancel" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SorsTab.CancelCommand}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand"/>
                             <Button  Style="{StaticResource NormalButton}"  Margin="10" Text="Confirm" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SorsTab.ConfirmCommand}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand"/>
@@ -126,7 +128,7 @@
                     </StackLayout.Triggers>
                     <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                         <Label Text="{Binding Title}" FontSize="23" FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}"/>
-                        <Label Text="{Binding Description}" FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}"/>
+                        <Label IsVisible="{Binding SubTitle, Converter={StaticResource StringNullOrEmptyConverter}}" Text="{Binding SubTitle}" FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}"/>
                     </StackLayout>
                     <ImageButton
                             IsVisible="{Binding IsShowActionButton}"
@@ -150,21 +152,21 @@
                 <StackLayout IsVisible="{Binding IsEditing}" HorizontalOptions="FillAndExpand">
                     <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="Start" Padding="10">
                         <Label Text="{Binding Description}" Padding="30,0,30,0" FontSize="16" FontFamily="FS-Medium" TextColor="{StaticResource MediumDarkBlue}"/>
-                        <StackLayout 
-                                HorizontalOptions="FillAndExpand"  
-                                VerticalOptions="Start" 
-                                Padding="30,0,30,0"
-                                BindableLayout.ItemsSource="{Binding ResponseData}"
-                                RadioButtonGroup.GroupName="{Binding Title}"
-                                RadioButtonGroup.SelectedValue="{Binding Response}">
+                        <material:RadioButtonGroupView
+                            Padding="30,0,30,0"
+                            HorizontalOptions="StartAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            Orientation="Vertical"
+                            SelectedItemChanged="Sor_SelectedItemChanged"
+                            BindableLayout.ItemsSource="{Binding ResponseData}"
+                            SelectedItem="{Binding Response}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-                                        <RadioButton 
-                                                Value="{Binding .}"
-                                                FlexLayout.AlignSelf="Start"
-                                                FlexLayout.Grow="1">
-                                        </RadioButton>
+                                    <material:RadioButton 
+                                        Value="{Binding .}"
+                                        CircleColor="{StaticResource MediumDarkBlue}"
+                                        Color="{StaticResource MediumDarkBlue}"
+                                        Margin="0,0,20,0">
                                         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
                                             <Label 
                                                 FontSize="16"
@@ -180,10 +182,10 @@
                                                 Text="{Binding Validation}">
                                             </Label>
                                         </StackLayout>
-                                    </StackLayout>
+                                    </material:RadioButton>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
-                        </StackLayout>
+                        </material:RadioButtonGroupView>
                         <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                             <Button Style="{StaticResource ActiveCancelButton}" Margin="10" Text="Cancel" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SorsTab.CancelCommand}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand"/>
                             <Button  Style="{StaticResource NormalButton}"  Margin="10" Text="Confirm" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=SorsTab.ConfirmCommand}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand"/>
@@ -232,15 +234,15 @@
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Fill"
-                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                            Value="{StaticResource SecondaryBlue}"/>
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Stroke"
-                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                            Value="{StaticResource SecondaryBlue}"/>
                                                         <Setter
                                                             TargetName="stepperTitle"
                                                             Property="Label.TextColor"
-                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                            Value="{StaticResource LightGrey}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
 
@@ -249,15 +251,15 @@
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Fill"
-                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                            Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
                                                             TargetName="stepperLayout"
                                                             Property="Path.Stroke"
-                                                            Value="{StaticResource MediumDarkBlue}"/>
+                                                            Value="{StaticResource MediumLightBlue}"/>
                                                         <Setter
                                                             TargetName="stepperTitle"
                                                             Property="Label.TextColor"
-                                                            Value="{StaticResource MediumLightBlue}"/>
+                                                            Value="{StaticResource MediumDarkBlue}"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
                                             </VisualStateGroup>
@@ -322,17 +324,19 @@
                         </StackLayout>
                         <StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
                             <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal"  Padding="10,0,10,0">
-                                <Border HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-                                    <Picker FontSize="18"
-                                        FontFamily="FS-Medium"
-                                        TextColor="{StaticResource MediumDarkBlue}"
-                                        ItemDisplayBinding="{Binding Value}"
-                                        ItemsSource="{Binding SorsTab.PrimarySORSData}"
-                                        SelectedItem="{Binding SorsTab.SelectedPrimarySors}"
-                                        Title="Select an Option"
-                                        HorizontalOptions="FillAndExpand">
-                                    </Picker>
-                                </Border>
+                                <material:PickerField 
+                                    FontSize="18"
+                                    FontFamily="FS-Medium"
+                                    TextColor="{StaticResource MediumDarkBlue}"
+                                    ItemDisplayBinding="{Binding Value}"
+                                    ItemsSource="{Binding SorsTab.PrimarySORSData}"
+                                    SelectedItem="{Binding SorsTab.SelectedPrimarySors}"
+                                    Title="Select Primary SOR"
+                                    TitleColor="{StaticResource MediumDarkBlue}"
+                                    CornerRadius="0"
+                                    AllowClear="False"
+                                    HorizontalOptions="FillAndExpand">
+                                </material:PickerField>
                             </StackLayout>
                             <StackLayout IsVisible="{Binding SorsTab.IsShowSelectUnit}" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
                                 <StackLayout VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
@@ -345,33 +349,25 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label  Text="Select Unit" FontFamily="FS-Medium" FontSize="18" TextColor="{StaticResource MediumDarkBlue}"  Margin="10,0,10,0"/>
-                                    <StackLayout 
-                                        HorizontalOptions="FillAndExpand"  
-                                        VerticalOptions="Start" 
-                                        Padding="30,0,30,0"
-                                        BindableLayout.ItemsSource="{Binding SorsTab.SelectedPrimarySors.ResponseData}"
-                                        RadioButtonGroup.GroupName="{Binding SorsTab.SelectedPrimarySors.Value}"
-                                        RadioButtonGroup.SelectedValue="{Binding SorsTab.SelectedUnit}">
+                                    <material:RadioButtonGroupView 
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalOptions="FillAndExpand"
+                                        Orientation="Vertical"
+                                        Padding="10"
+                                        SelectedItemChanged="Unit_SelectedItemChanged"
+                                        BindableLayout.ItemsSource="{Binding SorsTab.SelectedPrimarySors.ResponseData}">
                                         <BindableLayout.ItemTemplate>
                                             <DataTemplate>
-                                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-                                                    <RadioButton 
-                                                        Value="{Binding .}">
-                                                    </RadioButton>
-                                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
-                                                        <Label 
-                                                            FontSize="16"
-                                                            FontFamily="FS-Medium"
-                                                            VerticalOptions="FillAndExpand"
-                                                            HorizontalOptions="FillAndExpand"
-                                                            TextColor="{StaticResource MediumDarkBlue}"
-                                                            Text="{Binding Value}">
-                                                        </Label>
-                                                    </StackLayout>
-                                                </StackLayout>
+                                                <material:RadioButton 
+                                                    Value="{Binding .}"
+                                                    CircleColor="{StaticResource MediumDarkBlue}"
+                                                    Color="{StaticResource MediumDarkBlue}"
+                                                    Margin="0,0,20,0">
+                                                    <Label Text="{Binding Value}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" TextColor="{StaticResource MediumDarkBlue}" LineBreakMode="WordWrap" FontFamily="FS-Medium" FontSize="16"></Label>
+                                                </material:RadioButton>
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>
-                                    </StackLayout>
+                                    </material:RadioButtonGroupView>
                                 </StackLayout>
                                 <StackLayout  VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
                                     <StackLayout.Triggers>
@@ -463,7 +459,8 @@
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="1*" />
                                                                     <ColumnDefinition Width="2*" />
-                                                                    <ColumnDefinition Width="2*" />
+                                                                    <ColumnDefinition Width="1*" />
+                                                                    <ColumnDefinition Width="1*" />
                                                                     <ColumnDefinition Width="1*" />
                                                                 </Grid.ColumnDefinitions>
                                                                 <Image
@@ -477,6 +474,21 @@
                                                                 <StackLayout Grid.Column="3" VerticalOptions="CenterAndExpand">
                                                                     <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
                                                                     <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
+                                                                </StackLayout>
+                                                                <StackLayout Grid.Column="4" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                                                    <ImageButton
+                                                                        Grid.Column="2"
+                                                                        Source="icon_bin.png"
+                                                                        HeightRequest="45"
+                                                                        WidthRequest="45"
+                                                                        Padding="5"
+                                                                        Margin="0,0,5,0"
+                                                                        VerticalOptions="CenterAndExpand"
+                                                                        HorizontalOptions="EndAndExpand"
+                                                                        Clicked="RemoveFile_Clicked"
+                                                                        BackgroundColor="{StaticResource MediumLightBlue}"
+                                                                        CornerRadius="5">
+                                                                    </ImageButton>
                                                                 </StackLayout>
                                                             </Grid>
                                                         </StackLayout>
