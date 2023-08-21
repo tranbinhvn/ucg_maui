@@ -133,7 +133,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 if (sorClaimsSteppers.StepperUploadFiles != null)
                 {
                     sorClaimsSteppers.StepperUploadFiles.StepperType = StepperType.UploadFiles;
-                    UploadFilesTab = new ClaimUploadFilesTab(sorClaimsSteppers.StepperControl);
+                    UploadFilesTab = new ClaimUploadFilesTab(sorClaimsSteppers.StepperControl, AlertService);
                     Steppers.Add(sorClaimsSteppers.StepperUploadFiles);
                 }
 
@@ -184,11 +184,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         private async Task Confirm()
         {
-#if WINDOWS
             await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
-#else
-            await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
-#endif
         }
 
         private void EditPrimary()

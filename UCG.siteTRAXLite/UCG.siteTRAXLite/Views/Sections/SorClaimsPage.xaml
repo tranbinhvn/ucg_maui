@@ -451,6 +451,7 @@
                                             <StackLayout 
                                                 HorizontalOptions="FillAndExpand" 
                                                 VerticalOptions="FillAndExpand"
+                                                HeightRequest="{Binding AttachmentHeightRequest}"
                                                 BindableLayout.ItemsSource="{Binding FilesUpload}">
                                                 <BindableLayout.ItemTemplate>
                                                     <DataTemplate>
@@ -475,7 +476,7 @@
                                                                     <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
                                                                     <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
                                                                 </StackLayout>
-                                                                <StackLayout Grid.Column="4" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                                                <StackLayout Grid.Column="4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
                                                                     <ImageButton
                                                                         Grid.Column="2"
                                                                         Source="icon_bin.png"
@@ -496,7 +497,7 @@
                                                 </BindableLayout.ItemTemplate>
                                             </StackLayout>
                                         </StackLayout>
-                                        <StackLayout Margin="0,20,0,0" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
+                                        <StackLayout Margin="0,20,0,0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                             <Button 
                                             HorizontalOptions="FillAndExpand"
                                             VerticalOptions="Start"
@@ -510,6 +511,15 @@
                                 </StackLayout>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                    <StackLayout IsVisible="{Binding UploadFilesTab.IsShowUploadButton}" Margin="0,20,0,0"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="10">
+                        <Button 
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="Start"
+                            TextTransform="Uppercase"
+                            Style="{StaticResource ActiveButton}"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=UploadFilesTab.UploadCommand}"
+                            Text="Upload"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout IsVisible="{Binding SubmitTab.IsVisible}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

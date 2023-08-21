@@ -347,5 +347,14 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
                 return ResourceManager.GetString("Submitted_Successfully", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded files successfully.
+        /// </summary>
+        internal static string Uploaded_Files_Successfully {
+            get {
+                return ResourceManager.GetString("Uploaded_Files_Successfully", resourceCulture);
+            }
+        }
     }
 }

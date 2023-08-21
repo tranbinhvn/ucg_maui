@@ -2,17 +2,27 @@
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Logics;
+using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Models.SorClaims
 {
     public class ClaimUploadFilesTab : BindableBase
     {
+        private readonly IAlertService _alertService;
+
         private bool isVisible;
         public bool IsVisible
         {
             get { return isVisible; }
             set { SetProperty(ref isVisible, value); }
+        }
+
+        private bool isShowUploadButton;
+        public bool IsShowUploadButton
+        {
+            get { return isShowUploadButton; }
+            set { SetProperty(ref isShowUploadButton, value); }
         }
 
         private StepperEntity stepperEntity;
@@ -41,6 +51,16 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
+        private ICommand uploadCommand;
+
+        public ICommand UploadCommand
+        {
+            get
+            {
+                return this.uploadCommand ?? (this.uploadCommand = new Command(async () => await UploadFiles()));
+            }
+        }
+
         public ConcurrentObservableCollection<ActionItemEntity> SubActions { get; set; }
 
         private ActionItemEntity secondarySOR;
@@ -50,9 +70,10 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             set { SetProperty(ref secondarySOR, value); }
         }
 
-        public ClaimUploadFilesTab(StepperEntity entity)
+        public ClaimUploadFilesTab(StepperEntity entity, IAlertService alertService)
         {
             StepperEntity = entity;
+            _alertService = alertService;
 
             SubActions = new ConcurrentObservableCollection<ActionItemEntity>();
         }
@@ -71,6 +92,9 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                         SubActions.Add(item);
                     }
                 }
+
+                IsShowUploadButton = SubActions.Any();
+                RecalculateAttachmentHeight();
             }
         }
 
@@ -85,6 +109,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     continue;
 
                 action.FilesUpload = action.FilesUpload.Where(i => i != image).ToList();
+                RecalculateAttachmentHeight();
                 break;
             }
         }
@@ -93,6 +118,8 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             try
             {
+                var currentFiles = question.FilesUpload?.ToList() ?? new List<QuestionImageEntity>();
+
                 var results = await FilePicker.Default.PickMultipleAsync(new PickOptions
                 {
                     PickerTitle = question.Title,
@@ -109,12 +136,31 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     FileSize = new FileInfo(item.FullPath).Length,
                 }).ToList();
 
-                question.FilesUpload = uploadedFiles;
+                currentFiles.AddRange(uploadedFiles);
+
+                question.FilesUpload = currentFiles.ToList();
+                RecalculateAttachmentHeight();
             }
             catch (Exception ex)
             {
                 return;
             }
+        }
+
+        private void RecalculateAttachmentHeight()
+        {
+            foreach (var action in SubActions)
+            {
+                if (action.FilesUpload == null || !action.FilesUpload.Any())
+                    continue;
+
+                action.AttachmentHeightRequest = action.FilesUpload.Count * 80;
+            }
+        }
+
+        private async Task UploadFiles()
+        {
+            await _alertService.ShowAlertAsync(MessageStrings.Uploaded_Files_Successfully);
         }
     }
 }

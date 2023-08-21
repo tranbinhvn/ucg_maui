@@ -1,4 +1,6 @@
-﻿namespace UCG.siteTRAXLite.Services
+﻿using Acr.UserDialogs;
+
+namespace UCG.siteTRAXLite.Services
 {
     public class AlertService : IAlertService
     {
@@ -14,7 +16,11 @@
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
+#if WINDOWS
                 MainPage.DisplayAlert(title, message, cancel);
+#else
+                UserDialogs.Instance.Alert(message, title, cancel);
+#endif
             });
         }
 
@@ -22,7 +28,11 @@
         {
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
+#if WINDOWS
                 MainPage.DisplayAlert(title, message, cancel);
+#else
+                UserDialogs.Instance.Alert(message, title, cancel);
+#endif
             });
         }
     }
