@@ -97,6 +97,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please check duplicated file.
+        /// </summary>
+        internal static string Duplicated_File_Warning {
+            get {
+                return ResourceManager.GetString("Duplicated_File_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad Request.
         /// </summary>
         internal static string Error_BadRequest {
@@ -318,6 +327,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         internal static string Secondary_SORs {
             get {
                 return ResourceManager.GetString("Secondary_SORs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select files to upload.
+        /// </summary>
+        internal static string Select_Files_Warning {
+            get {
+                return ResourceManager.GetString("Select_Files_Warning", resourceCulture);
             }
         }
         

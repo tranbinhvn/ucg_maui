@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Logics;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
@@ -92,10 +93,9 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                         SubActions.Add(item);
                     }
                 }
-
-                IsShowUploadButton = SubActions.Any();
-                RecalculateAttachmentHeight();
             }
+
+            IsShowUploadButton = SubActions.Any();
         }
 
         private void RemoveImage(QuestionImageEntity image)
@@ -109,7 +109,6 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     continue;
 
                 action.FilesUpload = action.FilesUpload.Where(i => i != image).ToList();
-                RecalculateAttachmentHeight();
                 break;
             }
         }
@@ -129,6 +128,19 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 if (results == null || !results.Any())
                     return;
 
+                var currentFilePaths = currentFiles.Select(f => f.ImageSource).ToList();
+
+                foreach (var uploadedFile in results)
+                {
+                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.FullPath, currentFilePaths);
+                    if (isDuplicated)
+                    {
+                        await _alertService.ShowAlertAsync(MessageStrings.Duplicated_File_Warning);
+
+                        return;
+                    }
+                }
+
                 var uploadedFiles = results.Select(item => new QuestionImageEntity
                 {
                     FileName = item.FileName,
@@ -139,7 +151,6 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 currentFiles.AddRange(uploadedFiles);
 
                 question.FilesUpload = currentFiles.ToList();
-                RecalculateAttachmentHeight();
             }
             catch (Exception ex)
             {
@@ -147,20 +158,14 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
-        private void RecalculateAttachmentHeight()
-        {
-            foreach (var action in SubActions)
-            {
-                if (action.FilesUpload == null || !action.FilesUpload.Any())
-                    continue;
-
-                action.AttachmentHeightRequest = action.FilesUpload.Count * 80;
-            }
-        }
-
         private async Task UploadFiles()
         {
-            await _alertService.ShowAlertAsync(MessageStrings.Uploaded_Files_Successfully);
+            var isSelectedFiles = SubActions.Any(a => a.FilesUpload != null && a.FilesUpload.Any());
+            var message = isSelectedFiles 
+                ? MessageStrings.Uploaded_Files_Successfully 
+                : MessageStrings.Select_Files_Warning;
+
+            await _alertService.ShowAlertAsync(message);
         }
     }
 }

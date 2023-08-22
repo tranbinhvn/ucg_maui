@@ -16,11 +16,7 @@ namespace UCG.siteTRAXLite.Services
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-#if WINDOWS
                 MainPage.DisplayAlert(title, message, cancel);
-#else
-                UserDialogs.Instance.Alert(message, title, cancel);
-#endif
             });
         }
 
@@ -28,11 +24,7 @@ namespace UCG.siteTRAXLite.Services
         {
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
-#if WINDOWS
                 MainPage.DisplayAlert(title, message, cancel);
-#else
-                UserDialogs.Instance.Alert(message, title, cancel);
-#endif
             });
         }
     }

@@ -27,5 +27,7 @@ namespace UCG.siteTRAXLite.Common.Constants
         public static string Logic_Price_Code_777 = AppStrings.Logic_Price_Code_777;
         public static string Number_Of_Meters_Question = AppStrings.Number_Of_Meters_Question;
         public static string Uploaded_Files_Successfully = AppStrings.Uploaded_Files_Successfully;
+        public static string Select_Files_Warning = AppStrings.Select_Files_Warning;
+        public static string Duplicated_File_Warning = AppStrings.Duplicated_File_Warning;
     }
 }

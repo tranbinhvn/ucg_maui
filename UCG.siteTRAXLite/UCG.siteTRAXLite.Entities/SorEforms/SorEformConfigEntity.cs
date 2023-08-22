@@ -211,13 +211,6 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             }
         }
 
-        private int attachmentHeightRequest;
-        public int AttachmentHeightRequest
-        {
-            get { return attachmentHeightRequest; }
-            set { SetProperty(ref attachmentHeightRequest, value); }
-        }
-
         public List<ResponseDataItemEntity> ResponseData { get; set; }
 
         public List<ActionItemEntity> SubActionList { get; set; }
