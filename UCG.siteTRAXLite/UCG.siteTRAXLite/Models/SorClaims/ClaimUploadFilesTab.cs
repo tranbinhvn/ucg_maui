@@ -1,18 +1,29 @@
 ﻿using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Logics;
+using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Models.SorClaims
 {
     public class ClaimUploadFilesTab : BindableBase
     {
+        private readonly IAlertService _alertService;
+
         private bool isVisible;
         public bool IsVisible
         {
             get { return isVisible; }
             set { SetProperty(ref isVisible, value); }
+        }
+
+        private bool isShowUploadButton;
+        public bool IsShowUploadButton
+        {
+            get { return isShowUploadButton; }
+            set { SetProperty(ref isShowUploadButton, value); }
         }
 
         private StepperEntity stepperEntity;
@@ -41,6 +52,16 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             }
         }
 
+        private ICommand uploadCommand;
+
+        public ICommand UploadCommand
+        {
+            get
+            {
+                return this.uploadCommand ?? (this.uploadCommand = new Command(async () => await UploadFiles()));
+            }
+        }
+
         public ConcurrentObservableCollection<ActionItemEntity> SubActions { get; set; }
 
         private ActionItemEntity secondarySOR;
@@ -50,9 +71,10 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             set { SetProperty(ref secondarySOR, value); }
         }
 
-        public ClaimUploadFilesTab(StepperEntity entity)
+        public ClaimUploadFilesTab(StepperEntity entity, IAlertService alertService)
         {
             StepperEntity = entity;
+            _alertService = alertService;
 
             SubActions = new ConcurrentObservableCollection<ActionItemEntity>();
         }
@@ -72,6 +94,8 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     }
                 }
             }
+
+            IsShowUploadButton = SubActions.Any();
         }
 
         private void RemoveImage(QuestionImageEntity image)
@@ -93,6 +117,8 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             try
             {
+                var currentFiles = question.FilesUpload?.ToList() ?? new List<QuestionImageEntity>();
+
                 var results = await FilePicker.Default.PickMultipleAsync(new PickOptions
                 {
                     PickerTitle = question.Title,
@@ -102,6 +128,19 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                 if (results == null || !results.Any())
                     return;
 
+                var currentFilePaths = currentFiles.Select(f => f.ImageSource).ToList();
+
+                foreach (var uploadedFile in results)
+                {
+                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.FullPath, currentFilePaths);
+                    if (isDuplicated)
+                    {
+                        await _alertService.ShowAlertAsync(MessageStrings.Duplicated_File_Warning);
+
+                        return;
+                    }
+                }
+
                 var uploadedFiles = results.Select(item => new QuestionImageEntity
                 {
                     FileName = item.FileName,
@@ -109,12 +148,24 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     FileSize = new FileInfo(item.FullPath).Length,
                 }).ToList();
 
-                question.FilesUpload = uploadedFiles;
+                currentFiles.AddRange(uploadedFiles);
+
+                question.FilesUpload = currentFiles.ToList();
             }
             catch (Exception ex)
             {
                 return;
             }
+        }
+
+        private async Task UploadFiles()
+        {
+            var isSelectedFiles = SubActions.Any(a => a.FilesUpload != null && a.FilesUpload.Any());
+            var message = isSelectedFiles 
+                ? MessageStrings.Uploaded_Files_Successfully 
+                : MessageStrings.Select_Files_Warning;
+
+            await _alertService.ShowAlertAsync(message);
         }
     }
 }

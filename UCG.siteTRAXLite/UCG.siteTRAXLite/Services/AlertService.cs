@@ -1,4 +1,6 @@
-﻿namespace UCG.siteTRAXLite.Services
+﻿using Acr.UserDialogs;
+
+namespace UCG.siteTRAXLite.Services
 {
     public class AlertService : IAlertService
     {

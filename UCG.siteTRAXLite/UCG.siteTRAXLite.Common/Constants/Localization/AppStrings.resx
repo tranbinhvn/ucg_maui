@@ -129,6 +129,9 @@
   <data name="ConfigFolderName" xml:space="preserve">
     <value>Configs</value>
   </data>
+  <data name="Duplicated_File_Warning" xml:space="preserve">
+    <value>Please check duplicated file</value>
+  </data>
   <data name="Error_BadRequest" xml:space="preserve">
     <value>Bad Request</value>
   </data>
@@ -204,6 +207,9 @@
   <data name="Secondary_SORs" xml:space="preserve">
     <value>Secondary SORs</value>
   </data>
+  <data name="Select_Files_Warning" xml:space="preserve">
+    <value>Please select files to upload</value>
+  </data>
   <data name="SiteTraxAir_Package_Name" xml:space="preserve">
     <value>com.ucg.sitetraxair</value>
   </data>
@@ -212,5 +218,8 @@
   </data>
   <data name="Submitted_Successfully" xml:space="preserve">
     <value>Submitted successfully</value>
+  </data>
+  <data name="Uploaded_Files_Successfully" xml:space="preserve">
+    <value>Uploaded files successfully</value>
   </data>
 </root>

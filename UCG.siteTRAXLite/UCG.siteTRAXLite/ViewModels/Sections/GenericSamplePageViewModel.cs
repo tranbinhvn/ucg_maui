@@ -281,11 +281,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         private async Task Confirm()
         {
-#if WINDOWS
             await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
-#else
-            await UserDialogs.Instance.AlertAsync(MessageStrings.Submitted_Successfully);
-#endif
         }
     }
 }

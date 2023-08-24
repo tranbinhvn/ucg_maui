@@ -97,6 +97,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please check duplicated file.
+        /// </summary>
+        internal static string Duplicated_File_Warning {
+            get {
+                return ResourceManager.GetString("Duplicated_File_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad Request.
         /// </summary>
         internal static string Error_BadRequest {
@@ -322,6 +331,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select files to upload.
+        /// </summary>
+        internal static string Select_Files_Warning {
+            get {
+                return ResourceManager.GetString("Select_Files_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to com.ucg.sitetraxair.
         /// </summary>
         internal static string SiteTraxAir_Package_Name {
@@ -345,6 +363,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         internal static string Submitted_Successfully {
             get {
                 return ResourceManager.GetString("Submitted_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded files successfully.
+        /// </summary>
+        internal static string Uploaded_Files_Successfully {
+            get {
+                return ResourceManager.GetString("Uploaded_Files_Successfully", resourceCulture);
             }
         }
     }
