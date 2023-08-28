@@ -51,7 +51,7 @@ public partial class Take5Page : MasterContentPage
     private void RemoveFile_Clicked(object sender, EventArgs e)
     {
         var imgButton = (ImageButton)sender;
-        var item = imgButton.BindingContext as QuestionImageEntity;
+        var item = imgButton.BindingContext as QuestionAttachmentEntity;
         var currentTab = (BindingContext as Take5PageViewModel).GetCurrentTab();
         if (currentTab == null)
             return;

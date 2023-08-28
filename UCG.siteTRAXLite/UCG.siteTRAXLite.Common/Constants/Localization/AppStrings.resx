@@ -219,6 +219,9 @@
   <data name="Submitted_Successfully" xml:space="preserve">
     <value>Submitted successfully</value>
   </data>
+  <data name="Uploaded_Files_Failed" xml:space="preserve">
+    <value>File upload failed, there may be an error</value>
+  </data>
   <data name="Uploaded_Files_Successfully" xml:space="preserve">
     <value>Uploaded files successfully</value>
   </data>

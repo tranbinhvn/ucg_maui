@@ -476,13 +476,13 @@
                                                         HeightRequest="30"
                                                         HorizontalOptions="StartAndExpand"
                                                         VerticalOptions="CenterAndExpand"
-                                                        Source="{Binding ImageSource}"
+                                                        Source="icon_folderopen.png"
                                                         WidthRequest="30" />
                                                     <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" FontFamily="FS-Medium" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" Text="{Binding FileName}" VerticalOptions="CenterAndExpand" WidthRequest="50" />
                                                     <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalTextAlignment="Center" FontFamily="FS-Medium" Text="{Binding FileSizeInKB}" VerticalOptions="CenterAndExpand" />
                                                     <StackLayout Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
-                                                        <Label Text="100%" VerticalTextAlignment="Center" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="Start" HorizontalOptions="FillAndExpand" />
-                                                        <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
+                                                        <Label Text="{Binding TextProgress}" VerticalTextAlignment="Center" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="Start" HorizontalOptions="FillAndExpand" />
+                                                        <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="{Binding Progress}" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
                                                     </StackLayout>
                                                     <ImageButton
                                                         Margin="0,0,0,10"
@@ -498,6 +498,20 @@
                                                         Clicked="RemoveFile_Clicked"
                                                         BackgroundColor="{StaticResource MediumLightBlue}"
                                                         CornerRadius="5">
+                                                        <ImageButton.Triggers>
+                                                            <DataTrigger TargetType="ImageButton" Binding="{Binding IsComplete}" Value="True">
+                                                                <Setter Property="IsVisible" Value="False"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="ImageButton" Binding="{Binding IsComplete}" Value="False">
+                                                                <Setter Property="IsVisible" Value="True"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="ImageButton" Binding="{Binding IsUploading}" Value="True">
+                                                                <Setter Property="IsVisible" Value="False"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="ImageButton" Binding="{Binding IsUploading}" Value="False">
+                                                                <Setter Property="IsVisible" Value="True"/>
+                                                            </DataTrigger>
+                                                        </ImageButton.Triggers>
                                                     </ImageButton>
                                                 </Grid>
                                             </DataTemplate>
@@ -511,7 +525,16 @@
                                         Style="{StaticResource NormalButton}"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=UploadFilesTab.BrowseCommand}"
                                         CommandParameter="{Binding .}"
-                                        Text="Select Attachment"/>
+                                        Text="Select Attachment">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsUploading}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsUploading}" Value="False">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>

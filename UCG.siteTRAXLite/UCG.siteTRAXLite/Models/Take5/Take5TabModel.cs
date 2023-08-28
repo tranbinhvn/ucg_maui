@@ -53,7 +53,7 @@ namespace UCG.siteTRAXLite.Models.Take5
         {
             get
             {
-                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionImageEntity>((image) => RemoveImage(image)));
+                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionAttachmentEntity>((image) => RemoveImage(image)));
             }
         }
 
@@ -148,7 +148,7 @@ namespace UCG.siteTRAXLite.Models.Take5
             }
         }
 
-        private void RemoveImage(QuestionImageEntity image)
+        private void RemoveImage(QuestionAttachmentEntity image)
         {
             if (image == null)
                 return;
@@ -178,10 +178,10 @@ namespace UCG.siteTRAXLite.Models.Take5
                 if (results == null || !results.Any())
                     return;
 
-                var uploadedFiles = results.Select(item => new QuestionImageEntity
+                var uploadedFiles = results.Select(item => new QuestionAttachmentEntity
                 {
                     FileName = item.FileName,
-                    ImageSource = item.FullPath,
+                    Source = item.FullPath,
                     FileSize = new FileInfo(item.FullPath).Length,
                 }).ToList();
 

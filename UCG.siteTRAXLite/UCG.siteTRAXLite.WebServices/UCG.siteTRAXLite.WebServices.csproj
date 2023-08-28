@@ -12,6 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\UCG.siteTRAXLite.Common\UCG.siteTRAXLite.Common.csproj" />
     <ProjectReference Include="..\UCG.siteTRAXLite.DataContracts\UCG.siteTRAXLite.DataContracts.csproj" />
   </ItemGroup>

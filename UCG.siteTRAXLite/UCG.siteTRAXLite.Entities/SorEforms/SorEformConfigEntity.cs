@@ -132,8 +132,8 @@ namespace UCG.siteTRAXLite.Entities.SorEforms
             }
         }
 
-        private List<QuestionImageEntity> filesUpload;
-        public List<QuestionImageEntity> FilesUpload
+        private List<QuestionAttachmentEntity> filesUpload;
+        public List<QuestionAttachmentEntity> FilesUpload
         {
             get { return filesUpload; }
             set
