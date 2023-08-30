@@ -10,5 +10,6 @@ namespace UCG.siteTRAXLite.WebServices.AzureBlob
         Task UploadFileAsync(FileStorageEntity fileStorage, string src, string contentType, IProgress<long> progressHandler = null);
         Task<bool> BlobExistsOnCloudAsync(string azureContainer, string azureFolder, string fileName);
         bool BlobExistsOnCloud(string azureContainer, string azureFolder, string fileName);
+        Task GenerateThumbnailImageAzureAsync(FileStorageEntity fileStorage, string source, string contentType);
     }
 }

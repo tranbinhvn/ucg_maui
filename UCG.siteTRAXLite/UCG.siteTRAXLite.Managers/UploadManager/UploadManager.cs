@@ -31,6 +31,7 @@ namespace UCG.siteTRAXLite.Managers
                         {
                             FileStorageK = Guid.NewGuid(),
                             FileName = file.FileName,
+                            AzureContainer = azureContainer,
                             AzureFolder = azureFolder
                         };
 

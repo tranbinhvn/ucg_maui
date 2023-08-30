@@ -152,13 +152,13 @@
                                                 Grid.Column="0"
                                                 HeightRequest="30"
                                                 HorizontalOptions="StartAndExpand"
-                                                Source="{Binding ImageSource}"
+                                                Source="{Binding Source}"
                                                 WidthRequest="30" />
                                                 <Label Grid.Column="1" FontFamily="FS-Medium" LineBreakMode="TailTruncation" Text="{Binding FileName}" VerticalOptions="CenterAndExpand" WidthRequest="50" />
                                                 <Label Grid.Column="2" FontFamily="FS-Medium" Text="{Binding FileSizeInKB}" VerticalOptions="CenterAndExpand" />
                                                 <StackLayout Grid.Column="3" VerticalOptions="CenterAndExpand">
-                                                    <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
-                                                    <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
+                                                    <Label Text="{Binding TextProgress}" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
+                                                    <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="{Binding Progress}" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
                                                 </StackLayout>
                                                 <StackLayout Grid.Column="4" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                                     <ImageButton
@@ -308,13 +308,13 @@
                                                 Grid.Column="0"
                                                 HeightRequest="30"
                                                 HorizontalOptions="StartAndExpand"
-                                                Source="{Binding ImageSource}"
+                                                Source="{Binding Source}"
                                                 WidthRequest="30" />
                                                 <Label Grid.Column="1" FontFamily="FS-Medium" LineBreakMode="TailTruncation" Text="{Binding FileName}" VerticalOptions="CenterAndExpand" WidthRequest="50" />
                                                 <Label Grid.Column="2" FontFamily="FS-Medium" Text="{Binding FileSizeInKB}" VerticalOptions="CenterAndExpand" />
                                                 <StackLayout Grid.Column="3" VerticalOptions="CenterAndExpand">
-                                                    <Label Text="100%" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
-                                                    <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="100" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
+                                                    <Label Text="{Binding TextProgress}" FontFamily="FS-Medium" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand" />
+                                                    <ProgressBar HeightRequest="10" HorizontalOptions="FillAndExpand" Progress="{Binding Progress}" ProgressColor="{StaticResource VeryDarkBlue}" VerticalOptions="FillAndExpand" />
                                                 </StackLayout>
                                             </Grid>
                                         </StackLayout>

@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
+using SkiaSharp;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Entities;
 
@@ -84,6 +85,63 @@ namespace UCG.siteTRAXLite.WebServices.AzureBlob
         {
             var blob = GetBlockBlobReference(azureContainer, azureFolder, fileName);
             return blob.Exists();
+        }
+
+        public async Task GenerateThumbnailImageAzureAsync(FileStorageEntity fileStorage, string source, string contentType)
+        {
+            string thumbnailsPath = AzureConstants.Configurations["AzureStorageContainer:Thumbnails"];
+            var blob = await GetBlockBlobReferenceAsync(fileStorage.AzureContainer, thumbnailsPath, fileStorage.FileName);
+            var blobUploadOptions = new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders
+                {
+                    ContentType = contentType
+                }
+            };
+
+            try
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (SKBitmap skBitmap = SKBitmap.Decode(source))
+                    {
+                        int maxWidth = 480;
+                        int maxHeight = 360;
+                        int newWidth;
+                        int newHeight;
+
+                        if (skBitmap.Width > maxWidth || skBitmap.Height > maxHeight)
+                        {
+                            float ratioX = (float)maxWidth / skBitmap.Width;
+                            float ratioY = (float)maxHeight / skBitmap.Height;
+                            float ratio = Math.Min(ratioX, ratioY);
+
+                            newWidth = (int)(skBitmap.Width * ratio);
+                            newHeight = (int)(skBitmap.Height * ratio);
+                        }
+                        else
+                        {
+                            newWidth = skBitmap.Width;
+                            newHeight = skBitmap.Height;
+                        }
+
+                        using (SKBitmap resizedBitmap = skBitmap.Resize(new SKImageInfo(newWidth, newHeight), SKFilterQuality.High))
+                        using (SKImage resizedImage = SKImage.FromBitmap(resizedBitmap))
+                        {
+                            using (SKData encodedData = resizedImage.Encode(SKEncodedImageFormat.Jpeg, 90))
+                            {
+                                encodedData.SaveTo(memoryStream);
+                                memoryStream.Position = 0;
+                                await blob.UploadAsync(memoryStream, blobUploadOptions);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

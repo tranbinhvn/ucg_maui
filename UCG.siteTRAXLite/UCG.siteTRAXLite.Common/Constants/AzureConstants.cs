@@ -13,7 +13,7 @@
                     {
                         { "AzureStorageContainer", "file-abc-folder" },
                         { "AzureStorageContainer:SiteAttachments", "sitetraxliteattachments" },
-                        { "AzureStorageContainer:Thumbnails" , "thumbnails"},
+                        { "AzureStorageContainer:Thumbnails" , "sitetraxlitethumbnails"},
                         { "AzureStorageConnectionString", "DefaultEndpointsProtocol=https;AccountName=sitetraxnonprod;AccountKey=d36imiFsu8GYB4nQRh9UuJOaIqDFkKOKk5hA9S+lZ0zc9KkiaPqDB5GQbU7I+Xaa6RElAlUXY/Oj1ebvL/WdrA==;EndpointSuffix=core.windows.net" },
                         { "AzureStorageAccountName" , "sitetraxnonprod" },
                         { "AzureStorageAccountKey", "d36imiFsu8GYB4nQRh9UuJOaIqDFkKOKk5hA9S+lZ0zc9KkiaPqDB5GQbU7I+Xaa6RElAlUXY/Oj1ebvL/WdrA=="}

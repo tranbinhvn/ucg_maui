@@ -1,6 +1,6 @@
 ﻿namespace UCG.siteTRAXLite.Entities.SorEforms
 {
-    public class QuestionAttachmentEntity : EntityBase
+    public class AttachmentEntity : EntityBase
     {
         private string source;
         public string Source
@@ -9,7 +9,7 @@
             {
                 return source;
             }
-            set 
+            set
             {
                 SetProperty(ref source, value);
             }
@@ -41,6 +41,16 @@
             }
         }
 
+        private string contentType;
+        public string ContentType
+        {
+            get { return contentType; }
+            set { SetProperty(ref contentType, value); }
+        }
+    }
+
+    public class QuestionAttachmentEntity : AttachmentEntity
+    {
         public string FileSizeInKB
         {
             get
@@ -63,13 +73,6 @@
         {
             get { return _progress; }
             set { SetProperty(ref _progress, value); }
-        }
-
-        private string contentType;
-        public string ContentType
-        {
-            get { return contentType; }
-            set { SetProperty(ref contentType, value); }
         }
 
         private bool isPendingUpload;

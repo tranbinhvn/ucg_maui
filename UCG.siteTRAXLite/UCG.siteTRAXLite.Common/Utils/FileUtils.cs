@@ -4,6 +4,24 @@ namespace UCG.siteTRAXLite.Common.Utils
 {
     public class FileUtils
     {
+        public static List<string> imageExtension = new List<string> { ".png", ".bmp", ".dib", ".jpg", ".jpeg", ".jpe", ".jfif", ".gif", ".tif", ".tiff", ".heif", ".heic" };
+        public static List<string> documentExtension = new List<string> { ".docx", ".docm", ".doc", ".dotx", ".dotm", ".dot", ".pdf", ".xps", ".rtf", ".txt", ".xml", ".xls", ".xlsx", ".xlsm", ".odt", ".wps", ".csv", ".sql", ".vsdx", ".pptx", ".ppt", ".pptm", ".pptm", ".potx", ".potm", ".pot", ".ppsx", ".pps", ".odp", ".sor", ".msg", ".dwg", ".html", ".gml" };
+        public static List<string> compressExtension = new List<string> { ".zip", ".rar", ".arj", ".tar", ".gz", ".tgz", ".7z" };
+        public static bool IsImage(string extention)
+        {
+            return imageExtension.Contains(extention);
+        }
+
+        public static bool IsDocument(string extention)
+        {
+            return documentExtension.Contains(extention);
+        }
+
+        public static bool IsCompress(string extention)
+        {
+            return compressExtension.Contains(extention);
+        }
+
         public static string GenerateUploadFileName()
         {
             return $"UploadFile_{DateTime.UtcNow.ToString("YYYYMMDDHHMMSS")}.jpg";
