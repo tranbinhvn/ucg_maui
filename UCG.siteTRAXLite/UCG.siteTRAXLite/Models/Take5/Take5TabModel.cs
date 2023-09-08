@@ -9,6 +9,10 @@ using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.Managers.Models;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
+using CommunityToolkit.Mvvm.Messaging;
+using UCG.siteTRAXLite.Messages;
+using Acr.UserDialogs;
+using UCG.siteTRAXLite.DependencyServices;
 
 #if IOS
 using MobileCoreServices;
@@ -22,6 +26,8 @@ namespace UCG.siteTRAXLite.Models.Take5
 
         MultiUploadAction<QuestionAttachmentEntity> uploadHelper;
         private readonly IUploadManager _uploadManager;
+        private readonly IFileService _fileService;
+        private readonly IMediaService _mediaService;
 
         private bool isVisible;
         public bool IsVisible
@@ -76,11 +82,15 @@ namespace UCG.siteTRAXLite.Models.Take5
 
         public Take5TabModel(StepperEntity stepper, 
             IAlertService alertService,
-            IUploadManager uploadManager)
+            IUploadManager uploadManager,
+            IMediaService mediaService,
+            IFileService fileService)
         {
             Stepper = stepper;
             _alertService = alertService;
             _uploadManager = uploadManager;
+            _mediaService = mediaService;
+            _fileService = fileService;
             Questions = new ConcurrentObservableCollection<ActionItemEntity>();
             uploadHelper = new MultiUploadAction<QuestionAttachmentEntity>();
 
@@ -187,31 +197,50 @@ namespace UCG.siteTRAXLite.Models.Take5
 
         private async Task BrowseFile(ActionItemEntity question)
         {
+            var results = new List<ImageModel>();
+#if IOS
+            var actionSheetConfig = new ActionSheetConfig()
+            {
+                Options = new List<ActionSheetOption>()
+                {
+                    new ActionSheetOption("Photos") {
+                        Action = async () => {
+                            var photo = await this._mediaService.OpenGallery();
+                            results.Add(photo);
+                            await UpdateFilesUploaded(question, results); 
+                        }
+                    },
+
+                    new ActionSheetOption("Files") {
+                        Action = async () => { 
+                            results = await _fileService.SelectMultiFile();
+                            await UpdateFilesUploaded(question, results); 
+                        } 
+                    }
+                }
+            };
+
+            UserDialogs.Instance.ActionSheet(actionSheetConfig);
+#else
+            results =  await this._fileService.SelectMultiFile();
+            await UpdateFilesUploaded(question, results);
+#endif
+        }
+
+        public async Task UpdateFilesUploaded(ActionItemEntity question, List<ImageModel> files)
+        {
             try
             {
                 var currentFiles = question.FilesUpload?.ToList() ?? new List<QuestionAttachmentEntity>();
 
-                var results = await FilePicker.Default.PickMultipleAsync(new PickOptions
-                {
-                    PickerTitle = question.Title,
-                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
-                    {
-                        {DevicePlatform.Android, new[] { "image/png", "image/jpeg" }},
-#if IOS
-                        {DevicePlatform.iOS,  new[] { UTType.JPEG.ToString(), UTType.PNG.ToString() } },
-#endif
-                        {DevicePlatform.WinUI, new[] { ".jpeg", ".png" } }
-                    })
-                });
-
-                if (results == null || !results.Any())
+                if (files == null || !files.Any())
                     return;
 
                 var currentFilePaths = currentFiles.Select(f => f.Source).ToList();
 
-                foreach (var uploadedFile in results)
+                foreach (var uploadedFile in files)
                 {
-                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.FullPath, currentFilePaths);
+                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.ImageUrl, currentFilePaths);
                     if (isDuplicated)
                     {
                         await _alertService.ShowAlertAsync(MessageStrings.Duplicated_File_Warning);
@@ -220,11 +249,11 @@ namespace UCG.siteTRAXLite.Models.Take5
                     }
                 }
 
-                var uploadedFiles = results.Select(item => new QuestionAttachmentEntity
+                var uploadedFiles = files.Select(item => new QuestionAttachmentEntity
                 {
                     FileName = item.FileName,
-                    Source = item.FullPath,
-                    FileSize = new FileInfo(item.FullPath).Length,
+                    Source = item.ImageUrl,
+                    FileSize = item.FileSize,
                     ContentType = item.ContentType
                 }).ToList();
 

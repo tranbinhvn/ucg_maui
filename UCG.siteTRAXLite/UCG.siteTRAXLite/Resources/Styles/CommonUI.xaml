@@ -176,4 +176,16 @@
         <Setter Property="TextTransform" Value="Uppercase"/>
     </Style>
 
+
+    <Style x:Key="SiteInfoHeader" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource MediumDarkBlue}" />
+        <Setter Property="FontFamily" Value="FS-Medium" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <Style x:Key="SiteInfoContent" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource MediumDarkBlue}" />
+        <Setter Property="FontFamily" Value="FS-Medium" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
 </ResourceDictionary>

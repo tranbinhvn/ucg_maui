@@ -14,9 +14,6 @@
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
     <views:MasterContentPage.Resources>
-        <converters:IndexToColorConverter x:Key="IndexToColorConverter"/>
-        <converters:ActionLevelsConverter x:Key="ActionLevelsConverter"/>
-        
         <!--Control Tab-->
         <DataTemplate x:Key="responseRadioSingle">
             <StackLayout BackgroundColor="{Binding ., Converter={StaticResource IndexToColorConverter}}" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20">

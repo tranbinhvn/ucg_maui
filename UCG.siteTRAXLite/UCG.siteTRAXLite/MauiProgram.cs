@@ -117,6 +117,8 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddSingleton<IUploadService, UploadService>();
             mauiAppBuilder.Services.AddSingleton<IAzureBlobService, AzureBlobService>();
             mauiAppBuilder.Services.AddSingleton<IAzureBlobConnectionFactory, AzureBlobConnectionFactory>();
+            mauiAppBuilder.Services.AddSingleton<DependencyServices.IFileService, DependencyServices.FileService>();
+            mauiAppBuilder.Services.AddSingleton<DependencyServices.IMediaService, DependencyServices.MediaService>();
 
             return mauiAppBuilder;
         }
@@ -154,13 +156,13 @@ namespace UCG.siteTRAXLite
 
         private static MauiAppBuilder RegisterConnectionSQLs(this MauiAppBuilder mauiAppBuilder)
         {
-            #if ANDROID
+#if ANDROID
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteAndroid>();
-            #elif IOS
+#elif IOS
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteIOS>();
-            #elif WINDOWS
+#elif WINDOWS
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteWindows>();
-            #endif
+#endif
             return mauiAppBuilder;
         }
 

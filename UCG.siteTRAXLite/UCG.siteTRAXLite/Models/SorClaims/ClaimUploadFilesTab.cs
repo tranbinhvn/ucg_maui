@@ -1,6 +1,8 @@
-﻿using System.Windows.Input;
+﻿using Acr.UserDialogs;
+using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Common.Utils;
+using UCG.siteTRAXLite.DependencyServices;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Logics;
@@ -15,6 +17,8 @@ namespace UCG.siteTRAXLite.Models.SorClaims
     {
         private readonly IAlertService _alertService;
         private readonly IUploadManager _uploadManager;
+        private readonly IFileService _fileService;
+        private readonly IMediaService _mediaService;
 
         MultiUploadAction<QuestionAttachmentEntity> uploadHelper;
 
@@ -80,11 +84,15 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         public ClaimUploadFilesTab(
             StepperEntity entity,
             IAlertService alertService,
-            IUploadManager uploadManager)
+            IUploadManager uploadManager,
+            IMediaService mediaService,
+            IFileService fileService)
         {
             StepperEntity = entity;
             _alertService = alertService;
             _uploadManager = uploadManager;
+            _mediaService = mediaService;
+            _fileService = fileService;
 
             uploadHelper = new MultiUploadAction<QuestionAttachmentEntity>();
             SubActions = new ConcurrentObservableCollection<ActionItemEntity>();
@@ -126,23 +134,50 @@ namespace UCG.siteTRAXLite.Models.SorClaims
 
         private async Task BrowseFile(ActionItemEntity question)
         {
+            var results = new List<ImageModel>();
+#if IOS
+            var actionSheetConfig = new ActionSheetConfig()
+            {
+                Options = new List<ActionSheetOption>()
+                {
+                    new ActionSheetOption("Photos") {
+                        Action = async () => {
+                            var photo = await this._mediaService.OpenGallery();
+                            results.Add(photo);
+                            await UpdateFilesUploaded(question, results);
+                        }
+                    },
+
+                    new ActionSheetOption("Files") {
+                        Action = async () => {
+                            results = await _fileService.SelectMultiFile();
+                            await UpdateFilesUploaded(question, results);
+                        }
+                    }
+                }
+            };
+
+            UserDialogs.Instance.ActionSheet(actionSheetConfig);
+#else
+            results =  await this._fileService.SelectMultiFile();
+            await UpdateFilesUploaded(question, results);
+#endif
+        }
+
+        public async Task UpdateFilesUploaded(ActionItemEntity question, List<ImageModel> files)
+        {
             try
             {
                 var currentFiles = question.FilesUpload?.ToList() ?? new List<QuestionAttachmentEntity>();
 
-                var results = await FilePicker.Default.PickMultipleAsync(new PickOptions
-                {
-                    PickerTitle = question.Title,
-                });
-
-                if (results == null || !results.Any())
+                if (files == null || !files.Any())
                     return;
 
                 var currentFilePaths = currentFiles.Select(f => f.Source).ToList();
 
-                foreach (var uploadedFile in results)
+                foreach (var uploadedFile in files)
                 {
-                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.FullPath, currentFilePaths);
+                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.ImageUrl, currentFilePaths);
                     if (isDuplicated)
                     {
                         await _alertService.ShowAlertAsync(MessageStrings.Duplicated_File_Warning);
@@ -151,11 +186,11 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     }
                 }
 
-                var uploadedFiles = results.Select(item => new QuestionAttachmentEntity
+                var uploadedFiles = files.Select(item => new QuestionAttachmentEntity
                 {
                     FileName = item.FileName,
-                    Source = item.FullPath,
-                    FileSize = new FileInfo(item.FullPath).Length,
+                    Source = item.ImageUrl,
+                    FileSize = item.FileSize,
                     ContentType = item.ContentType
                 }).ToList();
 

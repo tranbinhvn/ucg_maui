@@ -14,7 +14,6 @@
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
     <ContentPage.Resources>
-        <converters:ActionLevelsConverter x:Key="ActionLevelsConverter"/>
         <DataTemplate x:Key="responseText">
             <StackLayout Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">

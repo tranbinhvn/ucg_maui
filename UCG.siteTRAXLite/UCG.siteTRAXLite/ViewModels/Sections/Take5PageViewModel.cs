@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.CustomControls;
+using UCG.siteTRAXLite.DependencyServices;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.Managers.Mappers;
@@ -17,7 +18,8 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
     {
         private readonly ISorEformManager _sorEformManager;
         private readonly IUploadManager _uploadManager;
-
+        private readonly IFileService _fileService;
+        private readonly IMediaService _mediaService;
         public ConcurrentObservableCollection<StepperEntity> Steppers { get; set; }
 
         private Take5TabModel controlTab;
@@ -106,10 +108,14 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IOpenAppService openAppService,
             IServiceEntityMapper mapper,
             ISorEformManager sorEformManager,
-            IUploadManager uploadManager) : base(navigationService, alertService, openAppService, mapper)
+            IUploadManager uploadManager,
+            IMediaService mediaService,
+            IFileService fileService) : base(navigationService, alertService, openAppService, mapper)
         {
             PageTitle = PageTitles.Take5;
             _uploadManager = uploadManager;
+            _mediaService = mediaService;
+            _fileService = fileService;
 
             Steppers = new ConcurrentObservableCollection<StepperEntity>();
             _sorEformManager = sorEformManager;
@@ -133,21 +139,21 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 if (take5Steppers.StepperControl != null)
                 {
                     take5Steppers.StepperControl.StepperType = StepperType.Control;
-                    ControlTab = new Take5TabModel(take5Steppers.StepperControl, AlertService, _uploadManager);
+                    ControlTab = new Take5TabModel(take5Steppers.StepperControl, AlertService, _uploadManager, _mediaService, _fileService);
                     Steppers.Add(take5Steppers.StepperControl);
                 }
 
                 if (take5Steppers.StepperHazard != null)
                 {
                     take5Steppers.StepperHazard.StepperType = StepperType.Hazard;
-                    HazardTab = new Take5TabModel(take5Steppers.StepperHazard, AlertService, _uploadManager);
+                    HazardTab = new Take5TabModel(take5Steppers.StepperHazard, AlertService, _uploadManager, _mediaService, _fileService);
                     Steppers.Add(take5Steppers.StepperHazard);
                 }
 
                 if (take5Steppers.StepperSubmit != null)
                 {
                     take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
-                    SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit, AlertService, _uploadManager);
+                    SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit, AlertService, _uploadManager, _mediaService, _fileService);
                     Steppers.Add(take5Steppers.StepperSubmit);
                 }
             }

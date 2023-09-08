@@ -82,6 +82,7 @@
 	  <None Remove="Resources\Images\arrow_back.svg" />
 	  <None Remove="Resources\Images\arrow_right_png.png" />
 	  <None Remove="Resources\Images\cogwheel.png" />
+	  <None Remove="Resources\Images\expander_collapse_png.png" />
 	  <None Remove="Resources\Images\expander_expand.svg" />
 	  <None Remove="Resources\Images\expander_expand_png.png" />
 	  <None Remove="Resources\Images\icons_hamburger_menu.png" />
