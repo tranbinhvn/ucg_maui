@@ -367,6 +367,15 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File upload failed, there may be an error.
+        /// </summary>
+        internal static string Uploaded_Files_Failed {
+            get {
+                return ResourceManager.GetString("Uploaded_Files_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uploaded files successfully.
         /// </summary>
         internal static string Uploaded_Files_Successfully {

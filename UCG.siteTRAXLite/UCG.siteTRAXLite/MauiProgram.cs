@@ -19,13 +19,16 @@ using UCG.siteTRAXLite.Repositories.Database;
 using UCG.siteTRAXLite.Repositories;
 using UCG.siteTRAXLite.Repositories.Hazard;
 using UraniumUI;
+using UCG.siteTRAXLite.Managers;
+using UCG.siteTRAXLite.WebServices.UploadService;
+using UCG.siteTRAXLite.WebServices.AzureBlob;
 
 #if ANDROID
     using Microsoft.Maui.Controls.PlatformConfiguration;
     using Microsoft.Maui.Controls.Compatibility.Platform.Android;
     using UCG.siteTRAXLite.Platforms.Android.Database;
 #elif IOS
-    using UCG.siteTRAXLite.Platforms.iOS.Database;
+using UCG.siteTRAXLite.Platforms.iOS.Database;
 #elif WINDOWS
     using UCG.siteTRAXLite.Platforms.Windows.Database;
 #endif
@@ -92,6 +95,7 @@ namespace UCG.siteTRAXLite
         {
             mauiAppBuilder.Services.AddSingleton<IUserManager, UserManager>();
             mauiAppBuilder.Services.AddSingleton<ISorEformManager, SorEformManager>();
+            mauiAppBuilder.Services.AddSingleton<IUploadManager, UploadManager>();
 
             return mauiAppBuilder;
         }
@@ -110,6 +114,11 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddSingleton<IAlertService, AlertService>();
             mauiAppBuilder.Services.AddSingleton<ISorEformService, SorEformService>();
             mauiAppBuilder.Services.AddSingleton<IFileService, FileService>();
+            mauiAppBuilder.Services.AddSingleton<IUploadService, UploadService>();
+            mauiAppBuilder.Services.AddSingleton<IAzureBlobService, AzureBlobService>();
+            mauiAppBuilder.Services.AddSingleton<IAzureBlobConnectionFactory, AzureBlobConnectionFactory>();
+            mauiAppBuilder.Services.AddSingleton<DependencyServices.IFileService, DependencyServices.FileService>();
+            mauiAppBuilder.Services.AddSingleton<DependencyServices.IMediaService, DependencyServices.MediaService>();
 
             return mauiAppBuilder;
         }
@@ -147,13 +156,13 @@ namespace UCG.siteTRAXLite
 
         private static MauiAppBuilder RegisterConnectionSQLs(this MauiAppBuilder mauiAppBuilder)
         {
-            #if ANDROID
+#if ANDROID
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteAndroid>();
-            #elif IOS
+#elif IOS
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteIOS>();
-            #elif WINDOWS
+#elif WINDOWS
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteWindows>();
-            #endif
+#endif
             return mauiAppBuilder;
         }
 

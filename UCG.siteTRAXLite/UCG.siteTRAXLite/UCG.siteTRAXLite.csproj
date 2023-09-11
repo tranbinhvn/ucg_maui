@@ -82,6 +82,7 @@
 	  <None Remove="Resources\Images\arrow_back.svg" />
 	  <None Remove="Resources\Images\arrow_right_png.png" />
 	  <None Remove="Resources\Images\cogwheel.png" />
+	  <None Remove="Resources\Images\expander_collapse_png.png" />
 	  <None Remove="Resources\Images\expander_expand.svg" />
 	  <None Remove="Resources\Images\expander_expand_png.png" />
 	  <None Remove="Resources\Images\icons_hamburger_menu.png" />
@@ -89,6 +90,7 @@
 	  <None Remove="Resources\Images\icon_claims.png" />
 	  <None Remove="Resources\Images\icon_complete.png" />
 	  <None Remove="Resources\Images\icon_edit.png" />
+	  <None Remove="Resources\Images\icon_folderopen.svg" />
 	  <None Remove="Resources\Images\icon_jobs.png" />
 	  <None Remove="Resources\Images\icon_plus.png" />
 	  <None Remove="Resources\Images\icon_STA.png" />

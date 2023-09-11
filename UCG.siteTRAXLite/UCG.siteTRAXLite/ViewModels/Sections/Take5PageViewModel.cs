@@ -3,7 +3,9 @@ using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.CustomControls;
+using UCG.siteTRAXLite.DependencyServices;
 using UCG.siteTRAXLite.Entities.SorEforms;
+using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Models;
@@ -15,7 +17,9 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
     public class Take5PageViewModel : ViewModelBase
     {
         private readonly ISorEformManager _sorEformManager;
-
+        private readonly IUploadManager _uploadManager;
+        private readonly IFileService _fileService;
+        private readonly IMediaService _mediaService;
         public ConcurrentObservableCollection<StepperEntity> Steppers { get; set; }
 
         private Take5TabModel controlTab;
@@ -103,9 +107,15 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IAlertService alertService,
             IOpenAppService openAppService,
             IServiceEntityMapper mapper,
-            ISorEformManager sorEformManager) : base(navigationService, alertService, openAppService, mapper)
+            ISorEformManager sorEformManager,
+            IUploadManager uploadManager,
+            IMediaService mediaService,
+            IFileService fileService) : base(navigationService, alertService, openAppService, mapper)
         {
             PageTitle = PageTitles.Take5;
+            _uploadManager = uploadManager;
+            _mediaService = mediaService;
+            _fileService = fileService;
 
             Steppers = new ConcurrentObservableCollection<StepperEntity>();
             _sorEformManager = sorEformManager;
@@ -129,21 +139,21 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 if (take5Steppers.StepperControl != null)
                 {
                     take5Steppers.StepperControl.StepperType = StepperType.Control;
-                    ControlTab = new Take5TabModel(take5Steppers.StepperControl);
+                    ControlTab = new Take5TabModel(take5Steppers.StepperControl, AlertService, _uploadManager, _mediaService, _fileService);
                     Steppers.Add(take5Steppers.StepperControl);
                 }
 
                 if (take5Steppers.StepperHazard != null)
                 {
                     take5Steppers.StepperHazard.StepperType = StepperType.Hazard;
-                    HazardTab = new Take5TabModel(take5Steppers.StepperHazard);
+                    HazardTab = new Take5TabModel(take5Steppers.StepperHazard, AlertService, _uploadManager, _mediaService, _fileService);
                     Steppers.Add(take5Steppers.StepperHazard);
                 }
 
                 if (take5Steppers.StepperSubmit != null)
                 {
                     take5Steppers.StepperSubmit.StepperType = StepperType.Submit;
-                    SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit);
+                    SubmitTab = new Take5TabModel(take5Steppers.StepperSubmit, AlertService, _uploadManager, _mediaService, _fileService);
                     Steppers.Add(take5Steppers.StepperSubmit);
                 }
             }
@@ -232,6 +242,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         private async Task Submit()
         {
             await SaveHazard();
+            await HazardTab.UploadFiles();
             await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
         }
 

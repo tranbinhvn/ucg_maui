@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using UCG.siteTRAXLite.Entities;
 using UCG.siteTRAXLite.Entities.SorEforms;
 
 namespace UCG.siteTRAXLite.Converters
@@ -8,11 +9,24 @@ namespace UCG.siteTRAXLite.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null)
-            {
-                var action = value as ActionItemEntity;
-                if (action.Index % 2 == 0)
+            {   
+                if (value is ActionItemEntity)
                 {
-                    return Color.FromArgb("#EDF0F6");
+                    var action = value as ActionItemEntity;
+                    if (action.Index % 2 == 0)
+                    {
+                        return Color.FromArgb("#EDF0F6");
+                    }
+                }
+                else if (value is ProgramCustomFieldMobileEntity)
+                {
+                    var field = value as ProgramCustomFieldMobileEntity;
+                    if (field.DisplayOrder % 2 == 0)
+                    {
+                        return Color.FromArgb("#EDF0F6");
+                    }
+
+                    return Color.FromArgb("#D4DDE9");
                 }
             }
 

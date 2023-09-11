@@ -43,9 +43,11 @@
 			<array>
 				<string>com.ucg.sitetraxlite</string>
 			</array>
-      <key>CFBundleURLPath</key>
-      <string>launchapp</string>
+			<key>CFBundleURLPath</key>
+			<string>launchapp</string>
 		</dict>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow access to photos to upload photos from your library.</string>
 </dict>
 </plist>

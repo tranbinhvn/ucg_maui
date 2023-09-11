@@ -1,8 +1,13 @@
-﻿using System.Windows.Input;
+﻿using Acr.UserDialogs;
+using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
+using UCG.siteTRAXLite.Common.Utils;
+using UCG.siteTRAXLite.DependencyServices;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Logics;
+using UCG.siteTRAXLite.Managers;
+using UCG.siteTRAXLite.Managers.Models;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 
@@ -11,6 +16,11 @@ namespace UCG.siteTRAXLite.Models.SorClaims
     public class ClaimUploadFilesTab : BindableBase
     {
         private readonly IAlertService _alertService;
+        private readonly IUploadManager _uploadManager;
+        private readonly IFileService _fileService;
+        private readonly IMediaService _mediaService;
+
+        MultiUploadAction<QuestionAttachmentEntity> uploadHelper;
 
         private bool isVisible;
         public bool IsVisible
@@ -48,7 +58,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
         {
             get
             {
-                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionImageEntity>((image) => RemoveImage(image)));
+                return this.removeImageCommand ?? (this.removeImageCommand = new Command<QuestionAttachmentEntity>((image) => RemoveImage(image)));
             }
         }
 
@@ -71,11 +81,20 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             set { SetProperty(ref secondarySOR, value); }
         }
 
-        public ClaimUploadFilesTab(StepperEntity entity, IAlertService alertService)
+        public ClaimUploadFilesTab(
+            StepperEntity entity,
+            IAlertService alertService,
+            IUploadManager uploadManager,
+            IMediaService mediaService,
+            IFileService fileService)
         {
             StepperEntity = entity;
             _alertService = alertService;
+            _uploadManager = uploadManager;
+            _mediaService = mediaService;
+            _fileService = fileService;
 
+            uploadHelper = new MultiUploadAction<QuestionAttachmentEntity>();
             SubActions = new ConcurrentObservableCollection<ActionItemEntity>();
         }
 
@@ -98,7 +117,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             IsShowUploadButton = SubActions.Any();
         }
 
-        private void RemoveImage(QuestionImageEntity image)
+        private void RemoveImage(QuestionAttachmentEntity image)
         {
             if (image == null)
                 return;
@@ -115,24 +134,50 @@ namespace UCG.siteTRAXLite.Models.SorClaims
 
         private async Task BrowseFile(ActionItemEntity question)
         {
+            var results = new List<ImageModel>();
+#if IOS
+            var actionSheetConfig = new ActionSheetConfig()
+            {
+                Options = new List<ActionSheetOption>()
+                {
+                    new ActionSheetOption("Photos") {
+                        Action = async () => {
+                            var photo = await this._mediaService.OpenGallery();
+                            results.Add(photo);
+                            await UpdateFilesUploaded(question, results);
+                        }
+                    },
+
+                    new ActionSheetOption("Files") {
+                        Action = async () => {
+                            results = await _fileService.SelectMultiFile();
+                            await UpdateFilesUploaded(question, results);
+                        }
+                    }
+                }
+            };
+
+            UserDialogs.Instance.ActionSheet(actionSheetConfig);
+#else
+            results =  await this._fileService.SelectMultiFile();
+            await UpdateFilesUploaded(question, results);
+#endif
+        }
+
+        public async Task UpdateFilesUploaded(ActionItemEntity question, List<ImageModel> files)
+        {
             try
             {
-                var currentFiles = question.FilesUpload?.ToList() ?? new List<QuestionImageEntity>();
+                var currentFiles = question.FilesUpload?.ToList() ?? new List<QuestionAttachmentEntity>();
 
-                var results = await FilePicker.Default.PickMultipleAsync(new PickOptions
-                {
-                    PickerTitle = question.Title,
-                    FileTypes = FilePickerFileType.Images
-                });
-
-                if (results == null || !results.Any())
+                if (files == null || !files.Any())
                     return;
 
-                var currentFilePaths = currentFiles.Select(f => f.ImageSource).ToList();
+                var currentFilePaths = currentFiles.Select(f => f.Source).ToList();
 
-                foreach (var uploadedFile in results)
+                foreach (var uploadedFile in files)
                 {
-                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.FullPath, currentFilePaths);
+                    var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.ImageUrl, currentFilePaths);
                     if (isDuplicated)
                     {
                         await _alertService.ShowAlertAsync(MessageStrings.Duplicated_File_Warning);
@@ -141,11 +186,12 @@ namespace UCG.siteTRAXLite.Models.SorClaims
                     }
                 }
 
-                var uploadedFiles = results.Select(item => new QuestionImageEntity
+                var uploadedFiles = files.Select(item => new QuestionAttachmentEntity
                 {
                     FileName = item.FileName,
-                    ImageSource = item.FullPath,
-                    FileSize = new FileInfo(item.FullPath).Length,
+                    Source = item.ImageUrl,
+                    FileSize = item.FileSize,
+                    ContentType = item.ContentType
                 }).ToList();
 
                 currentFiles.AddRange(uploadedFiles);
@@ -160,12 +206,62 @@ namespace UCG.siteTRAXLite.Models.SorClaims
 
         private async Task UploadFiles()
         {
-            var isSelectedFiles = SubActions.Any(a => a.FilesUpload != null && a.FilesUpload.Any());
-            var message = isSelectedFiles 
-                ? MessageStrings.Uploaded_Files_Successfully 
-                : MessageStrings.Select_Files_Warning;
+            try
+            {
+                var isSelectedFiles = SubActions.Any(a => a.FilesUpload != null && a.FilesUpload.Any());
 
-            await _alertService.ShowAlertAsync(message);
+                if (!isSelectedFiles)
+                {
+                    await _alertService.ShowAlertAsync($"{MessageStrings.Select_Files_Warning}");
+                }
+
+                var uploadedFiles = SubActions.SelectMany(s => s.FilesUpload).Where(f => !f.IsComplete);
+
+                var files = uploadedFiles.Select(f => f.FileName).ToList();
+                if (!FileUploadHelper.ValidateExtention(files))
+                    return;
+
+                IsShowUploadButton = false;
+                var accessType = Connectivity.Current.NetworkAccess;
+                if (accessType == NetworkAccess.Internet)
+                {
+                    foreach (var item in uploadedFiles)
+                    {
+                        uploadHelper.Enqueue(new ItemWithAction<QuestionAttachmentEntity> { Item = item, UploadSingleAction = UploadFileSingle });
+                    }
+
+                    await uploadHelper.Upload();
+                }
+
+                await _alertService.ShowAlertAsync($"{MessageStrings.Uploaded_Files_Successfully}");
+                IsShowUploadButton = true;
+            }
+            catch (Exception ex)
+            {
+                await _alertService.ShowAlertAsync(ex.Message);
+                IsShowUploadButton = true;
+            }
+        }
+
+        private async Task UploadFileSingle(QuestionAttachmentEntity fileData)
+        {
+            var files = new List<FileUploaded>();
+            var file = new FileUploaded()
+            {
+                FileName = Path.GetFileName(fileData.FileName),
+                Content = FileUtils.GetBytesFromFilePath(fileData.Source),
+                FilePath = fileData.Source
+            };
+            files.Add(file);
+
+            try
+            {
+                await _uploadManager.UploadFileToAzureAsync(files, fileData);
+            }
+            catch (FileUploadException ex)
+            {
+                throw new FileUploadException(ex.Message);
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ public partial class SorClaimsPage : MasterContentPage
 
     private void RemoveFile_Clicked(object sender, EventArgs e)
     {
-        if (sender is ImageButton imgButton && imgButton.BindingContext is QuestionImageEntity item)
+        if (sender is ImageButton imgButton && imgButton.BindingContext is QuestionAttachmentEntity item)
         {
             var viewModel = BindingContext as SorClaimsPageViewModel;
             viewModel.UploadFilesTab.RemoveImageCommand.Execute(item);

@@ -1,5 +1,4 @@
-﻿using Acr.UserDialogs;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using UCG.siteTRAXLite.Extensions;
 
 namespace UCG.siteTRAXLite.Helpers

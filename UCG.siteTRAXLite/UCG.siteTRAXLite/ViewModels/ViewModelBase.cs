@@ -86,10 +86,16 @@ namespace UCG.siteTRAXLite.ViewModels
             AlertService = alertService;
             OpenAppService = openAppService;
 
-            JobDetail = new JobDetailEntity();
-
-            JobDetail.SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582";
-            JobDetail.CRN = "221226808423";
+            JobDetail = new JobDetailEntity()
+            {
+                SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582",
+                CRN = "221226808423",
+                JobType = "CHS-PRO-Install",
+                WorkflowStatus = "DP Arrived",
+                Age = "1 Day",
+                PlannedStartDate = DateTime.Now,
+                PlannedEndDate = DateTime.Now
+            };
 
             WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
             WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
