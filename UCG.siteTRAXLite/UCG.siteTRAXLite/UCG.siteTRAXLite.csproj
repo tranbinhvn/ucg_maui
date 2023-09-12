@@ -101,6 +101,7 @@
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v3.json" />
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v4.json" />
 	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v5.json" />
+	  <None Remove="Resources\Raw\Configs\st-lite-poc-config-v6.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -161,6 +162,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\Configs\st-lite-poc-config-v6.json">
+	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+	  </MauiAsset>
 	  <MauiAsset Update="Resources\Raw\Configs\st-lite-poc-config-v5.json">
 	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
 	  </MauiAsset>
