@@ -27,7 +27,8 @@ namespace UCG.siteTRAXLite.ViewModels
             IUserData userData, 
             IOpenAppService openAppService,
             IAlertService alertService,
-            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
+            IServiceEntityMapper mapper,
+            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
         {
             _userData = userData;
             _openAppService = openAppService;

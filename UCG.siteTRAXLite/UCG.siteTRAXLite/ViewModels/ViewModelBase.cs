@@ -5,8 +5,11 @@ using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
 using UCG.siteTRAXLite.Entities;
+using UCG.siteTRAXLite.Entities.Job;
+using UCG.siteTRAXLite.Entities.Site;
 using UCG.siteTRAXLite.Extensions;
 using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Managers.SiteAndJob;
 using UCG.siteTRAXLite.Messages;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
@@ -21,6 +24,7 @@ namespace UCG.siteTRAXLite.ViewModels
         protected IAlertService AlertService { get; private set; }
         protected IOpenAppService OpenAppService { get; private set; }
         protected IServiceEntityMapper Mapper { get; private set; }
+        protected IServiceProvider Services { get; private set; }
 
         public static bool _isNetworkConnected;
         public bool IsNetworkConnected
@@ -48,8 +52,8 @@ namespace UCG.siteTRAXLite.ViewModels
             set { SetProperty(ref _pageTitle, value); }
         }
 
-        private JobDetailEntity jobDetail;
-        public JobDetailEntity JobDetail
+        private JobEntity jobDetail;
+        public JobEntity JobDetail
         {
             get
             {
@@ -73,9 +77,10 @@ namespace UCG.siteTRAXLite.ViewModels
 
         public ViewModelBase(
             INavigationService navigationService, 
-            IAlertService alertService, 
+            IAlertService alertService,
             IOpenAppService openAppService,
-            IServiceEntityMapper mapper)
+            IServiceEntityMapper mapper,
+            IServiceProvider services)
         {
             NavigationService = navigationService;
             Mapper = mapper;
@@ -85,17 +90,38 @@ namespace UCG.siteTRAXLite.ViewModels
             IsNetworkConnected = accessType == NetworkAccess.Internet;
             AlertService = alertService;
             OpenAppService = openAppService;
+            Services = services;
 
-            JobDetail = new JobDetailEntity()
+            var jobManager = Services.GetService<IJobManager>();
+
+            var job = jobManager.LoadJobInfo();
+            if (job == null)
             {
-                SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582",
-                CRN = "221226808423",
-                JobType = "CHS-PRO-Install",
-                WorkflowStatus = "DP Arrived",
-                Age = "1 Day",
-                PlannedStartDate = DateTime.Now,
-                PlannedEndDate = DateTime.Now
-            };
+                var jobK = Guid.NewGuid();
+                var siteK = Guid.NewGuid();
+                JobDetail = new JobEntity()
+                {
+                    JobK = jobK,
+                    SiteFK = siteK,
+                    Site = new SiteEntity()
+                    {
+                        SiteK = siteK,
+                        SiteName = "7 FINLAYSON BROOK ROAD Waipu 0582",
+                        CRN = "221226808423",
+                    },
+                    JobType = "CHS-PRO-Install",
+                    WorkflowStatus = "DP Arrived",
+                    Age = "1 Day",
+                    PlannedStartDate = DateTime.Now,
+                    PlannedEndDate = DateTime.Now
+                };
+
+                jobManager.SaveSiteAndJob(JobDetail);
+            }
+            else
+            {
+                JobDetail = job;
+            }
 
             WeakReferenceMessenger.Default.Unregister<LaunchingAppMessage>(this);
             WeakReferenceMessenger.Default.Register<LaunchingAppMessage>(this, (r, data) =>
@@ -109,8 +135,8 @@ namespace UCG.siteTRAXLite.ViewModels
 
                         if (launchDataEntity != null)
                         {
-                            JobDetail.CRN = launchDataEntity?.JobDetail?.CRN;
-                            JobDetail.SiteName = launchDataEntity?.JobDetail?.SiteName;
+                            JobDetail.Site.CRN = launchDataEntity?.JobDetail?.CRN;
+                            JobDetail.Site.SiteName = launchDataEntity?.JobDetail?.SiteName;
                         }
                     }
                 });

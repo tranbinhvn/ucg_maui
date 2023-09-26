@@ -94,10 +94,10 @@
                                     ColumnDefinitions="4*,2*">
                                     <Label
                                         Grid.Column="0"
-                                        Text="{TemplateBinding JobDetail.SiteName}"
+                                        Text="{TemplateBinding JobDetail.Site.SiteName}"
                                         VerticalOptions="CenterAndExpand"
                                         HorizontalOptions="StartAndExpand"
-                                        FontSize="{TemplateBinding JobDetail.SiteNameSize}"
+                                        FontSize="{TemplateBinding JobDetail.Site.SiteNameSize}"
                                         FontFamily="FS-SemiBold"
                                         FontAttributes="Bold"
                                         TextColor="{StaticResource MediumDarkBlue}"/>
@@ -116,7 +116,7 @@
                                 <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*">
                                     <Grid Grid.Column="0" HorizontalOptions="FillAndExpand" ColumnDefinitions="2*,4*">
                                         <Label TextColor="{StaticResource MediumLightGrey}"  Style="{StaticResource SiteInfoHeader}" Grid.Column="0" Text="CRN"/>
-                                        <Label  Style="{StaticResource SiteInfoContent}" Grid.Column="1" Text="{TemplateBinding JobDetail.CRN}"/>
+                                        <Label  Style="{StaticResource SiteInfoContent}" Grid.Column="1" Text="{TemplateBinding JobDetail.Site.CRN}"/>
                                     </Grid>
                                     <Grid Grid.Column="1" HorizontalOptions="FillAndExpand" ColumnDefinitions="2*,4*">
                                         <Label TextColor="{StaticResource MediumLightGrey}"  Style="{StaticResource SiteInfoHeader}" Grid.Column="0" Text="Job Type"/>

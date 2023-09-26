@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using UCG.siteTRAXLite.Entities;
+using UCG.siteTRAXLite.Entities.Job;
 using UCG.siteTRAXLite.Models;
 
 namespace UCG.siteTRAXLite.Views;
@@ -12,7 +13,7 @@ public partial class MasterContentPage : ContentPage
 
     public static readonly BindableProperty ExpanderIconProperty = BindableProperty.Create(nameof(ExpanderIcon), typeof(ImageSource), typeof(MasterContentPage), ImageSource.FromFile("expander_expand_png.png"), BindingMode.TwoWay);
 
-    public static readonly BindableProperty JobDetailProperty = BindableProperty.Create(nameof(JobDetail), typeof(JobDetailEntity), typeof(MasterContentPage), null, BindingMode.TwoWay);
+    public static readonly BindableProperty JobDetailProperty = BindableProperty.Create(nameof(JobDetail), typeof(JobEntity), typeof(MasterContentPage), null, BindingMode.TwoWay);
 
     public static readonly BindableProperty MenuItemsProperty = BindableProperty.Create(nameof(MenuItems), typeof(ConcurrentObservableCollection<MenuItemModel>), typeof(MasterContentPage), null, BindingMode.TwoWay);
 
@@ -34,12 +35,12 @@ public partial class MasterContentPage : ContentPage
             if (value)
             {
                 ExpanderIcon = ImageSource.FromFile("expander_collapse_png.png");
-                JobDetail.SiteNameSize = 18;
+                JobDetail.Site.SiteNameSize = 18;
             }
             else
             {
                 ExpanderIcon = ImageSource.FromFile("expander_expand_png.png");
-                JobDetail.SiteNameSize = 14;
+                JobDetail.Site.SiteNameSize = 14;
             }
             SetValue(IsExpandedProperty, value);
         }
@@ -51,9 +52,9 @@ public partial class MasterContentPage : ContentPage
         set => SetValue(ExpanderIconProperty, value);
     }
 
-    public JobDetailEntity JobDetail
+    public JobEntity JobDetail
     {
-        get => (JobDetailEntity)GetValue(JobDetailProperty);
+        get => (JobEntity)GetValue(JobDetailProperty);
         set => SetValue(JobDetailProperty, value);
     }
 

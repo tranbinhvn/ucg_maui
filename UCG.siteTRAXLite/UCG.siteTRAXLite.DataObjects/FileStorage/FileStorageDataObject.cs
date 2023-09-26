@@ -1,8 +1,9 @@
-﻿namespace UCG.siteTRAXLite.Entities
+﻿using UCG.siteTRAXLite.DataObjects.DataObject;
+
+namespace UCG.siteTRAXLite.DataObjects.FileStorage
 {
-    public class FileStorageEntity
+    public class FileStorageDataObject : DataObjectBase<Guid>
     {
-        public Guid FileStorageK { get; set; }
         public Guid ActionFK { get; set; }
         public string FileName { get; set; }
         public string AzureContainer { get; set; }

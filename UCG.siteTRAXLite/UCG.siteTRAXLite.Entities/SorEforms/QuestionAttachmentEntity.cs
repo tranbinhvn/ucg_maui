@@ -51,6 +51,7 @@
 
     public class QuestionAttachmentEntity : AttachmentEntity
     {
+        public Guid ActionFK { get; set; }
         public string FileSizeInKB
         {
             get

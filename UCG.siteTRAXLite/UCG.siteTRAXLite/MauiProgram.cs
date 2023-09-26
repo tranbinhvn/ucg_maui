@@ -2,26 +2,32 @@
 using CommunityToolkit.Maui;
 using FFImageLoading.Maui;
 using Microsoft.Maui.LifecycleEvents;
+using UCG.siteTRAXLite.Managers;
+using UCG.siteTRAXLite.Managers.ConfigurationManager;
+using UCG.siteTRAXLite.Managers.Job;
 using UCG.siteTRAXLite.Managers.Mappers;
+using UCG.siteTRAXLite.Managers.SiteAndJob;
 using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Managers.UserManagers;
+using UCG.siteTRAXLite.Repositories.Configuration;
+using UCG.siteTRAXLite.Repositories.Database;
+using UCG.siteTRAXLite.Repositories.FileStorage;
+using UCG.siteTRAXLite.Repositories.Hazard;
+using UCG.siteTRAXLite.Repositories.Job;
+using UCG.siteTRAXLite.Repositories.Site;
 using UCG.siteTRAXLite.Services;
 using UCG.siteTRAXLite.ViewModels;
 using UCG.siteTRAXLite.ViewModels.Sections;
 using UCG.siteTRAXLite.Views;
 using UCG.siteTRAXLite.Views.Sections;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
+using UCG.siteTRAXLite.WebServices.AzureBlob;
 using UCG.siteTRAXLite.WebServices.CrewServices;
 using UCG.siteTRAXLite.WebServices.DependencyServices;
 using UCG.siteTRAXLite.WebServices.SorEformServices;
-using UCG.siteTRAXLite.Repositories.Database;
-using UCG.siteTRAXLite.Repositories;
-using UCG.siteTRAXLite.Repositories.Hazard;
-using UraniumUI;
-using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.WebServices.UploadService;
-using UCG.siteTRAXLite.WebServices.AzureBlob;
+using UraniumUI;
 
 #if ANDROID
     using Microsoft.Maui.Controls.PlatformConfiguration;
@@ -30,7 +36,7 @@ using UCG.siteTRAXLite.WebServices.AzureBlob;
 #elif IOS
 using UCG.siteTRAXLite.Platforms.iOS.Database;
 #elif WINDOWS
-    using UCG.siteTRAXLite.Platforms.Windows.Database;
+using UCG.siteTRAXLite.Platforms.Windows.Database;
 #endif
 
 namespace UCG.siteTRAXLite
@@ -96,6 +102,8 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddSingleton<IUserManager, UserManager>();
             mauiAppBuilder.Services.AddSingleton<ISorEformManager, SorEformManager>();
             mauiAppBuilder.Services.AddSingleton<IUploadManager, UploadManager>();
+            mauiAppBuilder.Services.AddSingleton<IConfigurationManager, ConfigurationManager>();
+            mauiAppBuilder.Services.AddSingleton<IJobManager, JobManager>();
 
             return mauiAppBuilder;
         }
@@ -161,7 +169,7 @@ namespace UCG.siteTRAXLite
 #elif IOS
                 mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteIOS>();
 #elif WINDOWS
-                mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteWindows>();
+            mauiAppBuilder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteWindows>();
 #endif
             return mauiAppBuilder;
         }
@@ -170,6 +178,20 @@ namespace UCG.siteTRAXLite
         {
             mauiAppBuilder.Services.AddSingleton<IMobileDatabase, MobileDatabase>();
             mauiAppBuilder.Services.AddSingleton<IHazardRepository, HazardRepository>();
+            mauiAppBuilder.Services.AddSingleton<IJobRepository, JobRepository>();
+            mauiAppBuilder.Services.AddSingleton<ISiteRepository, SiteRepository>();
+            mauiAppBuilder.Services.AddSingleton<IConfigRepository, ConfigRepository>();
+            mauiAppBuilder.Services.AddSingleton<IConfigInfoRepository, ConfigInfoRepository>();
+            mauiAppBuilder.Services.AddSingleton<IJobTabRepository, JobTabRepository>();
+            mauiAppBuilder.Services.AddSingleton<ISectionRepository, SectionRepository>();
+            mauiAppBuilder.Services.AddSingleton<ISectionStepperRepository, SectionStepperRepository>();
+            mauiAppBuilder.Services.AddSingleton<IStepperRepository, StepperRepository>();
+            mauiAppBuilder.Services.AddSingleton<IActionRepository, ActionRepository>();
+            mauiAppBuilder.Services.AddSingleton<IPreConditionRepository, PreConditionRepository>();
+            mauiAppBuilder.Services.AddSingleton<IResponseDataRepository, ResponseDataRepository>();
+            mauiAppBuilder.Services.AddSingleton<IResponseRepository, ResponseRepository>();
+            mauiAppBuilder.Services.AddSingleton<IFileStorageRepository, FileStorageRepository>();
+
             return mauiAppBuilder;
         }
     }

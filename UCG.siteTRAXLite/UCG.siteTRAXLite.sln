@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCG.siteTRAXLite.DataContra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCG.siteTRAXLite.WebServices", "UCG.siteTRAXLite.WebServices\UCG.siteTRAXLite.WebServices.csproj", "{F137312A-7488-40F3-910F-ABC759644D92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCG.siteTRAXLite.Repositories", "UCG.siteTRAXLite.Repositories\UCG.siteTRAXLite.Repositories.csproj", "{B0E9F60A-7F04-423D-A404-93D60EA27B54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCG.siteTRAXLite.Repositories", "UCG.siteTRAXLite.Repositories\UCG.siteTRAXLite.Repositories.csproj", "{B0E9F60A-7F04-423D-A404-93D60EA27B54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCG.siteTRAXLite.DataObjects", "UCG.siteTRAXLite.DataObjects\UCG.siteTRAXLite.DataObjects.csproj", "{E1BD1CF6-5E67-48C3-BD9A-D967A9327536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCG.siteTRAXLite.DataObjects", "UCG.siteTRAXLite.DataObjects\UCG.siteTRAXLite.DataObjects.csproj", "{E1BD1CF6-5E67-48C3-BD9A-D967A9327536}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

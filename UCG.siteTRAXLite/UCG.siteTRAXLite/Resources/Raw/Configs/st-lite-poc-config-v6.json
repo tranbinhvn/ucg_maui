@@ -90,7 +90,12 @@
                 "responseType": "Text"
               },
               {
-                "title": "Pellentesque dictum interdum diam, nec cursus nunc varius?",
+                "title": "Pellentesque dictum interdum diam, nec cursus nunc?",
+                "description": "desc...",
+                "responseType": "Text"
+              },
+              {
+                "title": "Curabitur auctor sapien, nec cursus nunc?",
                 "description": "desc...",
                 "responseType": "Text"
               },
