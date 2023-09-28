@@ -92,6 +92,7 @@
 	  <None Remove="Resources\Images\icon_edit.png" />
 	  <None Remove="Resources\Images\icon_folderopen.svg" />
 	  <None Remove="Resources\Images\icon_jobs.png" />
+	  <None Remove="Resources\Images\icon_photo.png" />
 	  <None Remove="Resources\Images\icon_plus.png" />
 	  <None Remove="Resources\Images\icon_STA.png" />
 	  <None Remove="Resources\Images\icon_tick.png" />

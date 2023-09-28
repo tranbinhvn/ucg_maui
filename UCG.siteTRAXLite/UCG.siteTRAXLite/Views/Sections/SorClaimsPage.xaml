@@ -513,24 +513,52 @@
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>
                                     </StackLayout>
-                                    <Button
-                                        Grid.Row="2"
-                                        Margin="0,20,0,0"
+                                    <StackLayout Grid.Row="2"
                                         HorizontalOptions="FillAndExpand"
-                                        TextTransform="Uppercase"
-                                        Style="{StaticResource NormalButton}"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=UploadFilesTab.BrowseCommand}"
-                                        CommandParameter="{Binding .}"
-                                        Text="Select Attachment">
-                                        <Button.Triggers>
-                                            <DataTrigger TargetType="Button" Binding="{Binding IsUploading}" Value="True">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Button" Binding="{Binding IsUploading}" Value="False">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
+                                        Orientation="Horizontal">
+                                        <ImageButton
+                                            CornerRadius="5"
+                                            BorderWidth="1"
+                                            BorderColor="{StaticResource MediumDarkBlue}"
+                                            HeightRequest="65"
+                                            WidthRequest="65"
+                                            Padding="5"
+                                            BackgroundColor="Transparent"
+                                            Margin="10,0,0,0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=UploadFilesTab.TakePhotoCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Source="icon_camera">
+                                            <ImageButton.Triggers>
+                                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsUploading}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsUploading}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                            </ImageButton.Triggers>
+                                        </ImageButton>
+                                        <ImageButton
+                                            CornerRadius="5"
+                                            BorderWidth="1"
+                                            BorderColor="{StaticResource MediumDarkBlue}"
+                                            HeightRequest="65"
+                                            WidthRequest="65"
+                                            Padding="5"
+                                            BackgroundColor="Transparent"
+                                            Margin="20,0,0,0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SorClaimsPageViewModel}}, Path=UploadFilesTab.BrowseCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Source="icon_photo">
+                                            <ImageButton.Triggers>
+                                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsUploading}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsUploading}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                            </ImageButton.Triggers>
+                                        </ImageButton>
+                                    </StackLayout>
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>

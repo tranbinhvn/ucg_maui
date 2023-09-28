@@ -9,6 +9,7 @@ using UCG.siteTRAXLite.Logics;
 using UCG.siteTRAXLite.Managers;
 using UCG.siteTRAXLite.Managers.Models;
 using UCG.siteTRAXLite.Services;
+using UCG.siteTRAXLite.Utils;
 using UCG.siteTRAXLite.ViewModels;
 
 namespace UCG.siteTRAXLite.Models.SorClaims
@@ -50,6 +51,16 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             get
             {
                 return this.browseCommand ?? (this.browseCommand = new Command<ActionItemEntity>(async (q) => await BrowseFile(q)));
+            }
+        }
+
+        private ICommand takePhotoCommand;
+
+        public ICommand TakePhotoCommand
+        {
+            get
+            {
+                return this.takePhotoCommand ?? (this.takePhotoCommand = new Command<ActionItemEntity>(async (q) => await TakePhoto(q)));
             }
         }
 
@@ -106,7 +117,7 @@ namespace UCG.siteTRAXLite.Models.SorClaims
             {
                 foreach (var item in SecondarySOR.SubActionList)
                 {
-                    if ( (LogicPriceCode551.CheckLogic(SecondarySOR.Logic, item) && LogicPriceCode551.CheckResponse(item)) 
+                    if ( (LogicPriceCode551.CheckLogic(SecondarySOR.Logic, item) && LogicPriceCode551.CheckResponse(item))
                         || (LogicPriceCode563B.CheckLogic(SecondarySOR.Logic, item))  && LogicPriceCode563B.CheckResponse(item))
                     {
                         SubActions.Add(item);
@@ -134,6 +145,21 @@ namespace UCG.siteTRAXLite.Models.SorClaims
 
         private async Task BrowseFile(ActionItemEntity question)
         {
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                var isEnable = false;
+                if ((int)DeviceInfo.Version.Major < 13)
+                {
+                    isEnable = await PermisionChecking.CheckPermissions(new Permissions.StorageRead());
+                }
+                else
+                {
+                    isEnable = await PermisionChecking.CheckPermissions(new Permissions.Media());
+                }
+                if (!isEnable)
+                    return;
+            }
+
             var results = new List<ImageModel>();
 #if IOS
             var actionSheetConfig = new ActionSheetConfig()
@@ -164,6 +190,22 @@ namespace UCG.siteTRAXLite.Models.SorClaims
 #endif
         }
 
+        private async Task TakePhoto(ActionItemEntity question)
+        {
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                var isEnable = await PermisionChecking.CheckPermissions(new Permissions.Camera());
+                if (!isEnable)
+                    return;
+            }
+
+            var results = new List<ImageModel>();
+
+            var photo = await _mediaService.TakePhoto();
+            results.Add(photo);
+            await UpdateFilesUploaded(question, results);
+        }
+
         public async Task UpdateFilesUploaded(ActionItemEntity question, List<ImageModel> files)
         {
             try
@@ -177,6 +219,9 @@ namespace UCG.siteTRAXLite.Models.SorClaims
 
                 foreach (var uploadedFile in files)
                 {
+                    if (uploadedFile == null)
+                        return;
+
                     var isDuplicated = FileUploadHelper.IsDuplicate(uploadedFile.ImageUrl, currentFilePaths);
                     if (isDuplicated)
                     {

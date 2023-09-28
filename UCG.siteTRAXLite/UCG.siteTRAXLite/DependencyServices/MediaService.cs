@@ -49,6 +49,49 @@ namespace UCG.siteTRAXLite.DependencyServices
             return null;
         }
 
+        public async Task<ImageModel> TakePhoto()
+        {
+            try
+            {
+                var file = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Capture Photo",
+                });
+
+                if (file == null)
+                    return null;
+
+                var imageModel = new ImageModel();
+                imageModel.ImageUrl = file.FullPath;
+
+                string filename = file.FileName;
+                string pathname = file.FullPath;
+
+                imageModel.FileName = filename;
+                imageModel.ContentType = file.ContentType;
+
+
+                if (filename == null && pathname != null)
+                {
+                    filename = Path.GetFileName(pathname);
+                }
+
+                using var stream = await file.OpenReadAsync();
+                byte[] datas = FileUtils.GetBytesFromStream(stream);
+
+                imageModel.ImageUrl = await FileUtils.WriteToTempPath(datas, Path.GetFileName(pathname));
+                imageModel.FileSize = new FileInfo(imageModel.ImageUrl).Length;
+
+                return imageModel;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error picking photos: {ex}");
+            }
+
+            return null;
+        }
+
         public byte[] ResizeImage(byte[] imageData, float width, float height, int quality)
         {
             using (SKBitmap originalImage = SKBitmap.Decode(imageData))

@@ -14,6 +14,7 @@ using UCG.siteTRAXLite.Managers.Models;
 using UCG.siteTRAXLite.Managers.SorEformManager;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
+using UCG.siteTRAXLite.Utils;
 
 namespace UCG.siteTRAXLite.ViewModels.Sections
 {
@@ -407,6 +408,21 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
         private async Task BrowseFile(ActionItemEntity question)
         {
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                var isEnable = false;
+                if ((int)DeviceInfo.Version.Major < 13)
+                {
+                    isEnable = await PermisionChecking.CheckPermissions(new Permissions.StorageRead());
+                }
+                else
+                {
+                    isEnable = await PermisionChecking.CheckPermissions(new Permissions.Media());
+                }
+                if (!isEnable)
+                    return;
+            }
+
             var results = new List<ImageModel>();
 #if IOS
             var actionSheetConfig = new ActionSheetConfig()

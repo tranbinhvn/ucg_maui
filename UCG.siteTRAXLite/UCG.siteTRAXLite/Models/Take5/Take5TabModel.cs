@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using UCG.siteTRAXLite.Messages;
 using Acr.UserDialogs;
 using UCG.siteTRAXLite.DependencyServices;
+using UCG.siteTRAXLite.Utils;
 
 #if IOS
 using MobileCoreServices;
@@ -197,6 +198,21 @@ namespace UCG.siteTRAXLite.Models.Take5
 
         private async Task BrowseFile(ActionItemEntity question)
         {
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                var isEnable = false;
+                if ((int)DeviceInfo.Version.Major < 13)
+                {
+                    isEnable = await PermisionChecking.CheckPermissions(new Permissions.StorageRead());
+                }
+                else
+                {
+                    isEnable = await PermisionChecking.CheckPermissions(new Permissions.Media());
+                }
+                if (!isEnable)
+                    return;
+            }
+
             var results = new List<ImageModel>();
 #if IOS
             var actionSheetConfig = new ActionSheetConfig()
