@@ -3,10 +3,12 @@ using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.Common.Utils;
 using UCG.siteTRAXLite.DependencyServices;
+using UCG.siteTRAXLite.Entities.Configuration;
 using UCG.siteTRAXLite.Entities.SorEforms;
 using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Logics;
 using UCG.siteTRAXLite.Managers;
+using UCG.siteTRAXLite.Managers.ConfigurationManager;
 using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.Models;
 using UCG.siteTRAXLite.Managers.SorEformManager;
@@ -21,12 +23,13 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         private readonly IUploadManager _uploadManager;
         private readonly IFileService _fileService;
         private readonly IMediaService _mediaService;
+        private readonly IConfigurationManager _configurationManager;
 
         private bool IsLoadingQuestion = false;
 
         public ConcurrentObservableCollection<ActionItemEntity> Questions { get; set; }
         public ConcurrentObservableCollection<ActionItemEntity> SummaryQuestions { get; set; }
-        public ConcurrentObservableCollection<StepperEntity> Steppers { get; set; }
+        public ConcurrentObservableCollection<Entities.SorEforms.StepperEntity> Steppers { get; set; }
         public ConcurrentObservableCollection<PriceCodeEntity> PriceCodes { get; set; }
 
         MultiUploadAction<QuestionAttachmentEntity> uploadHelper;
@@ -45,8 +48,8 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             set { SetProperty(ref showSummary, value); }
         }
 
-        private StepperEntity selectedStepper;
-        public StepperEntity SelectedStepper
+        private Entities.SorEforms.StepperEntity selectedStepper;
+        public Entities.SorEforms.StepperEntity SelectedStepper
         {
             get { return selectedStepper; }
             set
@@ -72,6 +75,13 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         {
             get { return isShowPriceCodeQTY; }
             set { SetProperty(ref isShowPriceCodeQTY, value); }
+        }
+
+        private bool isSubmitted;
+        public bool IsSubmitted
+        {
+            get { return isSubmitted; }
+            set { SetProperty(ref isSubmitted, value); }
         }
 
         private ICommand cancelCommand;
@@ -129,17 +139,20 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IServiceEntityMapper mapper,
             IUploadManager uploadManager,
             IMediaService mediaService,
-            IFileService fileService) : base(navigationService, alertService, openAppService, mapper)
+            IFileService fileService,
+            IConfigurationManager configurationManager,
+            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
         {
             _sorEformManager = sorEformManager;
             uploadHelper = new MultiUploadAction<QuestionAttachmentEntity>();
             Questions = new ConcurrentObservableCollection<ActionItemEntity>();
             SummaryQuestions = new ConcurrentObservableCollection<ActionItemEntity>();
-            Steppers = new ConcurrentObservableCollection<StepperEntity>();
+            Steppers = new ConcurrentObservableCollection<Entities.SorEforms.StepperEntity>();
             PriceCodes = new ConcurrentObservableCollection<PriceCodeEntity>();
             _uploadManager = uploadManager;
             _mediaService = mediaService;
             _fileService = fileService;
+            _configurationManager = configurationManager;
             IsShowActionButton = true;
 
             PageTitle = "Jobs";
@@ -148,21 +161,23 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         public async override Task OnNavigatingTo(object parameter)
         {
             ClearData();
-            await LoadSteppers(parameter as SectionEntity);
+            await LoadSteppers(parameter as Entities.SorEforms.SectionEntity);
         }
 
-        public async Task LoadSteppers(SectionEntity section)
+        public async Task LoadSteppers(Entities.SorEforms.SectionEntity section)
         {
             if (section == null)
                 return;
 
-            var steppers = new List<StepperEntity>();
+            var steppersInDb = await _configurationManager.GetGenericSectionSteppers(JobDetail.JobK);
+
+            var steppers = new List<Entities.SorEforms.StepperEntity>();
 
             if (section.ESectionType == JobSectionType.Generic)
             {
                 steppers = await _sorEformManager.GetGenericSectionSteppers();
 
-                steppers.Add(new StepperEntity
+                steppers.Add(new Entities.SorEforms.StepperEntity
                 {
                     Title = "Submit"
                 });
@@ -170,11 +185,48 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
 
             foreach (var stepper in steppers)
             {
+                if (steppersInDb != null)
+                    SetResponse(stepper, steppersInDb);
+                stepper.StepperType = StepperType.Generic;
                 Steppers.Add(stepper);
             }
 
             SelectedStepper = Steppers.FirstOrDefault();
             SelectedStepper.IsChecked = true;
+        }
+
+        private void SetResponse(Entities.SorEforms.StepperEntity stepper, List<Entities.Configuration.StepperEntity> steppersInDb)
+        {
+            var currentStepper = steppersInDb.FirstOrDefault(s => s.Title.Equals(stepper.Title));
+            if (currentStepper == null)
+                return;
+
+            SetActionResponse(currentStepper.Actions, stepper.ActionList);
+        }
+
+        private void SetActionResponse(List<ActionEntity> actions, List<ActionItemEntity> renderActions)
+        {
+            foreach (var action in actions)
+            {
+                var matchingRenderAction = renderActions.FirstOrDefault(a => a.Title.Equals(action.Title));
+                if (matchingRenderAction == null) continue;
+
+                var response = action.Responses.FirstOrDefault();
+                if (response != null)
+                {
+                    if (matchingRenderAction.ResponseData != null && matchingRenderAction.ResponseData.Any())
+                    {
+                        var responseData = matchingRenderAction.ResponseData.FirstOrDefault(a => a.Value == response.Value);
+                        matchingRenderAction.Response = responseData;
+                    }
+                    else if (response.Value != null)
+                    {
+                        matchingRenderAction.Response.Value = response.Value;
+                    }
+                }
+
+                SetActionResponse(action.ChildActions, matchingRenderAction.SubActionList);
+            }
         }
 
         private void ClearData()
@@ -234,7 +286,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             }
         }
 
-        private void HandleSelectedStepper(StepperEntity stepper)
+        private void HandleSelectedStepper(Entities.SorEforms.StepperEntity stepper)
         {
             if (stepper.Title.Equals("Submit", StringComparison.OrdinalIgnoreCase))
             {
@@ -327,12 +379,15 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
         {
             IsShowActionButton = false;
 
+            await UpdateConfigToSubmit();
+
             if (SummaryQuestions.Any(ShouldUploadQuestionFiles))
                 await UploadFiles();
 
             await AlertService.ShowAlertAsync(MessageStrings.Submitted_Successfully);
 
             IsShowActionButton = true;
+            IsSubmitted = true;
         }
 
         private void RemoveImage(QuestionAttachmentEntity image)
@@ -484,6 +539,109 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             return question.EResponseType == SorEformsResponseType.UploadMultiple &&
                    question.FilesUpload != null &&
                    question.FilesUpload.Any();
+        }
+
+        private async Task UpdateConfigToSubmit()
+        {
+            var configActions = new List<ActionEntity>();
+            var configSteppers = new List<Entities.Configuration.StepperEntity>();
+            var steppers = Steppers.Where(s => s.StepperType == StepperType.Generic && s.Title != "Submit");
+            var sectionStepper = new SectionStepperEntity
+            {
+                SectionStepperK = Guid.NewGuid(),
+                StepperType = StepperType.None,
+            };
+            foreach (var s in steppers)
+            {
+                var stepperK = Guid.NewGuid();
+                var stepper = new Entities.Configuration.StepperEntity
+                {
+                    StepperK = stepperK,
+                    SectionStepperFK = sectionStepper.SectionStepperK,
+                    Title = s.Title,
+                    Actions = GetActionTree(s.ActionList, stepperK)
+                };
+
+                configSteppers.Add(stepper);
+            }
+            sectionStepper.Steppers = configSteppers;
+            var jobTab = new Entities.Configuration.JobTabEntity
+            {
+                JobTabK = Guid.NewGuid(),
+            };
+            var sectionEntity = new Entities.Configuration.SectionEntity
+            {
+                SectionK = Guid.NewGuid(),
+                Title = "Generic",
+                JobTabFK = jobTab.JobTabK,
+                SectionType = JobSectionType.Generic,
+                SectionStepperFK = sectionStepper.SectionStepperK,
+                SectionStepper = sectionStepper
+            };
+            jobTab.Sections = new List<Entities.Configuration.SectionEntity>
+            {
+                sectionEntity
+            };
+            var configInfo = new Entities.Configuration.ConfigInfoEntity
+            {
+                ConfigInfoK = Guid.NewGuid(),
+                ConfigVersion = 0
+            };
+            var config = new ConfigEntity()
+            {
+                JobFK = JobDetail.JobK,
+                ConfigK = Guid.NewGuid(),
+                ConfigInfoFK = configInfo.ConfigInfoK,
+                JobTabFK = jobTab.JobTabK,
+                ConfigInfo = configInfo,
+                JobTab = jobTab
+            };
+
+            await _configurationManager.SubmitGenericSampleSections(config);
+        }
+
+        private List<ActionEntity> GetActionTree(List<ActionItemEntity> list, Guid stepperFK, Guid parentFK = default(Guid))
+        {
+            return list.Select(a =>
+            {
+                var actionK = Guid.NewGuid();
+                if (a.FilesUpload != null && a.FilesUpload.Any())
+                    a.FilesUpload.ForEach(f => f.ActionFK = actionK);
+                var resDatas = a.ResponseData != null ? a.ResponseData.Select(r => new ResponseDataEntity
+                {
+                    ResponseDataK = Guid.NewGuid(),
+                    Value = r.Value,
+                    ActionFK = actionK,
+                }).ToList() : null;
+
+                var responses = new List<ResponseEntity> { new ResponseEntity
+                    {
+                        ResponseK = Guid.NewGuid(),
+                        Value = a.Response?.Value,
+                        ActionFK = actionK,
+                    } };
+
+                var condition = a.Condition?.ResponseData == null ? null : new PreConditionEntity
+                {
+                    PreConditionK = Guid.NewGuid(),
+                    Value = a.Condition?.ResponseData,
+                    ActionFK = actionK,
+                };
+
+                return new ActionEntity
+                {
+                    StepperFK = stepperFK,
+                    ParentActionFK = parentFK,
+                    ActionK = actionK,
+                    Title = a.Title,
+                    Description = a.Description,
+                    ResponseType = a.EResponseType,
+                    ResponseDatas = resDatas,
+                    Responses = responses,
+                    PreCondition = condition,
+                    ChildActions = GetActionTree(a.SubActionList, stepperFK, actionK)
+                };
+            }).ToList();
         }
     }
 }

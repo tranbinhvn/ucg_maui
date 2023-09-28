@@ -5,8 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using UCG.siteTRAXLite.DataObjects;
+using UCG.siteTRAXLite.DataObjects.Configuration;
 using UCG.siteTRAXLite.DataObjects.DataObject;
 using UCG.siteTRAXLite.DataObjects.DbCustomAttribute;
+using UCG.siteTRAXLite.DataObjects.FileStorage;
+using UCG.siteTRAXLite.DataObjects.Job;
+using UCG.siteTRAXLite.DataObjects.Site;
 using UCG.siteTRAXLite.Repositories.Extensions;
 
 namespace UCG.siteTRAXLite.Repositories.Database
@@ -29,7 +33,20 @@ namespace UCG.siteTRAXLite.Repositories.Database
                 if (DB == null)
                     DB = connectionFactory.CreateConnection();
                 SQLite3.BusyTimeout(DB.Handle, 5000);
+                DB.CreateTable<JobDataObject>();
+                DB.CreateTable<SiteDataObject>();
                 DB.CreateTable<HazardDataObject>();
+                DB.CreateTable<ConfigDataObject>();
+                DB.CreateTable<ConfigInfoDataObject>();
+                DB.CreateTable<JobTabDataObject>();
+                DB.CreateTable<SectionDataObject>();
+                DB.CreateTable<SectionStepperDataObject>();
+                DB.CreateTable<StepperDataObject>();
+                DB.CreateTable<ActionDataObject>();
+                DB.CreateTable<PreConditionDataObject>();
+                DB.CreateTable<ResponseDataObject>();
+                DB.CreateTable<ResponseDataDataObject>();
+                DB.CreateTable<FileStorageDataObject>();
             }
         }
 
@@ -40,7 +57,20 @@ namespace UCG.siteTRAXLite.Repositories.Database
                 if (DB == null)
                     DB = new SQLiteConnection(path);
                 SQLite3.BusyTimeout(DB.Handle, 5000);
+                DB.CreateTable<JobDataObject>();
+                DB.CreateTable<SiteDataObject>();
                 DB.CreateTable<HazardDataObject>();
+                DB.CreateTable<ConfigDataObject>();
+                DB.CreateTable<ConfigInfoDataObject>();
+                DB.CreateTable<JobTabDataObject>();
+                DB.CreateTable<SectionDataObject>();
+                DB.CreateTable<SectionStepperDataObject>();
+                DB.CreateTable<StepperDataObject>();
+                DB.CreateTable<ActionDataObject>();
+                DB.CreateTable<PreConditionDataObject>();
+                DB.CreateTable<ResponseDataObject>();
+                DB.CreateTable<ResponseDataDataObject>();
+                DB.CreateTable<FileStorageDataObject>();
             }
         }
 
@@ -53,7 +83,20 @@ namespace UCG.siteTRAXLite.Repositories.Database
             lock (_locker)
             {
                 SQLite3.BusyTimeout(DB.Handle, 5000);
+                DB.DeleteAll<JobDataObject>();
+                DB.DeleteAll<SiteDataObject>();
                 DB.DeleteAll<HazardDataObject>();
+                DB.DeleteAll<ConfigDataObject>();
+                DB.DeleteAll<ConfigInfoDataObject>();
+                DB.DeleteAll<JobTabDataObject>();
+                DB.DeleteAll<SectionDataObject>();
+                DB.DeleteAll<SectionStepperDataObject>();
+                DB.DeleteAll<StepperDataObject>();
+                DB.DeleteAll<ActionDataObject>();
+                DB.DeleteAll<PreConditionDataObject>();
+                DB.DeleteAll<ResponseDataObject>();
+                DB.DeleteAll<ResponseDataDataObject>();
+                DB.DeleteAll<FileStorageDataObject>();
             }
         }
 

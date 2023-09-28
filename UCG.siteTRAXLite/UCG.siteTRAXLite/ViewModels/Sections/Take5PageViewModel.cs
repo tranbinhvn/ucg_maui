@@ -110,7 +110,8 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             ISorEformManager sorEformManager,
             IUploadManager uploadManager,
             IMediaService mediaService,
-            IFileService fileService) : base(navigationService, alertService, openAppService, mapper)
+            IFileService fileService,
+            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
         {
             PageTitle = PageTitles.Take5;
             _uploadManager = uploadManager;
@@ -261,7 +262,7 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
                 {
                     Name = answer.Response.Value,
                     Description = description.Response.Value,
-                    SiteAddress = JobDetail.SiteName
+                    SiteAddress = JobDetail.Site.SiteName
                 };
                 hazards.Add(hazard);
             }

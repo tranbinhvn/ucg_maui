@@ -19,7 +19,8 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             IAlertService alertService,
             IOpenAppService openAppService,
             ISorEformManager sorEformManager,
-            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
+            IServiceEntityMapper mapper,
+            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
         {
             _sorEformManager = sorEformManager;
             Sections = new ConcurrentObservableCollection<SectionEntity>();

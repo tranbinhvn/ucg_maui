@@ -109,7 +109,8 @@ namespace UCG.siteTRAXLite.ViewModels.Sections
             ISorEformManager sorEformManager,
             IUploadManager uploadManager,
             IMediaService mediaService,
-            IFileService fileService) : base(navigationService, alertService, openAppService, mapper)
+            IFileService fileService,
+            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
         {
             PageTitle = PageTitles.ClaimsPage;
 

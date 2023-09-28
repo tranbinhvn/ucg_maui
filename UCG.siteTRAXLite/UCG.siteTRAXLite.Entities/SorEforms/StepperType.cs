@@ -3,9 +3,10 @@
     public enum StepperType : byte
     {
         None = 0,
-        Control = 1,
-        Hazard = 2,
-        Submit = 3,
-        UploadFiles = 4,
+        Generic = 1,
+        Control = 2,
+        Hazard = 3,
+        Submit = 4,
+        UploadFiles = 5,
     }
 }

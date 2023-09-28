@@ -111,7 +111,8 @@ namespace UCG.siteTRAXLite.ViewModels
             INavigationService navigationService, 
             IAlertService alertService, 
             IOpenAppService openAppService,
-            IServiceEntityMapper mapper) : base(navigationService, alertService, openAppService, mapper)
+            IServiceEntityMapper mapper,
+            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
         {
             var countries = Endpoints.GetAllCountries();
             TabCount = 0;
