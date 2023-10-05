@@ -70,14 +70,15 @@
                                     HorizontalOptions="EndAndExpand" 
                                     Spacing="0" 
                                     VerticalOptions="CenterAndExpand">
-                                    <Image 
-                                        Aspect="AspectFit" 
-                                        HeightRequest="24" 
-                                        HorizontalOptions="Center" 
-                                        Source="icons_hamburger_menu.png" 
-                                        VerticalOptions="CenterAndExpand" 
-                                        WidthRequest="24">
-                                    </Image>
+                                        <Image
+                                            x:Name="showMenuBtn"
+                                            Aspect="AspectFit" 
+                                            HeightRequest="24" 
+                                            HorizontalOptions="Center" 
+                                            Source="icons_hamburger_menu.png" 
+                                            VerticalOptions="CenterAndExpand" 
+                                            WidthRequest="24">
+                                        </Image>
                                 </StackLayout>
                             </Grid>
                         </StackLayout>

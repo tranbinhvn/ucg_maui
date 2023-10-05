@@ -28,13 +28,15 @@ using UCG.siteTRAXLite.WebServices.DependencyServices;
 using UCG.siteTRAXLite.WebServices.SorEformServices;
 using UCG.siteTRAXLite.WebServices.UploadService;
 using UraniumUI;
+using UCG.siteTRAXLite.Helpers;
+using IdentityModel.OidcClient;
 
 #if ANDROID
     using Microsoft.Maui.Controls.PlatformConfiguration;
     using Microsoft.Maui.Controls.Compatibility.Platform.Android;
     using UCG.siteTRAXLite.Platforms.Android.Database;
 #elif IOS
-using UCG.siteTRAXLite.Platforms.iOS.Database;
+    using UCG.siteTRAXLite.Platforms.iOS.Database;
 #elif WINDOWS
 using UCG.siteTRAXLite.Platforms.Windows.Database;
 #endif
@@ -80,6 +82,7 @@ namespace UCG.siteTRAXLite
                 .RegisterModels()
                 .RegisterRepositories()
                 .RegisterConnectionSQLs()
+                .RegisterAuthentication()
                 .ConfigureLifecycleEvents(events =>
                 {
 #if ANDROID
@@ -94,7 +97,10 @@ namespace UCG.siteTRAXLite
                 h.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
             });
 #endif
-            return builder.Build();
+
+            var app = builder.Build();
+            ServiceHelper.Initialize(app.Services);
+            return app;
         }
 
         private static MauiAppBuilder RegisterManagers(this MauiAppBuilder mauiAppBuilder)
@@ -191,6 +197,26 @@ namespace UCG.siteTRAXLite
             mauiAppBuilder.Services.AddSingleton<IResponseDataRepository, ResponseDataRepository>();
             mauiAppBuilder.Services.AddSingleton<IResponseRepository, ResponseRepository>();
             mauiAppBuilder.Services.AddSingleton<IFileStorageRepository, FileStorageRepository>();
+
+            return mauiAppBuilder;
+        }
+
+        private static MauiAppBuilder RegisterAuthentication(this MauiAppBuilder mauiAppBuilder)
+        {
+            mauiAppBuilder.Services.AddSingleton(HttpClientHelper.GetInsecureHttpClient());
+            mauiAppBuilder.Services.AddTransient<WebAuthenticatorBrowser>();
+            mauiAppBuilder.Services.AddTransient(sp =>
+                new OidcClient(new OidcClientOptions
+                {
+                    Authority = "https://localhost:5001/",
+                    ClientId = "sitetrax_maui",
+                    Scope = "openid profile",
+                    RedirectUri = "sitetraxmaui://",
+                    PostLogoutRedirectUri = "sitetraxmaui://",
+                    ClientSecret = "ZYCaJ962CTVDkpPLZX",
+                    HttpClientFactory = options => HttpClientHelper.GetInsecureHttpClient(),
+                    Browser = sp.GetRequiredService<WebAuthenticatorBrowser>()
+                }));
 
             return mauiAppBuilder;
         }

@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using IdentityModel.OidcClient;
 using System.Windows.Input;
 using UCG.siteTRAXLite.Common.Constants;
 using UCG.siteTRAXLite.DataContracts;
@@ -6,7 +7,6 @@ using UCG.siteTRAXLite.Managers.Mappers;
 using UCG.siteTRAXLite.Managers.UserDatas;
 using UCG.siteTRAXLite.Managers.UserManagers;
 using UCG.siteTRAXLite.Services;
-using UCG.siteTRAXLite.Utils;
 using UCG.siteTRAXLite.Views;
 using UCG.siteTRAXLite.WebServices.AuthenticationServices;
 using UCG.siteTRAXLite.WebServices.Exceptions;
@@ -20,6 +20,7 @@ namespace UCG.siteTRAXLite.ViewModels
         private readonly IIdentityService _authenService;
         private readonly IUserManager _userManager;
         private readonly IUserData _userData;
+        private readonly OidcClient _client;
 
         private string _username;
         public string Username
@@ -85,11 +86,13 @@ namespace UCG.siteTRAXLite.ViewModels
             IAlertService alertService,
             IOpenAppService openAppService,
             IServiceEntityMapper mapper,
-            IServiceProvider services) : base(navigationService, alertService, openAppService, mapper, services)
+            IServiceProvider services,
+            OidcClient client) : base(navigationService, alertService, openAppService, mapper, services)
         {
             _authenService = authenService;
             _userManager = userManager;
             _userData = userData;
+            _client = client;
 
             RememberMe = Settings.IsRememberMe;
             if (RememberMe)
@@ -108,69 +111,76 @@ namespace UCG.siteTRAXLite.ViewModels
 
         private async void Login()
         {
-#if WINDOWS
-            var spinner = await SpinnerHelper.ShowSpinnerAsync(MessageStrings.Login);
-#else
-            MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.ShowLoading(MessageStrings.Login, MaskType.Black));
-#endif
+            var loginResult = await _client.LoginAsync();
+            if (loginResult.IsError)
+                return;
 
-            await Task.Run(async () =>
-            {
-                if (string.IsNullOrEmpty(Settings.SelectedCountry))
-                {
-#if WINDOWS
-                    await AlertService.ShowAlertAsync(MessageStrings.NoEndpointSelected);
-#else
-                    await UserDialogs.Instance.AlertAsync(MessageStrings.NoEndpointSelected).ConfigureAwait(true);
-#endif
-                    return;
-                }
+            await AlertService.ShowAlertAsync("Access Token is:\n\n" + loginResult.AccessToken, "Login Result", "Close");
+//
+//#if WINDOWS
+//            var spinner = await SpinnerHelper.ShowSpinnerAsync(MessageStrings.Login);
+//#else
+//            MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.ShowLoading(MessageStrings.Login, MaskType.Black));
+//#endif
 
-                if (!RememberMe)
-                {
-                    Settings.Logout();
-                }
-                var isSuccess = await _authenService.Login(Username, Password);
-                bool shouldUpdateCompany = false;
-                if (isSuccess.Code == ResponseCode.SUCCESS)
-                {
-                    if (RememberMe)
-                    {
-                        shouldUpdateCompany = (!Username.Equals(Settings.UserNameSetting))
-                            || string.IsNullOrEmpty(Settings.CompanyKeySetting);
-                        Settings.IsRememberMe = RememberMe;
-                        Settings.UserNameSetting = Username;
-                        Settings.PasswordSetting = Password;
-                    }
-                    else
-                    {
-                        shouldUpdateCompany = true;
-                    }
+//            await Task.Run(async () =>
+//            {
+//                if (string.IsNullOrEmpty(Settings.SelectedCountry))
+//                {
+//#if WINDOWS
+//                    await AlertService.ShowAlertAsync(MessageStrings.NoEndpointSelected);
+//#else
+//                    await UserDialogs.Instance.AlertAsync(MessageStrings.NoEndpointSelected).ConfigureAwait(true);
+//#endif
+//                    return;
+//                }
 
-                    await SetupUserInfo(shouldUpdateCompany, true);
+//                if (!RememberMe)
+//                {
+//                    Settings.Logout();
+//                }
+//                var isSuccess = await _authenService.Login(Username, Password);
+//                bool shouldUpdateCompany = false;
+//                if (isSuccess.Code == ResponseCode.SUCCESS)
+//                {
+//                    if (RememberMe)
+//                    {
+//                        shouldUpdateCompany = (!Username.Equals(Settings.UserNameSetting))
+//                            || string.IsNullOrEmpty(Settings.CompanyKeySetting);
+//                        Settings.IsRememberMe = RememberMe;
+//                        Settings.UserNameSetting = Username;
+//                        Settings.PasswordSetting = Password;
+//                    }
+//                    else
+//                    {
+//                        shouldUpdateCompany = true;
+//                    }
 
-                    MainThread.BeginInvokeOnMainThread(async () => 
-                    {
-                        await NavigationService.NavigateToPageAsync<AppAccessPage>();
-                    });
-                }
-                else
-                {
-#if WINDOWS
-                    await AlertService.ShowAlertAsync(isSuccess.ErrorDescription);
-#else
-                    await UserDialogs.Instance.AlertAsync(isSuccess.ErrorDescription).ConfigureAwait(true);
-#endif
-                }
+//                    await SetupUserInfo(shouldUpdateCompany, true);
 
-            }).ContinueWith(res => MainThread.BeginInvokeOnMainThread(async () =>
-            {
-#if WINDOWS
-                await SpinnerHelper.CloseSpinnerAsync(spinner);
-#else
-                UserDialogs.Instance.HideLoading();
-#endif
-            }));
+//                    MainThread.BeginInvokeOnMainThread(async () =>
+//                    {
+//                        await NavigationService.NavigateToPageAsync<AppAccessPage>();
+//                    });
+//                }
+//                else
+//                {
+//#if WINDOWS
+//                    await AlertService.ShowAlertAsync(isSuccess.ErrorDescription);
+//#else
+//                    await UserDialogs.Instance.AlertAsync(isSuccess.ErrorDescription).ConfigureAwait(true);
+//#endif
+//                }
+
+//            }).ContinueWith(res => MainThread.BeginInvokeOnMainThread(async () =>
+//            {
+//#if WINDOWS
+//                await SpinnerHelper.CloseSpinnerAsync(spinner);
+//#else
+//                UserDialogs.Instance.HideLoading();
+//#endif
+//            }));
+//
         }
 
         private async Task SetupUserInfo(bool shouldUpdateCompany, bool isOnline)

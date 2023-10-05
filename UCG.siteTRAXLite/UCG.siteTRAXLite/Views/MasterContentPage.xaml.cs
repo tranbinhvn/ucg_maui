@@ -1,7 +1,9 @@
 using System.Windows.Input;
 using UCG.siteTRAXLite.Entities;
 using UCG.siteTRAXLite.Entities.Job;
+using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Models;
+using UCG.siteTRAXLite.Services;
 
 namespace UCG.siteTRAXLite.Views;
 
@@ -20,6 +22,8 @@ public partial class MasterContentPage : ContentPage
     public static readonly BindableProperty GoBackCommandProperty = BindableProperty.Create(nameof(GoBackCommand), typeof(ICommand), typeof(MasterContentPage), null, BindingMode.TwoWay);
 
     public static readonly BindableProperty CustomFieldsProperty = BindableProperty.Create(nameof(CustomFields), typeof(ConcurrentObservableCollection<ProgramCustomFieldMobileEntity>), typeof(MasterContentPage), null, BindingMode.TwoWay);
+
+    private readonly INavigationService _navigationService;
 
     public string PageTitle
     {
@@ -76,8 +80,38 @@ public partial class MasterContentPage : ContentPage
         set => SetValue(CustomFieldsProperty, value);
     }
 
+    protected override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+
+        var showMenuBtn = (Image)GetTemplateChild("showMenuBtn");
+        if (showMenuBtn == null)
+            return;
+
+        var tapGesture = new TapGestureRecognizer
+        {
+            NumberOfTapsRequired = 1,
+        };
+        tapGesture.Tapped += ShowMenuBtn_Tapped;
+        showMenuBtn.GestureRecognizers.Add(tapGesture);
+    }
+
+    private async void ShowMenuBtn_Tapped(object sender, TappedEventArgs e)
+    {
+        var showMenuBtn = (Image)GetTemplateChild("showMenuBtn");
+        if (showMenuBtn == null)
+            return;
+        var action = await this.DisplayActionSheet("Actions", "Cancel", null, "Login");
+        if (action == null || action.Equals("Cancel"))
+            return;
+        if (action.Equals("Login"))
+            _navigationService.NavigateToPageAsync<LoginPage>();
+    }
+
     public MasterContentPage()
     {
+        _navigationService = ServiceHelper.GetService<INavigationService>();
+
         InitializeComponent();
 
         MenuItems = new ConcurrentObservableCollection<MenuItemModel>
