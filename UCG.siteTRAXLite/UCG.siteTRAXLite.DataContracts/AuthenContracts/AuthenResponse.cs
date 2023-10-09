@@ -17,5 +17,7 @@ namespace UCG.siteTRAXLite.DataContracts.AuthenContracts
         public DateTime Issued { get; set; }
         [JsonProperty(".expires")]
         public DateTime Expires { get; set; }
+        [JsonProperty("refresh_token")]
+        public string ResfreshToken { get; set; }
     }
 }

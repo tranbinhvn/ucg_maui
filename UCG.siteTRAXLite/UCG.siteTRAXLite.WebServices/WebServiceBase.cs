@@ -46,6 +46,8 @@ namespace UCG.siteTRAXLite.WebServices
         public static string CurrentApiVersion { get; set; } = string.Empty;
         public string ApiVersion { get; }
         public bool CheckApiVersion { get; set; }
+        public string ClientID { get; } = "sitetrax_maui";
+        public string ClientSecret { get; } = "ZYCaJ962CTVDkpPLZX";
 
         private static string DataFormat = "application/json";
         private Uri APIBaseAddress;
@@ -80,6 +82,9 @@ namespace UCG.siteTRAXLite.WebServices
                         break;
                     case EndPointType.GoogleAPIEndPoint:
                         APIBaseURL = Settings.EnpointGoogleAPISetting;
+                        break;
+                    case EndPointType.IdentityEndpoint:
+                        APIBaseURL = Settings.EnpointIdentityUrlSetting;
                         break;
                 }
                 APIBaseAddress = new Uri(APIBaseURL);

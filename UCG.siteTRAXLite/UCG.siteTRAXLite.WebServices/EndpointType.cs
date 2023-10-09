@@ -4,6 +4,7 @@
     {
         DPPEndpoint = 0,
         UnleasedEndpoint = 1,
-        GoogleAPIEndPoint = 2
+        GoogleAPIEndPoint = 2,
+        IdentityEndpoint = 3
     }
 }

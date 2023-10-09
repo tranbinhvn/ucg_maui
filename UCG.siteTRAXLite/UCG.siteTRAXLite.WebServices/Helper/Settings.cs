@@ -83,6 +83,14 @@ namespace UCG.siteTRAXLite.WebServices.Helper
             }
         }
 
+        public static string EnpointIdentityUrlSetting
+        {
+            get
+            {
+                return Endpoints.GetEndpointSetting(SelectedCountry, EndPointSettingKeyString)?.EndpointIdentityURL;
+            }
+        }
+
         public static string EnpointDPPUrlSetting
         {
             get

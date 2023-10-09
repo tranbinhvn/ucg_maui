@@ -9,7 +9,7 @@ namespace UCG.siteTRAXLite
         {
             InitializeComponent();
             MainPage = new NavigationPage();
-            navigationService.NavigateToPageAsync<SectionPage>();
+            navigationService.NavigateToPageAsync<LoginPage>();
         }
     }
 }

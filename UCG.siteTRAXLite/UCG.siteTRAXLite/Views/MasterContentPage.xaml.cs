@@ -101,7 +101,7 @@ public partial class MasterContentPage : ContentPage
         var showMenuBtn = (Image)GetTemplateChild("showMenuBtn");
         if (showMenuBtn == null)
             return;
-        var action = await this.DisplayActionSheet("Actions", "Cancel", null, "Login");
+        var action = await this.DisplayActionSheet("Menu", "Cancel", null, "Login");
         if (action == null || action.Equals("Cancel"))
             return;
         if (action.Equals("Login"))

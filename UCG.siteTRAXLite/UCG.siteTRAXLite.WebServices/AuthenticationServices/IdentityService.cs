@@ -7,7 +7,7 @@ namespace UCG.siteTRAXLite.WebServices.AuthenticationServices
 {
     public class IdentityService : WebServiceBase, IIdentityService
     {
-        public IdentityService() : base(EndPointType.DPPEndpoint) { }
+        public IdentityService() : base(EndPointType.IdentityEndpoint) { }
 
         public async Task<MessageResponse> Login(string username, string password, string extraInfoJson = "")
         {
@@ -15,12 +15,15 @@ namespace UCG.siteTRAXLite.WebServices.AuthenticationServices
             var reqData = new AuthenRequestData()
             {
                 GrantType = "password",
+                ClientID = ClientID,
+                ClientSecret = ClientSecret,
                 Password = password,
-                Username = username
+                Username = username,
+                Scope = Endpoints.IdentityScope
             };
             try
             {
-                var authenResponse = await PostFormRequestAsync<AuthenRequestData, AuthenResponse>($"{Endpoints.AuthenEndpoint}&extrainfojson={extraInfoJson}", reqData);
+                var authenResponse = await PostFormRequestAsync<AuthenRequestData, AuthenResponse>(Endpoints.AuthenEndpoint, reqData);
                 WebServiceBase.AccessToken = authenResponse.AccessToken;
                 result.Code = ResponseCode.SUCCESS;
             }
