@@ -232,6 +232,42 @@ namespace UCG.siteTRAXLite.Common.Constants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Login_lblCancel {
+            get {
+                return ResourceManager.GetString("Login_lblCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Login_lblLogin {
+            get {
+                return ResourceManager.GetString("Login_lblLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        internal static string Login_lblLogout {
+            get {
+                return ResourceManager.GetString("Login_lblLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu.
+        /// </summary>
+        internal static string Login_lblMenu {
+            get {
+                return ResourceManager.GetString("Login_lblMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to *requires FM authorisation.
         /// </summary>
         internal static string LPC551_FM_Authorisation_Message {

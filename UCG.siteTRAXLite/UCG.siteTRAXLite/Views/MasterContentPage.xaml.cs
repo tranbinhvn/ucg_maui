@@ -4,6 +4,7 @@ using UCG.siteTRAXLite.Entities.Job;
 using UCG.siteTRAXLite.Helpers;
 using UCG.siteTRAXLite.Models;
 using UCG.siteTRAXLite.Services;
+using UCG.siteTRAXLite.Common.Constants;
 
 namespace UCG.siteTRAXLite.Views;
 
@@ -101,11 +102,17 @@ public partial class MasterContentPage : ContentPage
         var showMenuBtn = (Image)GetTemplateChild("showMenuBtn");
         if (showMenuBtn == null)
             return;
-        var action = await this.DisplayActionSheet("Menu", "Cancel", null, "Login");
-        if (action == null || action.Equals("Cancel"))
+        string txtLogin_Logout = string.IsNullOrEmpty(WebServices.WebServiceBase.AccessToken) ? LabelConstant.lblLogin : LabelConstant.lblLogOut;
+        var action = await this.DisplayActionSheet(LabelConstant.lblMenu, LabelConstant.lblCancel, null, txtLogin_Logout);
+        if (action == null || action.Equals(LabelConstant.lblCancel))
             return;
-        if (action.Equals("Login"))
-            _navigationService.NavigateToPageAsync<LoginPage>();
+        if (action.Equals(LabelConstant.lblLogin))
+           await _navigationService.NavigateToPageAsync<LoginPage>();
+        else if(action.Equals(LabelConstant.lblLogOut))
+        {
+            WebServices.WebServiceBase.AccessToken = null;
+            await _navigationService.NavigateToPageAsync<LoginPage>();
+        }
     }
 
     public MasterContentPage()

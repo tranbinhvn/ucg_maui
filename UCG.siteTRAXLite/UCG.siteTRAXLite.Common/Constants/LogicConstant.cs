@@ -19,4 +19,13 @@ namespace UCG.siteTRAXLite.Common.Constants
         public static string Logic_Price_Code_563B = AppStrings.Logic_Price_Code_563B;
         public static string L563B_Travel_Title = AppStrings.L563B_Travel_Title;
     }
+
+    public static class LabelConstant
+    {
+        //Login Popup
+        public static string lblLogin = AppStrings.Login_lblLogin;
+        public static string lblLogOut = AppStrings.Login_lblLogout;
+        public static string lblCancel = AppStrings.Login_lblCancel;
+        public static string lblMenu = AppStrings.Login_lblMenu;
+    }
 }
