@@ -16,8 +16,8 @@
                     nzSettings.Add("Dev",
                      new EndPointSetting(
                             name: "Dev",
-                            identityURL: "http://localhost:5001/",
-                            endpointDPPBaseURL: "http://localhost:5102/",
+                            identityURL: "https://identity.sitetrax.co.nz/",
+                            endpointDPPBaseURL: "https://ci.dpp.chorus.sitetrax.co.nz/",
                             endpointBMPSignalRURL: "https://ci.chorus.sitetrax.co.nz/signalr",
                             isDefault: false
                         ));
